@@ -1,64 +1,39 @@
-'use client';
+import { LoginForm } from "@/components/auth/login-form"
+import { Button } from "@/components/ui/button"
+import Link from "next/link"
 
-import { useActionState, useEffect, useState } from 'react';
-
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { toast } from 'sonner';
-
-import { AuthForm } from '@/components/auth-form';
-import { SubmitButton } from '@/components/submit-button';
-import { login, type LoginActionState } from '@/lib/actions/auth';
-import { useScopedI18n } from '@/locales/client';
-
-export default function Page() {
-  const router = useRouter();
-  const t = useScopedI18n('login');
-
-  const [email, setEmail] = useState('');
-  const [isSuccessful, setIsSuccessful] = useState(false);
-
-  const [state, formAction] = useActionState<LoginActionState, FormData>(login, {
-    status: 'idle',
-  });
-
-  useEffect(() => {
-    if (state.status === 'failed') {
-      toast.error(t('errors.invalidCredentials'));
-    } else if (state.status === 'invalid_data') {
-      toast.error(t('errors.validationFailed'));
-    } else if (state.status === 'success') {
-      setIsSuccessful(true);
-      // 刷新页面以更新认证状态
-      router.refresh();
-      // 重定向到首页
-      router.push('/');
-    }
-  }, [router, state.status, t]);
-
-  const handleSubmit = (formData: FormData) => {
-    setEmail(formData.get('email') as string);
-    formAction(formData);
-  };
-
+export default function LoginPage() {
   return (
-    <div className="bg-background flex h-dvh w-screen items-start justify-center pt-12 md:items-center md:pt-0">
-      <div className="flex w-full max-w-md flex-col gap-12 overflow-hidden rounded-2xl">
-        <div className="flex flex-col items-center justify-center gap-2 px-4 text-center sm:px-16">
-          <h3 className="text-xl font-semibold dark:text-zinc-50">{t('title')}</h3>
-          <p className="text-sm text-gray-500 dark:text-zinc-400">{t('subtitle')}</p>
+    <div className="flex min-h-screen flex-col">
+      <header className="sticky top-0 z-50 flex h-16 items-center gap-4 border-b bg-background px-6">
+        <div className="flex flex-1 items-center gap-2 md:gap-4">
+          <span className="font-bold">企业管理平台</span>
         </div>
-        <AuthForm action={handleSubmit} defaultEmail={email}>
-          <SubmitButton isSuccessful={isSuccessful}>{t('title')}</SubmitButton>
-          <p className="mt-4 text-center text-sm text-gray-600 dark:text-zinc-400">
-            {t('noAccount')}{' '}
-            <Link href="/register" className="font-semibold text-gray-800 hover:underline dark:text-zinc-200">
-              {t('signUpLink')}
-            </Link>{' '}
-            {t('signUpSuffix')}
-          </p>
-        </AuthForm>
-      </div>
+        <div className="flex items-center gap-4">
+          <Button variant="ghost" size="sm" asChild>
+            <Link href="/online-system">演示入口</Link>
+          </Button>
+        </div>
+      </header>
+      <main className="flex-1">
+        <section className="flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center py-12">
+          <div className="grid gap-6 px-4 md:px-6 lg:grid-cols-2 lg:gap-10">
+            <div className="space-y-3">
+              <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">欢迎使用企业管理平台</h1>
+              <p className="max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                高效、安全的企业级管理系统，助力企业数字化转型
+              </p>
+            </div>
+            <div className="mx-auto w-full max-w-sm space-y-4 border p-6 rounded-lg shadow-sm">
+              <div className="space-y-2 text-center">
+                <h2 className="text-2xl font-bold">登录</h2>
+                <p className="text-sm text-muted-foreground">输入您的账号和密码登录系统</p>
+              </div>
+              <LoginForm />
+            </div>
+          </div>
+        </section>
+      </main>
     </div>
-  );
+  )
 }
