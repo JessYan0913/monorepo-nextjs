@@ -1,17 +1,15 @@
-import NextAuth from 'next-auth';
+import { NextRequest } from 'next/server';
 import { createI18nMiddleware } from 'next-international/middleware';
-import { authConfig } from '@/lib/auth/config';
+
+import { auth } from '@/lib/auth';
 
 const I18nMiddleware = createI18nMiddleware({
   locales: ['en', 'ja', 'zh'],
   defaultLocale: 'en',
 });
 
-const { auth } = NextAuth(authConfig);
-
-// Export the middleware with proper typing
-export default auth((req) => {
-  return I18nMiddleware(req);
+export default auth((request: NextRequest) => {
+  return I18nMiddleware(request);
 });
 
 export const config = {

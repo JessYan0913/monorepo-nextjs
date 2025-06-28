@@ -61,4 +61,4 @@ export const {
       return session;
     },
   },
-});
+}) as any;
