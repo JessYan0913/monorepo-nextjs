@@ -2,7 +2,7 @@ import { LoginForm } from "@/components/auth/login-form"
 import { Button } from "@repo/ui/components/ui/button"
 import Link from "next/link"
 
-export default function Home() {
+export default function LoginPage() {
   return (
     <div className="flex min-h-screen flex-col">
       <header className="sticky top-0 z-50 flex h-16 items-center gap-4 border-b bg-background px-6">
