@@ -1,15 +1,14 @@
 "use client"
 
 import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Switch } from "@/components/ui/switch"
-import { Label } from "@/components/ui/label"
-import { Separator } from "@/components/ui/separator"
-import { useToast } from "@/components/ui/use-toast"
+import { Button } from "@repo/ui/components/ui/button"
+import { Switch } from "@repo/ui/components/ui/switch"
+import { Label } from "@repo/ui/components/ui/label"
+import { Separator } from "@repo/ui/components/ui/separator"
+import { toast } from "@repo/ui/components/ui/sonner"
 import { Loader2 } from "lucide-react"
 
 export function NotificationSettings() {
-  const { toast } = useToast()
   const [isLoading, setIsLoading] = useState(false)
   const [settings, setSettings] = useState({
     emailNotifications: true,
@@ -35,10 +34,7 @@ export function NotificationSettings() {
       setIsLoading(false)
       console.log(settings)
 
-      toast({
-        title: "通知设置已更新",
-        description: "您的通知偏好设置已成功保存",
-      })
+      toast.success("通知设置已更新")
     }, 1000)
   }
 

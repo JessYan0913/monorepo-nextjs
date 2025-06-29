@@ -3,8 +3,8 @@
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { ModeToggle } from "@/components/layout/mode-toggle"
-import { Button } from "@/components/ui/button"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Button } from "@repo/ui/components/ui/button"
+import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/components/ui/avatar"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,15 +13,14 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@repo/ui/components/ui/dropdown-menu"
 import { Bell, Menu } from "lucide-react"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetTrigger } from "@repo/ui/components/ui/sheet"
 import { SidebarContent } from "@/components/layout/sidebar"
-import { useToast } from "@/components/ui/use-toast"
+import { toast } from '@repo/ui/components/ui/sonner'
 
 export function Header() {
   const router = useRouter()
-  const { toast } = useToast()
   const [user, setUser] = useState<{ name: string; role: string } | null>(null)
 
   useEffect(() => {
@@ -35,10 +34,7 @@ export function Header() {
     localStorage.removeItem("isLoggedIn")
     localStorage.removeItem("user")
 
-    toast({
-      title: "已退出登录",
-      description: "您已成功退出系统",
-    })
+    toast.success("已退出登录")
 
     router.push("/login")
   }

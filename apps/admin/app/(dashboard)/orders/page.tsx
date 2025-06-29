@@ -15,16 +15,16 @@ import {
   Clock, 
   ChevronRight 
 } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
+import { Button } from "@repo/ui/components/ui/button"
+import { Input } from "@repo/ui/components/ui/input"
+import { Badge } from "@repo/ui/components/ui/badge"
 import { 
   Select, 
   SelectContent, 
   SelectItem, 
   SelectTrigger, 
   SelectValue 
-} from "@/components/ui/select"
+} from "@repo/ui/components/ui/select"
 import {
   Card,
   CardContent,
@@ -32,13 +32,13 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@repo/ui/components/ui/card"
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@/components/ui/tabs"
+} from "@repo/ui/components/ui/tabs"
 
 // 订单状态枚举
 enum OrderStatus {

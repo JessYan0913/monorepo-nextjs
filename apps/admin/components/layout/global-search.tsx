@@ -11,7 +11,7 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@/components/ui/command"
+} from "@repo/ui/components/ui/command"
 import {
   LayoutDashboard,
   Users,
@@ -26,7 +26,7 @@ import {
   CheckSquare,
   MessageSquare,
 } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { Button } from "@repo/ui/components/ui/button"
 
 // 搜索结果类型
 type SearchResult = {

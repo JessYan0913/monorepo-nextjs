@@ -1,9 +1,9 @@
 "use client"
 
 import { useRouter } from "next/navigation"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@repo/ui/components/ui/card"
+import { Badge } from "@repo/ui/components/ui/badge"
+import { Button } from "@repo/ui/components/ui/button"
 import { BookOpen, Clock, ShoppingCart, Star } from "lucide-react"
 import { Product } from "./cart"
 

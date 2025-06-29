@@ -1,18 +1,14 @@
 "use client"
 
 import { useState } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Button } from "@/components/ui/button"
-import { useToast } from "@/components/ui/use-toast"
-import { RefreshCw, Users, BookOpen, Calendar, Clock, Map, ClipboardList, CheckSquare, Download, UserPlus, GraduationCap, Presentation } from "lucide-react"
-import { DatePickerWithRange } from "@/components/ui/date-range-picker"
-import { addDays, format } from "date-fns"
-import Link from "next/link"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@repo/ui/components/ui/card"
+import { Button } from "@repo/ui/components/ui/button"
+import { toast } from "@repo/ui/components/ui/sonner"
+import { RefreshCw, Users, BookOpen, CheckSquare, UserPlus, GraduationCap } from "lucide-react"
+import { addDays } from "date-fns"
 import { DateRange } from "react-day-picker"
 
 export default function OfflineSystemPage() {
-  const { toast } = useToast()
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [dateRange, setDateRange] = useState<DateRange>({
     from: addDays(new Date(), -30),
@@ -25,10 +21,7 @@ export default function OfflineSystemPage() {
     // 模拟数据刷新，包含日期范围信息
     setTimeout(() => {
       setIsRefreshing(false)
-      toast({
-        title: "数据已刷新",
-        description: `线下系统数据已更新至最新状态，日期范围: ${format(dateRange.from || new Date(), "yyyy-MM-dd")} 至 ${format(dateRange.to || new Date(), "yyyy-MM-dd")}`,
-      })
+      toast.error("数据已刷新")
     }, 1000)
   }
 

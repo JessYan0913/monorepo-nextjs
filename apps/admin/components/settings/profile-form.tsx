@@ -1,16 +1,16 @@
 "use client"
 
 import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Button } from "@repo/ui/components/ui/button"
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/components/ui/form"
+import { Input } from "@repo/ui/components/ui/input"
+import { Textarea } from "@repo/ui/components/ui/textarea"
+import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/components/ui/avatar"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { Loader2, Upload } from "lucide-react"
-import { useToast } from "@/components/ui/use-toast"
+import { toast } from "@repo/ui/components/ui/sonner"
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -29,7 +29,6 @@ const formSchema = z.object({
 })
 
 export function ProfileForm() {
-  const { toast } = useToast()
   const [isLoading, setIsLoading] = useState(false)
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -50,10 +49,7 @@ export function ProfileForm() {
       setIsLoading(false)
       console.log(values)
 
-      toast({
-        title: "个人资料已更新",
-        description: "您的个人资料已成功更新",
-      })
+      toast.success("个人资料已更新")
     }, 1000)
   }
 

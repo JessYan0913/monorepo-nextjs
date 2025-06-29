@@ -5,10 +5,10 @@ import { useRouter } from "next/navigation"
 import { format, isWithinInterval } from "date-fns"
 import { DateRange } from "react-day-picker"
 import { Calendar as CalendarIcon } from "lucide-react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/components/ui/card"
+import { Button } from "@repo/ui/components/ui/button"
+import { Input } from "@repo/ui/components/ui/input"
+import { Label } from "@repo/ui/components/ui/label"
 import { 
   Table, 
   TableBody, 
@@ -16,7 +16,7 @@ import {
   TableHead, 
   TableHeader, 
   TableRow 
-} from "@/components/ui/table"
+} from "@repo/ui/components/ui/table"
 import { 
   DropdownMenu, 
   DropdownMenuContent, 
@@ -24,14 +24,14 @@ import {
   DropdownMenuLabel, 
   DropdownMenuSeparator, 
   DropdownMenuTrigger 
-} from "@/components/ui/dropdown-menu"
+} from "@repo/ui/components/ui/dropdown-menu"
 import { 
   Select, 
   SelectContent, 
   SelectItem, 
   SelectTrigger, 
   SelectValue 
-} from "@/components/ui/select"
+} from "@repo/ui/components/ui/select"
 import { 
   Pagination, 
   PaginationContent, 
@@ -40,7 +40,7 @@ import {
   PaginationLink, 
   PaginationNext, 
   PaginationPrevious 
-} from "@/components/ui/pagination"
+} from "@repo/ui/components/ui/pagination"
 import { 
   Search, 
   Plus, 
@@ -50,13 +50,13 @@ import {
   Eye,
   FileText
 } from "lucide-react"
-import { Calendar } from "@/components/ui/calendar"
+import { Calendar } from "@repo/ui/components/ui/calendar"
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
-import { Badge } from "@/components/ui/badge"
+} from "@repo/ui/components/ui/popover"
+import { Badge } from "@repo/ui/components/ui/badge"
 
 // 模拟教案数据
 const coursesData = [

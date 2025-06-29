@@ -1,13 +1,13 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui/components/ui/tabs"
+import { Input } from "@repo/ui/components/ui/input"
+import { Badge } from "@repo/ui/components/ui/badge"
+import { Button } from "@repo/ui/components/ui/button"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui/components/ui/select"
 import { Search, Tag } from "lucide-react"
-import { toast } from "@/components/ui/use-toast"
+import { toast } from "@repo/ui/components/ui/sonner"
 
 // 导入自定义组件
 import Cart, { Product, CartItem as CartItemType } from "@/components/mall/cart"
@@ -282,10 +282,7 @@ export default function MallPage() {
     });
     
     // 显示提示，但不自动打开购物车
-    toast({
-      title: "已添加到购物车",
-      description: `${product.title} 已添加到购物车`,
-    });
+    toast.success("已添加到购物车")
   };
   
   // 使用单独的组件渲染商品卡片

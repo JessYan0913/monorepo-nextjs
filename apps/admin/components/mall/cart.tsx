@@ -1,8 +1,8 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
+import { Button } from "@repo/ui/components/ui/button"
+import { Badge } from "@repo/ui/components/ui/badge"
 import { 
   Sheet, 
   SheetContent, 
@@ -12,11 +12,11 @@ import {
   SheetTrigger,
   SheetFooter,
   SheetClose
-} from "@/components/ui/sheet"
+} from "@repo/ui/components/ui/sheet"
 import { ShoppingCart, Plus, Minus, Trash2, X } from "lucide-react"
-import { toast } from "@/components/ui/use-toast"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Progress } from "@/components/ui/progress"
+import { toast } from "@repo/ui/components/ui/sonner"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@repo/ui/components/ui/dialog"
+import { Progress } from "@repo/ui/components/ui/progress"
 
 // 商品类型定义
 export interface Product {
@@ -124,10 +124,7 @@ export default function Cart({ cartItems, setCartItems }: CartProps) {
         setCartItems([]);
         setIsCartOpen(false);
         closePaymentDialog();
-        toast({
-          title: "支付成功",
-          description: `订单支付成功，总计 ¥${totalPrice.toFixed(2)}`,
-        });
+        toast.success("支付成功")
       }, 3000);
       
       return () => clearTimeout(timer);

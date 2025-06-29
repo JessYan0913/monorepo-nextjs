@@ -2,12 +2,12 @@
 
 import { useState, useEffect } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Card, CardContent } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Button } from "@repo/ui/components/ui/button"
+import { Badge } from "@repo/ui/components/ui/badge"
+import { Card, CardContent } from "@repo/ui/components/ui/card"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui/components/ui/tabs"
 import { BookOpen, Clock, ShoppingCart, Star, ArrowLeft, Tag } from "lucide-react"
-import { toast } from "@/components/ui/use-toast"
+import { toast } from "@repo/ui/components/ui/sonner"
 
 // 导入商品类型和购物车组件
 import Cart, { Product, CartItem as CartItemType } from "@/components/mall/cart"
@@ -90,10 +90,7 @@ export default function ProductDetail() {
       // 保存到localStorage
       localStorage.setItem("cart", JSON.stringify(newCart))
       
-      toast({
-        title: "已添加到购物车",
-        description: `${product.title} 已添加到购物车`
-      })
+      toast.success("已添加到购物车")
       
       return newCart
     })

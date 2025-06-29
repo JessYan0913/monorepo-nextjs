@@ -1,8 +1,8 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Skeleton } from "@/components/ui/skeleton"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@repo/ui/components/ui/card"
+import { Skeleton } from "@repo/ui/components/ui/skeleton"
 
 // 模拟用户数据，实际项目中应该从API获取
 const mockUserData = {

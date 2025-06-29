@@ -1,15 +1,15 @@
 "use client"
 
 import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Switch } from "@/components/ui/switch"
+import { Button } from "@repo/ui/components/ui/button"
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/components/ui/form"
+import { Input } from "@repo/ui/components/ui/input"
+import { Switch } from "@repo/ui/components/ui/switch"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { Loader2 } from "lucide-react"
-import { useToast } from "@/components/ui/use-toast"
+import { toast } from "@repo/ui/components/ui/sonner"
 
 const passwordFormSchema = z
   .object({
@@ -29,7 +29,6 @@ const passwordFormSchema = z
   })
 
 export function SecurityForm() {
-  const { toast } = useToast()
   const [isLoading, setIsLoading] = useState(false)
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(false)
   const [loginNotificationsEnabled, setLoginNotificationsEnabled] = useState(true)
@@ -51,10 +50,7 @@ export function SecurityForm() {
       setIsLoading(false)
       console.log(values)
 
-      toast({
-        title: "密码已更新",
-        description: "您的密码已成功更新",
-      })
+      toast.success("密码已更新")
 
       form.reset()
     }, 1000)
@@ -63,19 +59,13 @@ export function SecurityForm() {
   const handleTwoFactorChange = (checked: boolean) => {
     setTwoFactorEnabled(checked)
 
-    toast({
-      title: checked ? "两步验证已启用" : "两步验证已禁用",
-      description: checked ? "您的账户现在受到两步验证的保护" : "您的账户不再使用两步验证",
-    })
+    toast.success(checked ? "两步验证已启用" : "两步验证已禁用")
   }
 
   const handleLoginNotificationsChange = (checked: boolean) => {
     setLoginNotificationsEnabled(checked)
 
-    toast({
-      title: checked ? "登录通知已启用" : "登录通知已禁用",
-      description: checked ? "您将在每次登录时收到通知" : "您将不再收到登录通知",
-    })
+    toast.success(checked ? "登录通知已启用" : "登录通知已禁用")
   }
 
   return (

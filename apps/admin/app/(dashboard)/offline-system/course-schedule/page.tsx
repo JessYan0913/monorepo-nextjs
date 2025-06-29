@@ -1,14 +1,14 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { DatePickerWithRange } from "@/components/ui/date-range-picker"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@repo/ui/components/ui/card"
+import { Button } from "@repo/ui/components/ui/button"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui/components/ui/tabs"
+import { DatePickerWithRange } from "@repo/ui/components/ui/date-range-picker"
 import { addDays, format, startOfWeek, addWeeks, eachDayOfInterval, isSameDay } from "date-fns"
 import { zhCN } from "date-fns/locale"
 import { DateRange } from "react-day-picker"
-import { useToast } from "@/components/ui/use-toast"
+import { toast } from "@repo/ui/components/ui/sonner"
 import { Calendar as CalendarIcon, Clock, MapPin, Users, BookOpen, CheckSquare, Filter, Download, Printer, RefreshCw } from "lucide-react"
 import {
   Select,
@@ -16,7 +16,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "@repo/ui/components/ui/select"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,7 +24,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@repo/ui/components/ui/dropdown-menu"
 
 // 模拟课程数据
 const timeSlots = [
@@ -100,7 +100,6 @@ const generateWeekSchedule = (startDate: Date) => {
 }
 
 export default function CourseSchedulePage() {
-  const { toast } = useToast()
   const [isLoading, setIsLoading] = useState(false)
   const [currentWeekStart, setCurrentWeekStart] = useState<Date>(startOfWeek(new Date(), { weekStartsOn: 1 }))
   const [weekSchedule, setWeekSchedule] = useState<Record<string, Record<string, any>>>({})
@@ -167,36 +166,24 @@ export default function CourseSchedulePage() {
   // 刷新课程表
   const refreshSchedule = () => {
     setIsLoading(true)
-    toast({
-      title: "正在刷新课程表",
-      description: "正在获取最新课程安排数据...",
-    })
+    toast.info("正在刷新课程表")
     
     // 模拟API请求延迟
     setTimeout(() => {
       setWeekSchedule(generateWeekSchedule(currentWeekStart))
       setIsLoading(false)
-      toast({
-        title: "刷新成功",
-        description: "课程表数据已更新至最新状态",
-      })
+      toast.success("课程表数据已更新至最新状态")
     }, 1000)
   }
   
   // 导出课程表
   const exportSchedule = () => {
-    toast({
-      title: "导出成功",
-      description: "课程表已导出为Excel文件",
-    })
+    toast.success("课程表已导出为Excel文件")
   }
   
   // 打印课程表
   const printSchedule = () => {
-    toast({
-      title: "准备打印",
-      description: "正在准备打印课程表...",
-    })
+    toast.info("正在准备打印课程表...")
     setTimeout(() => {
       window.print()
     }, 500)

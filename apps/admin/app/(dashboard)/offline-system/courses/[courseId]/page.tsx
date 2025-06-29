@@ -1,20 +1,19 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useEffect } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { format } from "date-fns"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm, useFieldArray } from "react-hook-form"
-import { Calendar as CalendarIcon, Plus, Trash, ChevronDown, ChevronUp } from "lucide-react"
+import { Calendar as CalendarIcon, Plus, Trash } from "lucide-react"
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Calendar } from "@/components/ui/calendar"
+import { Button } from "@repo/ui/components/ui/button"
+import { Input } from "@repo/ui/components/ui/input"
+import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/components/ui/card"
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/components/ui/form"
+import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/components/ui/popover"
+import { Calendar } from "@repo/ui/components/ui/calendar"
 
 // 定义动作步骤验证架构
 const actionStepSchema = z.object({

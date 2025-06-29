@@ -1,8 +1,8 @@
 "use client"
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Badge } from "@/components/ui/badge"
-import { Progress } from "@/components/ui/progress"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@repo/ui/components/ui/table"
+import { Badge } from "@repo/ui/components/ui/badge"
+import { Progress } from "@repo/ui/components/ui/progress"
 
 const data = [
   {

@@ -1,14 +1,14 @@
 "use client"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { useToast } from "@/components/ui/use-toast"
+
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@repo/ui/components/ui/card"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui/components/ui/tabs"
+import { toast } from "@repo/ui/components/ui/sonner"
 import { ProfileForm } from "@/components/settings/profile-form"
 import { SecurityForm } from "@/components/settings/security-form"
 import { NotificationSettings } from "@/components/settings/notification-settings"
 import { AppearanceSettings } from "@/components/settings/appearance-settings"
 
 export default function SettingsPage() {
-  const { toast } = useToast()
 
   return (
     <div className="flex flex-col gap-4">

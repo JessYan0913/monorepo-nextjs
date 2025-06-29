@@ -1,10 +1,10 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
-import { Skeleton } from "@/components/ui/skeleton"
+import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/components/ui/avatar"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@repo/ui/components/ui/card"
+import { Separator } from "@repo/ui/components/ui/separator"
+import { Skeleton } from "@repo/ui/components/ui/skeleton"
 import { Calendar, MapPin, Clock } from "lucide-react"
 
 // 模拟用户数据，实际项目中应该从API获取

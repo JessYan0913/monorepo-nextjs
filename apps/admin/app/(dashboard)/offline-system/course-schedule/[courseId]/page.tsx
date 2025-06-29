@@ -3,17 +3,15 @@
 import { useState, useEffect } from "react"
 import { useSearchParams } from "next/navigation"
 import Link from "next/link"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Badge } from "@/components/ui/badge"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { useToast } from "@/components/ui/use-toast"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@repo/ui/components/ui/card"
+import { Button } from "@repo/ui/components/ui/button"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui/components/ui/tabs"
+import { Badge } from "@repo/ui/components/ui/badge"
+import { Input } from "@repo/ui/components/ui/input"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@repo/ui/components/ui/table"
+import { toast } from "@repo/ui/components/ui/sonner"
 import { ArrowLeft, Calendar, Clock, MapPin, User, Users, BookOpen, CheckSquare, Search, Download, Printer } from "lucide-react"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback } from "@repo/ui/components/ui/avatar"
 import { LessonPlanDisplay } from "./components/LessonPlanDisplay"
 import { StudentAttendanceStatus, Student, CourseDetail, LessonPlan } from "./types"
 
@@ -60,7 +58,6 @@ const fetchCourseDetail = (courseId: string): Promise<CourseDetail> => {
 export default function CourseDetailPage() {
   const searchParams = useSearchParams()
   const courseId = searchParams.get("id") || "default-course"
-  const { toast } = useToast()
   
   const [isLoading, setIsLoading] = useState(true)
   const [courseDetail, setCourseDetail] = useState<CourseDetail | null>(null)
@@ -132,11 +129,7 @@ export default function CourseDetailPage() {
       })
       .catch((error) => {
         console.error("Failed to fetch course detail:", error)
-        toast({
-          title: "加载失败",
-          description: "无法获取课程详情数据，请稍后重试",
-          variant: "destructive"
-        })
+        toast.error("无法获取课程详情数据，请稍后重试")
         setIsLoading(false)
       })
   }, [courseId, toast])
@@ -165,26 +158,17 @@ export default function CourseDetailPage() {
       [StudentAttendanceStatus.LATE]: "迟到"
     }
     
-    toast({
-      title: `学生状态更新: ${statusLabels[status]}`,
-      description: `学生 ${courseDetail.students.find(s => s.id === studentId)?.name} 状态已更新为${statusLabels[status]}`
-    })
+    toast.success(`学生状态更新: ${statusLabels[status]}`)
   }
   
   // 导出学生名单
   const exportStudentList = () => {
-    toast({
-      title: "导出成功",
-      description: "学生名单已导出为Excel文件"
-    })
+    toast.success("学生名单已导出为Excel文件")
   }
   
   // 打印学生名单
   const printStudentList = () => {
-    toast({
-      title: "准备打印",
-      description: "正在准备打印学生名单..."
-    })
+    toast.success("正在准备打印学生名单...")
     setTimeout(() => {
       window.print()
     }, 500)

@@ -1,11 +1,11 @@
 "use client"
 
 import { useState } from "react"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
+import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/components/ui/avatar"
+import { Button } from "@repo/ui/components/ui/button"
+import { Badge } from "@repo/ui/components/ui/badge"
 import { Check, Trash2 } from "lucide-react"
-import { useToast } from "@/components/ui/use-toast"
+import { toast } from "@repo/ui/components/ui/sonner"
 
 // 模拟通知数据
 const allNotifications = [
@@ -120,7 +120,6 @@ interface NotificationListProps {
 }
 
 export function NotificationList({ type = "all" }: NotificationListProps) {
-  const { toast } = useToast()
   const [notifications, setNotifications] = useState(allNotifications)
 
   // 根据类型过滤通知
@@ -135,19 +134,13 @@ export function NotificationList({ type = "all" }: NotificationListProps) {
       notifications.map((notification) => (notification.id === id ? { ...notification, read: true } : notification)),
     )
 
-    toast({
-      title: "已标记为已读",
-      description: "通知已标记为已读状态",
-    })
+    toast.success("已标记为已读")
   }
 
   const handleDelete = (id: string) => {
     setNotifications(notifications.filter((notification) => notification.id !== id))
 
-    toast({
-      title: "通知已删除",
-      description: "通知已成功删除",
-    })
+    toast.success("通知已成功删除")
   }
 
   if (filteredNotifications.length === 0) {

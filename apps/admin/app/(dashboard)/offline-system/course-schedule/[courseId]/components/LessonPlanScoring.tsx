@@ -1,10 +1,10 @@
 'use client'
 
 import React from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@repo/ui/components/ui/card'
+import { Input } from '@repo/ui/components/ui/input'
+import { Label } from '@repo/ui/components/ui/label'
+import { Button } from '@repo/ui/components/ui/button'
 import { ScoringLessonPlan } from '../types'
 
 interface LessonPlanScoringProps {

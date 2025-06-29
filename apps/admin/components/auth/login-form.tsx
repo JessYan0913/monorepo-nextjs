@@ -2,17 +2,17 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { Button } from "@/components/ui/button"
+import { Button } from "@repo/ui/components/ui/button"
 import { useSystemStore } from "@/store/useSystemStore"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/components/ui/form"
+import { Input } from "@repo/ui/components/ui/input"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { Loader2, Eye, EyeOff } from "lucide-react"
-import { useToast } from "@/components/ui/use-toast"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog"
+import { toast } from "@repo/ui/components/ui/sonner"
+import { RadioGroup, RadioGroupItem } from "@repo/ui/components/ui/radio-group"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@repo/ui/components/ui/dialog"
 
 const formSchema = z.object({
   username: z.string().min(2, {
@@ -28,7 +28,6 @@ const formSchema = z.object({
 
 export function LoginForm() {
   const router = useRouter()
-  const { toast } = useToast()
   const [isLoading, setIsLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [showSystemDialog, setShowSystemDialog] = useState(false)
@@ -64,20 +63,12 @@ export function LoginForm() {
         )
       } catch (error) {
         console.error("Failed to save login state:", error)
-        toast({
-          title: "登录失败",
-          description: "无法保存登录状态，请重试",
-          variant: "destructive",
-        })
+        toast.error("无法保存登录状态，请重试")
         setIsLoading(false)
         return
       }
 
-      toast({
-        title: "登录成功",
-        description: "欢迎回来，" + values.username,
-      })
-
+      toast.success("登录成功")
       // 显示系统选择对话框
       setShowSystemDialog(true)
     }, 1000)

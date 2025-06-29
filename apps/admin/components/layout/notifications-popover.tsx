@@ -2,14 +2,14 @@
 
 import { useState } from "react"
 import { Bell } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Badge } from "@/components/ui/badge"
-import { ScrollArea } from "@/components/ui/scroll-area"
+import { Button } from "@repo/ui/components/ui/button"
+import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/components/ui/popover"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui/components/ui/tabs"
+import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/components/ui/avatar"
+import { Badge } from "@repo/ui/components/ui/badge"
+import { ScrollArea } from "@repo/ui/components/ui/scroll-area"
 import { useRouter } from "next/navigation"
-import { useToast } from "@/components/ui/use-toast"
+import { toast } from "@repo/ui/components/ui/sonner"
 
 // 模拟通知数据
 const initialNotifications = [
@@ -71,7 +71,6 @@ export function NotificationsPopover() {
   const [open, setOpen] = useState(false)
   const [activeTab, setActiveTab] = useState("all")
   const router = useRouter()
-  const { toast } = useToast()
   const [notifications, setNotifications] = useState(initialNotifications)
 
   const unreadCount = notifications.filter((n) => !n.read).length
@@ -92,10 +91,7 @@ export function NotificationsPopover() {
     // 标记通知为已读
     setNotifications(notifications.map((n) => (n.id === notification.id ? { ...n, read: true } : n)))
 
-    toast({
-      title: "通知已读",
-      description: `已将"${notification.title}"标记为已读`,
-    })
+    toast.success(`已将"${notification.title}"标记为已读`)
 
     // 关闭弹出框
     setOpen(false)
@@ -105,10 +101,7 @@ export function NotificationsPopover() {
   const markAllAsRead = () => {
     setNotifications(notifications.map((n) => ({ ...n, read: true })))
 
-    toast({
-      title: "全部已读",
-      description: "所有通知已标记为已读",
-    })
+    toast.success("所有通知已标记为已读")
   }
 
   return (

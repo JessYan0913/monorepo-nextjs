@@ -3,10 +3,9 @@
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { ModeToggle } from "@/components/layout/mode-toggle"
-import { Button } from "@/components/ui/button"
-import { Switch } from "@/components/ui/switch"
+import { Button } from "@repo/ui/components/ui/button"
 import { useSystemStore } from "@/store/useSystemStore"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/components/ui/avatar"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,17 +14,15 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@repo/ui/components/ui/dropdown-menu"
 import { Menu } from "lucide-react"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetTrigger } from "@repo/ui/components/ui/sheet"
 import { SidebarContent } from "@/components/layout/sidebar"
-import { useToast } from "@/components/ui/use-toast"
-import { GlobalSearch } from "@/components/layout/global-search"
+import { toast } from "@repo/ui/components/ui/sonner"
 import { NotificationsPopover } from "@/components/layout/notifications-popover"
 
 export function Header() {
   const router = useRouter()
-  const { toast } = useToast()
   const [user, setUser] = useState<{ name: string; role: string } | null>(null)
   const [campus, setCampus] = useState<string>("总校区")
   const [isMounted, setIsMounted] = useState(false)
@@ -60,10 +57,7 @@ export function Header() {
       console.error("Failed to clear login state:", error)
     }
 
-    toast({
-      title: "已退出登录",
-      description: "您已成功退出系统",
-    })
+    toast.success("已退出登录")
 
     router.push("/login")
   }
@@ -76,10 +70,7 @@ export function Header() {
       // 使用 Zustand store 设置系统类型
       setSystemType(newSystemType)
       
-      toast({
-        title: "系统已切换",
-        description: `当前系统：${newSystemType === "online" ? "线上系统" : "线下系统"}`,
-      })
+      toast.success("系统已切换")
 
       // 根据系统类型跳转到不同的页面
       if (newSystemType === "online") {
@@ -140,42 +131,27 @@ export function Header() {
               <DropdownMenuItem onClick={() => {
                 setCampus("总校区");
                 localStorage.setItem("campus", "总校区");
-                toast({
-                  title: "校区已切换",
-                  description: "当前校区：总校区",
-                });
+                toast.success("校区已切换")
               }}>总校区</DropdownMenuItem>
               <DropdownMenuItem onClick={() => {
                 setCampus("东校区");
                 localStorage.setItem("campus", "东校区");
-                toast({
-                  title: "校区已切换",
-                  description: "当前校区：东校区",
-                });
+                toast.success("校区已切换")
               }}>东校区</DropdownMenuItem>
               <DropdownMenuItem onClick={() => {
                 setCampus("西校区");
                 localStorage.setItem("campus", "西校区");
-                toast({
-                  title: "校区已切换",
-                  description: "当前校区：西校区",
-                });
+                toast.success("校区已切换");
               }}>西校区</DropdownMenuItem>
               <DropdownMenuItem onClick={() => {
                 setCampus("南校区");
                 localStorage.setItem("campus", "南校区");
-                toast({
-                  title: "校区已切换",
-                  description: "当前校区：南校区",
-                });
+                toast.success("校区已切换");
               }}>南校区</DropdownMenuItem>
               <DropdownMenuItem onClick={() => {
                 setCampus("北校区");
                 localStorage.setItem("campus", "北校区");
-                toast({
-                  title: "校区已切换",
-                  description: "当前校区：北校区",
-                });
+                toast.success("校区已切换");
               }}>北校区</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

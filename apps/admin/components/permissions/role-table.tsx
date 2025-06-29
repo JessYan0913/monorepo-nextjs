@@ -10,7 +10,7 @@ import {
 } from "@tanstack/react-table"
 import { MoreHorizontal, Pencil, Trash2, Shield } from "lucide-react"
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@repo/ui/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,10 +18,10 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Badge } from "@/components/ui/badge"
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+} from "@repo/ui/components/ui/dropdown-menu"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@repo/ui/components/ui/table"
+import { Badge } from "@repo/ui/components/ui/badge"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@repo/ui/components/ui/dialog"
 import { RoleForm } from "@/components/permissions/role-form"
 import {
   AlertDialog,
@@ -32,10 +32,10 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog"
-import { useToast } from "@/components/ui/use-toast"
-import { Skeleton } from "@/components/ui/skeleton"
-import { Checkbox } from "@/components/ui/checkbox"
+} from "@repo/ui/components/ui/alert-dialog"
+import { toast } from "@repo/ui/components/ui/sonner"
+import { Skeleton } from "@repo/ui/components/ui/skeleton"
+import { Checkbox } from "@repo/ui/components/ui/checkbox"
 
 // 模拟角色数据
 const data: Role[] = [
@@ -129,7 +129,6 @@ const availablePermissions = [
 ]
 
 export function RoleTable({ isRefreshing = false }: RoleTableProps) {
-  const { toast } = useToast()
   const [editingRole, setEditingRole] = useState<Role | null>(null)
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
   const [roleToDelete, setRoleToDelete] = useState<Role | null>(null)
@@ -238,30 +237,20 @@ export function RoleTable({ isRefreshing = false }: RoleTableProps) {
     console.log("编辑角色:", formData)
     setIsEditDialogOpen(false)
 
-    toast({
-      title: "角色已更新",
-      description: `角色 ${formData.name} 的信息已成功更新`,
-    })
+    toast.success(`角色 ${formData.name} 的信息已成功更新`)
   }
 
   const handleDeleteRole = () => {
     console.log("删除角色:", roleToDelete)
     setIsDeleteDialogOpen(false)
 
-    toast({
-      title: "角色已删除",
-      description: `角色 ${roleToDelete?.name} 已成功从系统中删除`,
-      variant: "destructive",
-    })
+    toast.success(`角色 ${roleToDelete?.name} 已成功从系统中删除`)
   }
 
   const handleManagePermissions = () => {
     setIsPermissionDialogOpen(false)
 
-    toast({
-      title: "权限已更新",
-      description: `角色 ${selectedRole?.name} 的权限已成功更新`,
-    })
+    toast.success(`角色 ${selectedRole?.name} 的权限已成功更新`)
   }
 
   if (isRefreshing) {

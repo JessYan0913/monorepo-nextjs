@@ -1,10 +1,10 @@
 "use client"
 
 import { useState } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Button } from "@/components/ui/button"
-import { useToast } from "@/components/ui/use-toast"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@repo/ui/components/ui/card"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui/components/ui/tabs"
+import { Button } from "@repo/ui/components/ui/button"
+import { toast } from "@repo/ui/components/ui/sonner"
 import { RefreshCw, Bell, BellOff, Check, Trash2, Activity, Users } from "lucide-react"
 import { NotificationList } from "@/components/notifications/notification-list"
 import {
@@ -16,10 +16,9 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog"
+} from "@repo/ui/components/ui/alert-dialog"
 
 export default function NotificationsPage() {
-  const { toast } = useToast()
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
 
@@ -29,18 +28,12 @@ export default function NotificationsPage() {
     // 模拟数据刷新
     setTimeout(() => {
       setIsRefreshing(false)
-      toast({
-        title: "通知已刷新",
-        description: "通知列表已更新至最新状态",
-      })
+      toast.success("通知已刷新")
     }, 1000)
   }
 
   const handleMarkAllAsRead = () => {
-    toast({
-      title: "已标记为已读",
-      description: "所有通知已标记为已读",
-    })
+    toast.success("已标记为已读")
   }
 
   const handleClearAll = () => {
@@ -49,11 +42,7 @@ export default function NotificationsPage() {
 
   const confirmClearAll = () => {
     setIsDialogOpen(false)
-    toast({
-      title: "通知已清空",
-      description: "所有通知已被清空",
-      variant: "destructive",
-    })
+    toast.success("通知已清空")
   }
 
   return (

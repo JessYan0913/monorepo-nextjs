@@ -9,7 +9,7 @@ import { Header } from "@/components/layout/header"
 import { Sidebar } from "@/components/layout/sidebar"
 import { Breadcrumb } from "@/components/layout/breadcrumb"
 import { Loader2 } from "lucide-react"
-import { Toaster } from "@/components/ui/toaster"
+import { Toaster } from "@repo/ui/components/ui/sonner"
 
 export default function DashboardLayout({
   children,

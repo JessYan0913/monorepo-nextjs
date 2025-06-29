@@ -1,13 +1,13 @@
 "use client"
 
-import { Card, CardContent, CardHeader, CardTitle, CardFooter, CardDescription } from "@/components/ui/card"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Badge } from "@/components/ui/badge"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Button } from "@/components/ui/button"
-import { Progress } from "@/components/ui/progress"
-import { Phone, MapPin, Calendar, CreditCard, GraduationCap, Clock, BookOpen, AlertCircle, CheckCircle2, Timer } from "lucide-react"
+import { Card, CardContent, CardHeader, CardTitle, CardFooter, CardDescription } from "@repo/ui/components/ui/card"
+import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/components/ui/avatar"
+import { Badge } from "@repo/ui/components/ui/badge"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui/components/ui/tabs"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@repo/ui/components/ui/table"
+import { Button } from "@repo/ui/components/ui/button"
+import { Progress } from "@repo/ui/components/ui/progress"
+import { Phone, MapPin, Calendar, GraduationCap, Clock, BookOpen, AlertCircle, CheckCircle2, Timer } from "lucide-react"
 
 // 模拟学生数据
 const studentData = {

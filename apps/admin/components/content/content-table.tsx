@@ -11,7 +11,7 @@ import {
 } from "@tanstack/react-table"
 import { MoreHorizontal, Pencil, Trash2, Eye } from "lucide-react"
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@repo/ui/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,10 +19,10 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Badge } from "@/components/ui/badge"
-import { useToast } from "@/components/ui/use-toast"
+} from "@repo/ui/components/ui/dropdown-menu"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@repo/ui/components/ui/table"
+import { Badge } from "@repo/ui/components/ui/badge"
+import { toast } from "@repo/ui/components/ui/sonner"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -32,7 +32,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog"
+} from "@repo/ui/components/ui/alert-dialog"
 
 // 模拟内容数据
 const allContent: Content[] = [
@@ -126,7 +126,6 @@ interface ContentTableProps {
 }
 
 export function ContentTable({ searchQuery = "", status }: ContentTableProps) {
-  const { toast } = useToast()
   const [contentToDelete, setContentToDelete] = useState<Content | null>(null)
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
 
@@ -237,11 +236,7 @@ export function ContentTable({ searchQuery = "", status }: ContentTableProps) {
     console.log("删除内容:", contentToDelete)
     setIsDeleteDialogOpen(false)
 
-    toast({
-      title: "内容已删除",
-      description: `内容 ${contentToDelete?.title} 已成功删除`,
-      variant: "destructive",
-    })
+    toast.success(`内容 ${contentToDelete?.title} 已成功删除`)
   }
 
   return (

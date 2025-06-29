@@ -2,12 +2,11 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Badge } from "@/components/ui/badge"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@repo/ui/components/ui/card"
+import { Button } from "@repo/ui/components/ui/button"
+import { Input } from "@repo/ui/components/ui/input"
+import { Label } from "@repo/ui/components/ui/label"
+import { Badge } from "@repo/ui/components/ui/badge"
 import { 
   DropdownMenu, 
   DropdownMenuContent, 
@@ -15,23 +14,7 @@ import {
   DropdownMenuLabel, 
   DropdownMenuSeparator, 
   DropdownMenuTrigger 
-} from "@/components/ui/dropdown-menu"
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogDescription, 
-  DialogFooter, 
-  DialogHeader, 
-  DialogTitle, 
-  DialogTrigger 
-} from "@/components/ui/dialog"
-import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
-  SelectValue 
-} from "@/components/ui/select"
+} from "@repo/ui/components/ui/dropdown-menu"
 import { 
   Pagination, 
   PaginationContent, 
@@ -40,7 +23,7 @@ import {
   PaginationLink, 
   PaginationNext, 
   PaginationPrevious 
-} from "@/components/ui/pagination"
+} from "@repo/ui/components/ui/pagination"
 import { 
   Search, 
   Plus, 

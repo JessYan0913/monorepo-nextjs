@@ -1,12 +1,9 @@
 "use client"
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { useToast } from "@/components/ui/use-toast"
-import { RefreshCw, Users, UserPlus, GraduationCap, Video, BookOpen, Clock, Calendar, Play, Activity } from "lucide-react"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@repo/ui/components/ui/card"
+import { Users, UserPlus, GraduationCap, BookOpen, Play, Activity } from "lucide-react"
 
 export default function OnlineSystemPage() {
-  const { toast } = useToast()
-
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">

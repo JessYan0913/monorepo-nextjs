@@ -17,15 +17,13 @@ import {
   ChevronDown,
   Calendar,
   BookOpen,
-  School,
   Presentation,
-  Map,
   Store,
   ClipboardList,
 } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { Collapsible, CollapsibleContent } from "@/components/ui/collapsible"
+import { Button } from "@repo/ui/components/ui/button"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@repo/ui/components/ui/tooltip"
+import { Collapsible, CollapsibleContent } from "@repo/ui/components/ui/collapsible"
 
 // 侧边栏菜单项类型
 type MenuItem = {

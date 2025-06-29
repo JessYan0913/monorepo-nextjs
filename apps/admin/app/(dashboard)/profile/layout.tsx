@@ -2,7 +2,7 @@
 
 import { usePathname, useRouter } from "next/navigation"
 import { User, Wallet } from "lucide-react"
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Tabs, TabsList, TabsTrigger } from "@repo/ui/components/ui/tabs"
 
 export default function ProfileLayout({
   children,

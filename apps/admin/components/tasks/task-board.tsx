@@ -2,12 +2,12 @@
 
 import { useState } from "react"
 import { DragDropContext, Droppable, Draggable, type DropResult } from "@hello-pangea/dnd"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/components/ui/card"
+import { Badge } from "@repo/ui/components/ui/badge"
+import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/components/ui/avatar"
+import { Button } from "@repo/ui/components/ui/button"
 import { PlusCircle, MoreHorizontal, Calendar, MessageSquare } from "lucide-react"
-import { useToast } from "@/components/ui/use-toast"
+import { toast } from "@repo/ui/components/ui/sonner"
 
 // 任务类型
 type Task = {
@@ -146,7 +146,6 @@ const initialData: Column[] = [
 ]
 
 export function TaskBoard() {
-  const { toast } = useToast()
   const [columns, setColumns] = useState<Column[]>(initialData)
 
   // 处理拖拽结束事件
@@ -189,10 +188,7 @@ export function TaskBoard() {
 
     // 显示通知
     if (source.droppableId !== destination.droppableId) {
-      toast({
-        title: "任务状态已更新",
-        description: `任务"${movedTask.title}"已从${sourceColumn.title}移动到${destColumn.title}`,
-      })
+      toast.success(`任务"${movedTask.title}"已从${sourceColumn.title}移动到${destColumn.title}`)
     }
   }
 

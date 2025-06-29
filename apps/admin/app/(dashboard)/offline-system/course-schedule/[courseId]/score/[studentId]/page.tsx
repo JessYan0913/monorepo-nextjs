@@ -1,13 +1,13 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@repo/ui/components/ui/card'
+import { Button } from '@repo/ui/components/ui/button'
+import { Badge } from '@repo/ui/components/ui/badge'
 import { ArrowLeft, Calendar, Clock, MapPin, User, Users } from 'lucide-react'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { Avatar, AvatarFallback } from '@repo/ui/components/ui/avatar'
 import { LessonPlanScoring } from '../../components/LessonPlanScoring'
 import { ScoringLessonPlan } from '../../types'
 

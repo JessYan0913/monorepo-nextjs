@@ -2,14 +2,13 @@
 
 import { useTheme } from "next-themes"
 import { Moon, Sun } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { useToast } from "@/components/ui/use-toast"
+import { Button } from "@repo/ui/components/ui/button"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@repo/ui/components/ui/dropdown-menu"
+import { toast } from "@repo/ui/components/ui/sonner"
 import { useEffect, useState } from "react"
 
 export function ModeToggle() {
   const { setTheme, theme, resolvedTheme } = useTheme()
-  const { toast } = useToast()
   const [mounted, setMounted] = useState(false)
 
   // 避免水合不匹配
@@ -22,11 +21,7 @@ export function ModeToggle() {
 
     const themeName = newTheme === "system" ? "系统" : newTheme === "dark" ? "深色" : "浅色"
 
-    toast({
-      title: "主题已更改",
-      description: `已切换至${themeName}主题`,
-      duration: 2000,
-    })
+    toast.success(`已切换至${themeName}主题`)
   }
 
   if (!mounted) {

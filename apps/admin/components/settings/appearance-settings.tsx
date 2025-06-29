@@ -1,18 +1,17 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Button } from "@/components/ui/button"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Label } from "@/components/ui/label"
-import { Separator } from "@/components/ui/separator"
+import { Button } from "@repo/ui/components/ui/button"
+import { RadioGroup, RadioGroupItem } from "@repo/ui/components/ui/radio-group"
+import { Label } from "@repo/ui/components/ui/label"
+import { Separator } from "@repo/ui/components/ui/separator"
 import { useTheme } from "next-themes"
-import { useToast } from "@/components/ui/use-toast"
+import { toast } from "@repo/ui/components/ui/sonner"
 import { Loader2 } from "lucide-react"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Slider } from "@/components/ui/slider"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui/components/ui/select"
+import { Slider } from "@repo/ui/components/ui/slider"
 
 export function AppearanceSettings() {
-  const { toast } = useToast()
   const { theme, setTheme, resolvedTheme } = useTheme()
   const [isLoading, setIsLoading] = useState(false)
   const [fontSize, setFontSize] = useState("medium")
@@ -65,10 +64,7 @@ export function AppearanceSettings() {
     setTimeout(() => {
       setIsLoading(false)
 
-      toast({
-        title: "外观设置已更新",
-        description: "您的外观偏好设置已成功保存",
-      })
+      toast.success("外观设置已更新")
     }, 500)
   }
 

@@ -2,21 +2,21 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@repo/ui/components/ui/card"
+import { Button } from "@repo/ui/components/ui/button"
+import { Input } from "@repo/ui/components/ui/input"
+import { Label } from "@repo/ui/components/ui/label"
+import { Textarea } from "@repo/ui/components/ui/textarea"
 import { 
   Select, 
   SelectContent, 
   SelectItem, 
   SelectTrigger, 
   SelectValue 
-} from "@/components/ui/select"
-import { useToast } from "@/components/ui/use-toast"
-import { Separator } from "@/components/ui/separator"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+} from "@repo/ui/components/ui/select"
+import { toast } from "@repo/ui/components/ui/sonner"
+import { Separator } from "@repo/ui/components/ui/separator"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui/components/ui/tabs"
 import { ArrowLeft, BookOpen, Clock, FileText, GraduationCap, Image as ImageIcon, Info, Layers, Plus, Upload, User, Video, X } from "lucide-react"
 
 // 课程分类选项
@@ -24,7 +24,6 @@ const courseCategories = ["编程开发", "前端开发", "计算机科学", "�
 
 export default function CreateCoursePage() {
   const router = useRouter()
-  const { toast } = useToast()
   
   // 表单状态
   const [formData, setFormData] = useState({
@@ -138,11 +137,7 @@ export default function CreateCoursePage() {
     e.preventDefault()
     
     if (!validateForm()) {
-      toast({
-        title: "表单验证失败",
-        description: "请填写所有必填字段",
-        variant: "destructive"
-      })
+      toast.error("表单验证失败")
       return
     }
     
@@ -152,10 +147,7 @@ export default function CreateCoursePage() {
     setTimeout(() => {
       setIsSubmitting(false)
       
-      toast({
-        title: "课程创建成功",
-        description: `课程 "${formData.title}" 已成功创建`,
-      })
+      toast.success("课程创建成功")
       
       // 重定向到课程列表页面
       router.push("/online-system/courses")

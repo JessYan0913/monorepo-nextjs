@@ -1,9 +1,9 @@
 "use client"
 
 import { useState } from "react"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@repo/ui/components/ui/card"
+import { Badge } from "@repo/ui/components/ui/badge"
+import { Button } from "@repo/ui/components/ui/button"
 import { MoreHorizontal, Pencil, Trash2, Eye } from "lucide-react"
 import {
   DropdownMenu,
@@ -12,8 +12,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { useToast } from "@/components/ui/use-toast"
+} from "@repo/ui/components/ui/dropdown-menu"
+import { toast } from "@repo/ui/components/ui/sonner"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -23,7 +23,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog"
+} from "@repo/ui/components/ui/alert-dialog"
 
 // 模拟内容数据
 const allContent = [
@@ -115,7 +115,6 @@ interface ContentGridProps {
 }
 
 export function ContentGrid({ searchQuery = "", status }: ContentGridProps) {
-  const { toast } = useToast()
   const [contentToDelete, setContentToDelete] = useState<any | null>(null)
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
 
@@ -134,11 +133,7 @@ export function ContentGrid({ searchQuery = "", status }: ContentGridProps) {
     console.log("删除内容:", contentToDelete)
     setIsDeleteDialogOpen(false)
 
-    toast({
-      title: "内容已删除",
-      description: `内容 ${contentToDelete?.title} 已成功删除`,
-      variant: "destructive",
-    })
+    toast.success(`内容 ${contentToDelete?.title} 已成功删除`)
   }
 
   return (
