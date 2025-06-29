@@ -3,11 +3,9 @@ import { redirect } from "next/navigation"
 import { ModeToggle } from "@/components/layout/mode-toggle"
 import { NotificationsPopover } from "@/components/layout/notifications-popover"
 import { AvatarInfo } from "@/components/avatar-info"
-import { AppSidebar } from "@/components/layout/app-sidebar"
-import { Breadcrumb } from "@/components/layout/breadcrumb"
 import { Toaster } from "@repo/ui/components/ui/sonner"
-import { SidebarProvider, SidebarTrigger } from "@repo/ui/components/ui/sidebar"
 import { auth } from "@/lib/auth"
+import { LayoutContent } from "@/components/layout/content"
 
 export default async function DashboardLayout({
   children,
@@ -33,16 +31,7 @@ export default async function DashboardLayout({
         </div>
       </header>
       <div className="flex flex-1 overflow-hidden">
-        <SidebarProvider>
-          <AppSidebar />
-          <main className="flex-1 overflow-hidden">
-            <SidebarTrigger />
-            <div className="flex h-full flex-col">
-              <Breadcrumb />
-              <div className="flex-1 overflow-auto p-6">{children}</div>
-            </div>
-          </main>
-        </SidebarProvider>
+        <LayoutContent>{children}</LayoutContent>
       </div>
       <Toaster />
     </div>
