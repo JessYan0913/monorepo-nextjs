@@ -1,0 +1,71 @@
+'use server';
+
+import { z } from 'zod';
+
+import { signIn } from '@/lib/auth';
+
+const authFormSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(6),
+});
+
+export interface LoginActionState {
+  status: 'idle' | 'in_progress' | 'success' | 'failed' | 'invalid_data';
+}
+
+export const login = async (_: LoginActionState, formData: FormData): Promise<LoginActionState> => {
+  try {
+    const validatedData = authFormSchema.parse({
+      email: formData.get('email'),
+      password: formData.get('password'),
+    });
+
+    const result = await signIn('credentials', {
+      email: validatedData.email,
+      password: validatedData.password,
+      redirect: false,
+      callbackUrl: '/', // 设置登录成功后的回调URL
+    });
+
+    if (result?.error) {
+      return { status: 'failed' };
+    }
+
+    // 返回成功状态，页面组件会处理重定向
+    return { status: 'success' };
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return { status: 'invalid_data' };
+    }
+
+    return { status: 'failed' };
+  }
+};
+
+export interface RegisterActionState {
+  status: 'idle' | 'in_progress' | 'success' | 'failed' | 'user_exists' | 'invalid_data';
+}
+
+export const register = async (_: RegisterActionState, formData: FormData): Promise<RegisterActionState> => {
+  try {
+    const validatedData = authFormSchema.parse({
+      email: formData.get('email'),
+      password: formData.get('password'),
+    });
+
+    // TODO: 处理注册逻辑
+    await signIn('credentials', {
+      email: validatedData.email,
+      password: validatedData.password,
+      redirect: false,
+    });
+
+    return { status: 'success' };
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return { status: 'invalid_data' };
+    }
+
+    return { status: 'failed' };
+  }
+};
