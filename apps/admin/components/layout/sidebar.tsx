@@ -5,15 +5,12 @@ import type React from "react"
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { cn } from "@/lib/utils"
+import { cn } from "@repo/ui/lib/utils"
 import {
   LayoutDashboard,
   Users,
   Settings,
-  FileText,
   Bell,
-  ChevronLeft,
-  ChevronRight,
   ChevronDown,
   Calendar,
   BookOpen,
@@ -21,7 +18,6 @@ import {
   Store,
   ClipboardList,
 } from "lucide-react"
-import { Button } from "@repo/ui/components/ui/button"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@repo/ui/components/ui/tooltip"
 import { Collapsible, CollapsibleContent } from "@repo/ui/components/ui/collapsible"
 
@@ -301,42 +297,8 @@ export function SidebarContent({ collapsed = false, platform = "default" }: { co
   )
 }
 
-export function Sidebar({ platform = "default" }: { platform?: "online" | "offline" | "default" }) {
+export function Sidebar() {
   const [collapsed, setCollapsed] = useState(false)
-  const [isMounted, setIsMounted] = useState(false)
-
-  // 从本地存储中获取菜单栏状态
-  useEffect(() => {
-    setIsMounted(true)
-    try {
-      // 根据平台选择不同的本地存储键
-      const storageKey = `${platform}SidebarCollapsed`
-      const savedState = localStorage.getItem(storageKey)
-      if (savedState !== null) {
-        setCollapsed(savedState === "true")
-      }
-    } catch (error) {
-      console.error("Failed to access localStorage:", error)
-    }
-  }, [platform])
-
-  // 切换菜单栏状态
-  const toggleSidebar = () => {
-    const newState = !collapsed
-    setCollapsed(newState)
-    try {
-      // 根据平台选择不同的本地存储键
-      const storageKey = `${platform}SidebarCollapsed`
-      localStorage.setItem(storageKey, String(newState))
-    } catch (error) {
-      console.error("Failed to save to localStorage:", error)
-    }
-  }
-
-  // 避免水合不匹配
-  if (!isMounted) {
-    return null
-  }
 
   return (
     <aside
@@ -346,16 +308,7 @@ export function Sidebar({ platform = "default" }: { platform?: "online" | "offli
       )}
     >
       <div className="flex h-full flex-col">
-        <SidebarContent collapsed={collapsed} platform={platform} />
-        <Button
-          variant="ghost"
-          size="icon"
-          className="absolute -right-3 top-6 z-10 flex h-6 w-6 items-center justify-center rounded-full border bg-background shadow-sm"
-          onClick={toggleSidebar}
-          aria-label={collapsed ? "展开侧边栏" : "折叠侧边栏"}
-        >
-          {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
-        </Button>
+        <SidebarContent collapsed={collapsed} platform={'offline'} />
       </div>
     </aside>
   )
