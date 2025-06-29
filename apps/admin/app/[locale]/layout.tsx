@@ -1,6 +1,8 @@
 import type React from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
+import { setStaticParamsLocale } from 'next-international/server';
+import { I18nProviderClient } from '@/locales/client';
 import { ThemeProvider } from "@repo/ui/components/theme-provider"
 import { Toaster } from "@repo/ui/components/ui/sonner"
 import "./globals.css"
@@ -17,18 +19,24 @@ export const metadata: Metadata = {
     generator: 'v0.dev'
 }
 
-export default function RootLayout({
+export default async function RootLayout({
+  params,
   children,
 }: {
+  params: Promise<{ locale: string }>;
   children: React.ReactNode
 }) {
+  const { locale } = await params;
+  setStaticParamsLocale(locale);
   return (
-    <html lang="zh-CN" suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          {children}
-          <Toaster />
-        </ThemeProvider>
+        <I18nProviderClient locale={locale}>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+            {children}
+            <Toaster />
+          </ThemeProvider>
+        </I18nProviderClient>
       </body>
     </html>
   )
