@@ -19,20 +19,7 @@ export default async function DashboardLayout({
   }
   return (
     <div className="flex h-screen flex-col">
-      <header className="sticky top-0 z-40 flex h-16 items-center gap-4 border-b bg-background px-6">
-        <div className="flex flex-1 items-center gap-2 md:gap-4">
-          <span className="font-bold">企业管理平台</span>
-        </div>
-  
-        <div className="flex items-center gap-2">
-          <NotificationsPopover />
-          <ModeToggle />
-          <AvatarInfo user={user} />
-        </div>
-      </header>
-      <div className="flex flex-1 overflow-hidden">
-        <LayoutContent>{children}</LayoutContent>
-      </div>
+      <LayoutContent>{children}</LayoutContent>
       <Toaster />
     </div>
   )
