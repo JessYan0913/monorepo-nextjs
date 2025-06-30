@@ -3,17 +3,14 @@
 import * as React from "react"
 import {
   BookOpen,
-  Bot,
-  Frame,
-  Map,
   PieChart,
   Settings2,
   Users,
   School,
 } from "lucide-react"
 
-import { NavMain } from "@/components/nav-main"
-import { NavUser } from "@/components/nav-user"
+import { NavMain } from "@/components/layout/nav-main"
+import { NavUser } from "@/components/layout/nav-user"
 import { TeamSwitcher } from "@/components/team-switcher"
 import {
   Sidebar,
@@ -26,8 +23,8 @@ import {
 // This is sample data.
 const data = {
   user: {
-    name: "shadcn",
-    email: "m@example.com",
+    name: "yanheng",
+    email: "yanheng@163.com",
     avatar: "/avatars/shadcn.jpg",
   },
   teams: [
