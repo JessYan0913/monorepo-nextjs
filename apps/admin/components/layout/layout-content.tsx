@@ -79,9 +79,9 @@ export function LayoutContent({
                     </BreadcrumbLink>
                   </BreadcrumbItem>
                   {breadcrumbItems.map((item, index) => (
-                    <>
-                      <BreadcrumbSeparator key={`${index}-separator`} className="hidden md:block" />
-                      <BreadcrumbItem key={`${index}-item`}>
+                    <div key={`${index}-item`} className="flex gap-1 items-center">
+                      <BreadcrumbSeparator className="hidden md:block" />
+                      <BreadcrumbItem>
                         {item.isLast ? (
                           <BreadcrumbPage>{item.label}</BreadcrumbPage>
                         ) : (
@@ -90,7 +90,7 @@ export function LayoutContent({
                           </BreadcrumbLink>
                         )}
                       </BreadcrumbItem>
-                    </>
+                    </div>
                   ))}
                 </BreadcrumbList>
               </Breadcrumb>
