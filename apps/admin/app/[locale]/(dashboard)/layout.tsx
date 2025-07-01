@@ -1,11 +1,8 @@
 import React from "react"
 import { redirect } from "next/navigation"
-import { ModeToggle } from "@/components/layout/mode-toggle"
-import { NotificationsPopover } from "@/components/layout/notifications-popover"
-import { AvatarInfo } from "@/components/avatar-info"
 import { Toaster } from "@repo/ui/components/ui/sonner"
 import { auth } from "@/lib/auth"
-import { LayoutContent } from "@/components/layout/content"
+import { LayoutContent } from "@/components/layout/layout-content"
 
 export default async function DashboardLayout({
   children,

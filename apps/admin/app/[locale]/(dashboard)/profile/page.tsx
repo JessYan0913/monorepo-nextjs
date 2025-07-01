@@ -108,67 +108,112 @@ export default function ProfileInfoPage() {
 
   return (
     <div className="space-y-8 pb-10 animate-in fade-in duration-500">
-      {/* 顶部英雄区域 */}
+      {/* 顶部区域 - 用户信息和工作信息 */}
       <div className="relative overflow-hidden rounded-xl bg-gradient-to-r from-primary/10 via-primary/5 to-muted p-6 md:p-10">
         <div className="absolute inset-0 bg-grid-white/10 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.5))] dark:bg-grid-black/10" />
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between relative z-10">
-          <div className="flex flex-col md:flex-row items-center md:space-x-6 space-y-4 md:space-y-0">
+        <div className="flex flex-col lg:flex-row gap-8 relative z-10">
+          {/* 左侧头像区域 */}
+          <div className="flex-shrink-0 flex justify-center">
             <div className="relative group">
-              <div className="absolute -inset-0.5 rounded-full bg-gradient-to-r from-primary to-primary/50 opacity-70 blur-sm group-hover:opacity-100 transition duration-300" />
-              <Avatar className="h-28 w-28 md:h-32 md:w-32 border-4 border-background relative">
-                <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback className="text-4xl">
+              <Avatar className="h-64 w-64 md:h-96 md:w-96 border-4 border-background/80 relative shadow-xl">
+                <AvatarImage src={user.avatar} alt={user.name} className="object-cover" />
+                <AvatarFallback className="text-7xl bg-muted/30">
                   {user.name?.charAt(0) || "U"}
                 </AvatarFallback>
               </Avatar>
-              <Button
-                variant="secondary"
-                size="icon"
-                className="absolute -bottom-2 -right-2 rounded-full h-10 w-10 shadow-lg opacity-90 hover:opacity-100 transition-opacity"
-                onClick={() => {/* 编辑头像逻辑 */}}
-              >
-                <Camera className="h-4 w-4" />
-                <span className="sr-only">编辑头像</span>
-              </Button>
-            </div>
-            <div className="text-center md:text-left space-y-2">
-              <div className="flex items-center justify-center md:justify-start space-x-2">
-                <h1 className="text-2xl md:text-3xl font-bold">{user.name}</h1>
-                <StatusBadge status={user.status} />
-              </div>
-              <p className="text-muted-foreground">{user.position} · {user.role}</p>
-              <div className="flex items-center justify-center md:justify-start space-x-2 text-sm text-muted-foreground">
-                <MapPin className="h-3.5 w-3.5" />
-                <span>{user.campus}</span>
-                <span className="h-1 w-1 rounded-full bg-muted-foreground" />
-                <Calendar className="h-3.5 w-3.5" />
-                <span>入职 {new Date(user.hireDate).toLocaleDateString("zh-CN", { year: "numeric", month: "numeric" })}</span>
-              </div>
             </div>
           </div>
-          <div className="mt-4 md:mt-0 flex justify-center md:justify-end">
-            <Button variant="default" className="shadow-sm">
-              <Edit className="mr-2 h-4 w-4" />
-              编辑资料
-            </Button>
+          
+          {/* 右侧信息区域 */}
+          <div className="flex-1 flex flex-col space-y-6">
+            {/* 基本信息 */}
+            <div className="text-center lg:text-left space-y-3">
+              <div className="flex items-center justify-center lg:justify-start space-x-3">
+                <h1 className="text-3xl md:text-4xl font-bold">{user.name}</h1>
+                <StatusBadge status={user.status} />
+              </div>
+              <p className="text-lg text-muted-foreground">{user.position} · {user.role}</p>
+            </div>
+            
+            {/* 工作信息卡片 */}
+            <Card className="bg-background/70 backdrop-blur-sm border-muted">
+              <CardContent className="p-5">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  {/* 左侧工作信息 */}
+                  <div className="space-y-4">
+                    <div className="flex items-center space-x-3">
+                      <div className="p-2 rounded-md bg-primary/10">
+                        <Briefcase className="h-5 w-5 text-primary" />
+                      </div>
+                      <h3 className="font-medium">工作信息</h3>
+                    </div>
+                    
+                    <div className="grid gap-4">
+                      <div className="flex items-center space-x-3">
+                        <Calendar className="h-4 w-4 text-muted-foreground" />
+                        <div>
+                          <p className="text-sm text-muted-foreground">入职时间</p>
+                          <p className="font-medium">{formatDate(user.hireDate)}</p>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-center space-x-3">
+                        <Award className="h-4 w-4 text-muted-foreground" />
+                        <div>
+                          <p className="text-sm text-muted-foreground">教学资质</p>
+                          <p className="font-medium">{user.teachingQualification}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* 右侧联系信息 */}
+                  <div className="space-y-4">
+                    <div className="flex items-center space-x-3">
+                      <div className="p-2 rounded-md bg-primary/10">
+                        <User className="h-5 w-5 text-primary" />
+                      </div>
+                      <h3 className="font-medium">联系方式</h3>
+                    </div>
+                    
+                    <div className="grid gap-4">
+                      <div className="flex items-center space-x-3">
+                        <MapPin className="h-4 w-4 text-muted-foreground" />
+                        <div>
+                          <p className="text-sm text-muted-foreground">校区</p>
+                          <p className="font-medium">{user.campus}</p>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-center space-x-3">
+                        <Smartphone className="h-4 w-4 text-muted-foreground" />
+                        <div>
+                          <p className="text-sm text-muted-foreground">联系电话</p>
+                          <p className="font-medium">{user.phone}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </div>
 
       {/* 标签页导航 */}
-      <Tabs defaultValue="info" className="w-full" value={activeTab} onValueChange={setActiveTab}>
-        <div className="border-b sticky top-0 bg-background/95 backdrop-blur z-10 pb-2">
-          <TabsList className="w-full max-w-md h-11">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
+        <div className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm pt-2 pb-2">
+          <TabsList className="w-full grid grid-cols-2">
             <TabsTrigger value="info" className="flex-1">个人信息</TabsTrigger>
-            <TabsTrigger value="work" className="flex-1">工作信息</TabsTrigger>
             <TabsTrigger value="gallery" className="flex-1">照片墙</TabsTrigger>
           </TabsList>
         </div>
         
         <div className="pt-6">
           <TabsContent value="info" className="space-y-6 mt-0 animate-in fade-in-50 duration-300">
-            {/* 个人资料 - 合并基本信息和联系信息 */}
-            <InfoCard title="个人资料" icon={User}>
+            {/* 个人资料 - 详细信息 */}
+            <InfoCard title="个人详细资料" icon={User}>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {/* 基本信息部分 */}
                 <InfoItem label="姓名" value={user.name} icon={User} />
@@ -176,25 +221,8 @@ export default function ProfileInfoPage() {
                 <InfoItem label="昵称" value={user.nickname} icon={User} />
                 <InfoItem label="出生日期" value={user.birthdate} icon={Calendar} />
                 <InfoItem label="身份证号" value={user.idNumber} icon={User} />
-                <InfoItem label="状态" value={user.status} icon={User} />
-                
-                {/* 联系信息部分 */}
-                <InfoItem label="手机号" value={user.phone} icon={Smartphone} />
                 <InfoItem label="邮箱" value={user.email} icon={Mail} />
                 <InfoItem label="联系地址" value={user.address} icon={Home} />
-                <InfoItem label="校区" value={user.campus} icon={MapPin} />
-              </div>
-            </InfoCard>
-          </TabsContent>
-          
-          <TabsContent value="work" className="space-y-6 mt-0 animate-in fade-in-50 duration-300">
-            {/* 工作信息 */}
-            <InfoCard title="工作信息" icon={Briefcase}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <InfoItem label="入职时间" value={formatDate(user.hireDate)} icon={Calendar} />
-                <InfoItem label="职位" value={user.position} icon={Briefcase} />
-                <InfoItem label="角色" value={user.role} icon={User} />
-                <InfoItem label="教学资质" value={user.teachingQualification} icon={Award} />
               </div>
             </InfoCard>
           </TabsContent>
