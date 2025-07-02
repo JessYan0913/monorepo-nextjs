@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { useState } from "react"
-import { School, Plus, Search, Edit, Trash2, MoreHorizontal } from "lucide-react"
+import { Plus, Search, Edit, Trash2, MoreHorizontal } from "lucide-react"
 
 import { Button } from "@repo/ui/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@repo/ui/components/ui/card"
