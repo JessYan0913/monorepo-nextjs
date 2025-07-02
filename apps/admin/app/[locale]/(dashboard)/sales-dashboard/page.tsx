@@ -1,13 +1,10 @@
 "use client"
 
-import { ActivityChart } from "@/components/dashboard/activity-chart"
-import { Overview } from "@/components/dashboard/overview"
-import { RecentActivity } from "@/components/dashboard/recent-activity"
 import { StatsCard } from "@/components/dashboard/stats-card"
 import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/components/ui/avatar"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@repo/ui/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui/components/ui/tabs"
-import { ArrowUpRight, CreditCard, DollarSign, Package, Users } from "lucide-react"
+import { CreditCard, DollarSign, Package, Users } from "lucide-react"
 import { Bar, BarChart, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
 
 // 销售统计数据（模拟数据）

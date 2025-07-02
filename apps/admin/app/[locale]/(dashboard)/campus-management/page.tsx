@@ -1,7 +1,4 @@
-"use client"
-
 import * as React from "react"
-import { useState } from "react"
 import { Plus, Search, Edit, Trash2, MoreHorizontal } from "lucide-react"
 
 import { Button } from "@repo/ui/components/ui/button"
@@ -78,31 +75,25 @@ const mockCampuses: Campus[] = [
   },
 ]
 
-export default function CampusManagementPage() {
-  // 状态管理
-  const [campuses, setCampuses] = useState<Campus[]>(mockCampuses)
-  const [searchQuery, setSearchQuery] = useState<string>("")
-  const [currentPage, setCurrentPage] = useState<number>(1)
-  const [itemsPerPage] = useState<number>(4)
-
+export default async function CampusManagementPage({ params }: {
+  params: Promise<{
+    query: string
+    page: string
+  }>
+}) {
+  const { query, page } = await params
+  const itemsPerPage = 4
+  const currentPage = Number(page)
   // 过滤校园数据
-  const filteredCampuses = campuses.filter((campus) =>
-    campus.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    campus.address.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    campus.region.toLowerCase().includes(searchQuery.toLowerCase())
-  )
+  const filteredCampuses = mockCampuses;
 
   // 分页逻辑
   const indexOfLastItem = currentPage * itemsPerPage
   const indexOfFirstItem = indexOfLastItem - itemsPerPage
   const currentCampuses = filteredCampuses.slice(indexOfFirstItem, indexOfLastItem)
   const totalPages = Math.ceil(filteredCampuses.length / itemsPerPage)
-
-  // 处理页面变化
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page)
-  }
-
+  console.log('====>', filteredCampuses);
+  
   return (
     <div className="space-y-6 p-6">
       <div className="flex items-center justify-between">
@@ -121,8 +112,7 @@ export default function CampusManagementPage() {
         <Input
           placeholder="搜索校区名称、地址或区域..."
           className="max-w-sm"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          value={query}
         />
       </div>
 
@@ -188,16 +178,14 @@ export default function CampusManagementPage() {
           <Pagination>
             <PaginationContent>
               <PaginationItem>
-                <PaginationPrevious 
-                  onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
+                <PaginationPrevious
                   className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
                 />
               </PaginationItem>
               
               {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
                 <PaginationItem key={page}>
-                  <PaginationLink 
-                    onClick={() => handlePageChange(page)}
+                  <PaginationLink
                     isActive={page === currentPage}
                   >
                     {page}
@@ -206,8 +194,7 @@ export default function CampusManagementPage() {
               ))}
               
               <PaginationItem>
-                <PaginationNext 
-                  onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
+                <PaginationNext
                   className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
                 />
               </PaginationItem>
