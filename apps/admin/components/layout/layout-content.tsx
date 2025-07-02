@@ -18,6 +18,8 @@ import { Separator } from "@repo/ui/components/ui/separator"
 const pathMap: Record<string, string> = {
   profile: "个人中心",
   'sales-dashboard': '销售数据',
+  'campus-management': '校区管理',
+  'add': '添加',
 }
 
 export function LayoutContent({
@@ -27,15 +29,20 @@ export function LayoutContent({
   }) {
   const pathname = usePathname()
 
-  const pathSegments = pathname.split("/").filter(Boolean)
+  // 分割路径并过滤空段
+  const segments = pathname.split("/").filter(Boolean)
+  const [locale, ...pathSegments] = segments
 
-  const breadcrumbItems = pathSegments.splice(1).map((segment, index) => {
-    const href = `/${pathSegments.slice(0, index + 1).join("/")}`
-    const isLast = index === pathSegments.length - 1
+  // 生成面包屑项
+  const breadcrumbItems = pathSegments.map((segment, index, array) => {
+    // 构建完整路径，始终包含 locale
+    const href = `/${[locale, ...array.slice(0, index + 1)].join("/")}`
+    const isLast = index === array.length - 1
     const label = pathMap[segment] || segment
 
     return { href, label, isLast }
   })
+  
   return (
     <SidebarProvider>
       <AppSidebar />

@@ -1,13 +1,14 @@
 import * as React from "react"
-import { Plus, Search, Edit, Trash2, MoreHorizontal } from "lucide-react"
+import { Plus, Search, Edit } from "lucide-react"
+import Link from "next/link"
 
 import { Button } from "@repo/ui/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@repo/ui/components/ui/card"
 import { Input } from "@repo/ui/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@repo/ui/components/ui/table"
 import { Badge } from "@repo/ui/components/ui/badge"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@repo/ui/components/ui/dropdown-menu"
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@repo/ui/components/ui/pagination"
+import { DeleteCampusButton } from "@/components/campus-management/delete-campus"
 
 // 校园数据类型定义
 type Campus = {
@@ -75,25 +76,27 @@ const mockCampuses: Campus[] = [
   },
 ]
 
-export default async function CampusManagementPage({ params }: {
-  params: Promise<{
-    query: string
-    page: string
-  }>
+export default async function CampusManagementPage({ searchParams }: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }) {
-  const { query, page } = await params
+  const { query, page } = await searchParams
   const itemsPerPage = 4
-  const currentPage = Number(page)
-  // 过滤校园数据
-  const filteredCampuses = mockCampuses;
+  const filteredCampuses = mockCampuses.filter(campus => {
+    if (!query) return true;
+    const lowerQuery = query.toString().toLowerCase();
+    return (
+      campus.name.toLowerCase().includes(lowerQuery) ||
+      campus.address.toLowerCase().includes(lowerQuery) ||
+      campus.region.toLowerCase().includes(lowerQuery)
+    )
+  })
+  const totalPages = Math.ceil(filteredCampuses.length / itemsPerPage)
+  const currentPage = Math.max(1, Math.min(Number(page) || 1, totalPages || 1))
 
-  // 分页逻辑
   const indexOfLastItem = currentPage * itemsPerPage
   const indexOfFirstItem = indexOfLastItem - itemsPerPage
   const currentCampuses = filteredCampuses.slice(indexOfFirstItem, indexOfLastItem)
-  const totalPages = Math.ceil(filteredCampuses.length / itemsPerPage)
-  console.log('====>', filteredCampuses);
-  
+
   return (
     <div className="space-y-6 p-6">
       <div className="flex items-center justify-between">
@@ -101,20 +104,26 @@ export default async function CampusManagementPage({ params }: {
           <h1 className="text-2xl font-bold tracking-tight">校园管理</h1>
           <p className="text-muted-foreground">管理所有校区的基本信息、状态和统计数据</p>
         </div>
-        <Button>
+        <Link 
+          href="/campus-management/add" 
+          className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+        >
           <Plus className="mr-2 h-4 w-4" />
           添加校区
-        </Button>
+        </Link>
       </div>
 
-      <div className="flex items-center gap-2">
+      <form method="GET" className="flex items-center gap-2">
         <Search className="h-4 w-4 text-muted-foreground" />
         <Input
+          type="text"
+          name="query"
           placeholder="搜索校区名称、地址或区域..."
           className="max-w-sm"
-          value={query}
+          defaultValue={query}
         />
-      </div>
+        <Button type="submit" variant="outline">搜索</Button>
+      </form>
 
       <Card>
         <CardHeader>
@@ -149,25 +158,12 @@ export default async function CampusManagementPage({ params }: {
                   <TableCell>{campus.studentCount}</TableCell>
                   <TableCell>{campus.classroomCount}</TableCell>
                   <TableCell>{campus.createdAt}</TableCell>
-                  <TableCell className="text-right">
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon">
-                          <MoreHorizontal className="h-4 w-4" />
-                          <span className="sr-only">操作菜单</span>
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem>
-                          <Edit className="mr-2 h-4 w-4" />
-                          编辑
-                        </DropdownMenuItem>
-                        <DropdownMenuItem className="text-red-600">
-                          <Trash2 className="mr-2 h-4 w-4" />
-                          删除
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+                  <TableCell className="flex items-center justify-center gap-2">
+                    <Link href={`/campus-management/${campus.id}`} className="flex items-center gap-1">
+                      <Edit className="h-4 w-4" />
+                      编辑
+                    </Link>
+                    <DeleteCampusButton id={campus.id} />
                   </TableCell>
                 </TableRow>
               ))}
@@ -179,6 +175,7 @@ export default async function CampusManagementPage({ params }: {
             <PaginationContent>
               <PaginationItem>
                 <PaginationPrevious
+                  href={`?page=${currentPage - 1}`}
                   className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
                 />
               </PaginationItem>
@@ -186,6 +183,7 @@ export default async function CampusManagementPage({ params }: {
               {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
                 <PaginationItem key={page}>
                   <PaginationLink
+                    href={`?page=${page}`}
                     isActive={page === currentPage}
                   >
                     {page}
@@ -195,6 +193,7 @@ export default async function CampusManagementPage({ params }: {
               
               <PaginationItem>
                 <PaginationNext
+                  href={`?page=${currentPage + 1}`}
                   className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
                 />
               </PaginationItem>
