@@ -43,18 +43,14 @@ const data = {
   ],
   navMain: [
     {
-      title: '数据统计',
-      url: '#',
+      title: '数据看板',
       icon: PieChart,
+      url: '#',
       isActive: true,
       items: [
         {
-          title: '营收统计',
-          url: '#'
-        },
-        {
-          title: '课程统计',
-          url: '#'
+          title: '销售看板',
+          url: '/sales-dashboard',
         },
       ]
     },
@@ -65,7 +61,7 @@ const data = {
       items: [
         {
           title: "校区管理",
-          url: "#",
+          url: "/campus-management",
         },
         {
           title: "教室管理",

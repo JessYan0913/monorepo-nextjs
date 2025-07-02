@@ -16,31 +16,8 @@ import {
 import { Separator } from "@repo/ui/components/ui/separator"
 
 const pathMap: Record<string, string> = {
-  "online-system": "线上系统",
-  "offline-system": "线下系统",
-  users: "用户管理",
-  permissions: "权限管理",
-  analytics: "数据分析",
-  content: "内容管理",
-  notifications: "通知中心",
-  settings: "系统设置",
-  help: "帮助中心",
-  profile: "个人资料",
-  classes: "班级管理",
-  courses: "教案管理",
-  students: "学生管理",
-  exams: "考试管理",
-  resources: "教学资源",
-  messages: "消息中心",
-  detail: "详情",
-  "course-schedule": "课程表",
-  score: "评分",
-  mall: "商城",
-  orders: "我的订单",
-  info: "信息",
-  financial: "财务状况",
-  create: "创建",
-  edit: "编辑"
+  profile: "个人中心",
+  'sales-dashboard': '销售数据',
 }
 
 export function LayoutContent({
