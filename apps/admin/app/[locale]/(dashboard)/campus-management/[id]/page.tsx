@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { useRouter, useParams, notFound } from "next/navigation"
+import { useRouter, notFound } from "next/navigation"
 import Link from "next/link"
 import { z } from "zod"
 import { useForm } from 'react-hook-form'
