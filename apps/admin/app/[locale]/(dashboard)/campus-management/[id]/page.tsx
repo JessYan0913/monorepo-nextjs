@@ -7,6 +7,7 @@ import { z } from "zod"
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ArrowLeft, Save } from "lucide-react"
+import useSWR from "swr"
 
 import { Button } from "@repo/ui/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@repo/ui/components/ui/card"
@@ -14,95 +15,44 @@ import { Input } from "@repo/ui/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui/components/ui/select"
 import { Textarea } from "@repo/ui/components/ui/textarea"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/components/ui/form"
-import { saveCampus } from "@/lib/actions/campus"
+import { Transfer } from "@repo/ui/components/transfer"
 
-// 校园数据类型定义
-type Campus = {
-  id: string
-  name: string
-  address: string
-  region: string
-  status: "active" | "inactive"
-  studentCount: number
-  classroomCount: number
-  createdAt: string
-}
-
-// 模拟校园数据
-const mockCampuses: Campus[] = [
-  {
-    id: "1",
-    name: "顺义校区",
-    address: "北京市顺义区后沙峪镇安富街8号",
-    region: "北京市-顺义区",
-    status: "active",
-    studentCount: 1250,
-    classroomCount: 45,
-    createdAt: "2020-05-15",
-  },
-  {
-    id: "2",
-    name: "昌平校区",
-    address: "北京市昌平区沙河镇松兰堡村西口",
-    region: "北京市-昌平区",
-    status: "active",
-    studentCount: 980,
-    classroomCount: 32,
-    createdAt: "2021-03-20",
-  },
-  {
-    id: "3",
-    name: "海淀校区",
-    address: "北京市海淀区西三旗建材城西路31号",
-    region: "北京市-海淀区",
-    status: "active",
-    studentCount: 1580,
-    classroomCount: 52,
-    createdAt: "2019-09-01",
-  },
-  {
-    id: "4",
-    name: "朝阳校区",
-    address: "北京市朝阳区望京西园四区417号楼",
-    region: "北京市-朝阳区",
-    status: "inactive",
-    studentCount: 750,
-    classroomCount: 28,
-    createdAt: "2022-01-10",
-  },
-  {
-    id: "5",
-    name: "通州校区",
-    address: "北京市通州区永顺镇潞苑北大街15号",
-    region: "北京市-通州区",
-    status: "active",
-    studentCount: 620,
-    classroomCount: 25,
-    createdAt: "2022-08-15",
-  },
+const userOptions = [
+  { value: "1", label: "张三", description: "前端开发工程师" },
+  { value: "2", label: "李四", description: "后端开发工程师" },
+  { value: "3", label: "王五", description: "产品经理" },
+  { value: "4", label: "赵六", description: "UI设计师" },
+  { value: "5", label: "钱七", description: "测试工程师" },
+  { value: "6", label: "孙八", description: "运维工程师" },
+  { value: "7", label: "周九", description: "数据分析师" },
+  { value: "8", label: "吴十", description: "项目经理" },
+  { value: "9", label: "郑十一", description: "架构师", disabled: true },
+  { value: "10", label: "王十二", description: "技术总监" },
 ]
 
 const campusEditSchema = z.object({
-  id: z.string({
+  schoolId: z.string({
     required_error: "请输入校区ID",
   }),
-  name: z.string({
+  schoolName: z.string({
     required_error: "请输入校区名称",
   }),
-  address: z.string({
-    required_error: "请输入详细地址",
+  schoolIntro: z.string({
+    required_error: "请输入校区介绍",
   }),
-  region: z.string({
-    required_error: "请输入所属区域",
-  }),
-  status: z.enum(["active", "inactive"], {
+  schoolMvs: z.array(z.string()),
+  schoolPictures: z.array(z.string()),
+  schoolStatus: z.enum(["normal", "closed"], {
     required_error: "请选择运营状态",
   }),
-  studentCount: z.number({
-    required_error: "请输入学生数量",
+  schoolAddr: z.string({
+    required_error: "请输入详细地址",
   }),
-  classroomCount: z.number({
-    required_error: "请输入教室数量",
+  director: z.array(z.object({
+    staffId: z.string(),
+    staffName: z.string(),
+  }), {
+    required_error: "请选择校区负责人",
   }),
 })
 
@@ -111,28 +61,39 @@ type CampusFormValues = z.infer<typeof campusEditSchema>
 export default function CampusEditPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = React.use(params)
   const router = useRouter()
-  // 根据ID查找校区数据
-  const campus = mockCampuses.find(c => c.id === id)
+
+  const { data: school, isLoading } = useSWR(`${process.env.BASE_URL}/school/manage/get?school=${id}`, async (url: string) => {
+    const res = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "req-device": "pc"
+      },
+    })
+    const { data } = await res.json()
+    return data
+  })
   
   // 如果找不到对应校区，返回404
-  if (!campus && id !== "add") {
+  if (!school && id !== "add") {
     notFound()
   }
 
   const form = useForm<CampusFormValues>({
       resolver: zodResolver(campusEditSchema),
-      defaultValues: {
-        name: campus?.name,
-        address: campus?.address,
-        region: campus?.region,
-        status: campus?.status,
-        studentCount: campus?.studentCount,
-        classroomCount: campus?.classroomCount,
-      },
+    defaultValues: {
+      schoolId: school?.schoolId,
+      schoolName: school?.schoolName,
+      schoolIntro: school?.schoolIntro,
+      schoolMvs: school?.schoolMvs,
+      schoolStatus: school?.schoolStatus,
+      schoolPictures: school?.schoolPictures,
+      schoolAddr: school?.schoolAddr,
+      director: school?.director,
+    },
   })
   
   const submit = form.handleSubmit(async (data) => {
-    await saveCampus(data)
     router.back()
   })
 
@@ -157,15 +118,15 @@ export default function CampusEditPage({ params }: { params: Promise<{ id: strin
         </CardHeader>
         <Form {...form}>
           <form onSubmit={submit}>
-            <input type="hidden" {...form.register("id")} value={id} />
+            <input type="hidden" {...form.register("schoolId")} value={id} />
             <CardContent className="p-6 space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <FormField
                   control={form.control}
-                  name="name"
+                  name="schoolName"
                   render={({ field }) => (
                       <FormItem>
-                        <FormLabel htmlFor="name" className="text-sm font-medium">
+                        <FormLabel htmlFor="schoolName" className="text-sm font-medium">
                           校区名称
                           <span className="text-destructive ml-1">*</span>
                         </FormLabel>
@@ -183,19 +144,18 @@ export default function CampusEditPage({ params }: { params: Promise<{ id: strin
                   />
                 <FormField
                   control={form.control}
-                  name="region"
+                  name="schoolIntro"
                   render={({ field }) => (
                       <FormItem>
-                        <FormLabel htmlFor="region" className="text-sm font-medium">
-                          所属区域
+                        <FormLabel htmlFor="schoolIntro" className="text-sm font-medium">
+                          校区介绍
                           <span className="text-destructive ml-1">*</span>
                         </FormLabel>
                         <FormControl>
-                          <Input 
-                            id="region" 
-                            type="text" 
+                          <Textarea 
+                            id="schoolIntro" 
                             {...field} 
-                            className="mt-1 focus-visible:ring-2 focus-visible:ring-primary/50"
+                            className="mt-1 min-h-[100px] focus-visible:ring-2 focus-visible:ring-primary/50"
                           />
                         </FormControl>
                         <FormMessage />
@@ -206,10 +166,10 @@ export default function CampusEditPage({ params }: { params: Promise<{ id: strin
               
               <FormField
                 control={form.control}
-                name="address"
+                name="schoolAddr"
                 render={({ field }) => (
                     <FormItem>
-                      <FormLabel htmlFor="address" className="text-sm font-medium">
+                      <FormLabel htmlFor="schoolAddr" className="text-sm font-medium">
                         详细地址
                         <span className="text-destructive ml-1">*</span>
                       </FormLabel>
@@ -228,10 +188,10 @@ export default function CampusEditPage({ params }: { params: Promise<{ id: strin
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 <FormField
                   control={form.control}
-                  name="status"
+                  name="schoolStatus"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel htmlFor="status" className="text-sm font-medium">
+                      <FormLabel htmlFor="schoolStatus" className="text-sm font-medium">
                         运营状态
                         <span className="text-destructive ml-1">*</span>
                       </FormLabel>
@@ -244,8 +204,8 @@ export default function CampusEditPage({ params }: { params: Promise<{ id: strin
                             <SelectValue placeholder="选择状态" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="active">正常运营</SelectItem>
-                            <SelectItem value="inactive">暂停运营</SelectItem>
+                            <SelectItem value="normal">正常运营</SelectItem>
+                            <SelectItem value="closed">暂停运营</SelectItem>
                           </SelectContent>
                         </Select>
                       </FormControl>
@@ -255,44 +215,19 @@ export default function CampusEditPage({ params }: { params: Promise<{ id: strin
                 />
                 <FormField
                   control={form.control}
-                  name="studentCount"
+                  name="director"
                   render={({ field }) => (
                       <FormItem>
-                        <FormLabel htmlFor="studentCount" className="text-sm font-medium">
-                          学生数量
+                        <FormLabel htmlFor="director" className="text-sm font-medium">
+                          校区负责人
                           <span className="text-destructive ml-1">*</span>
                         </FormLabel>
                         <FormControl>
-                          <Input 
-                            id="studentCount" 
-                            type="number" 
-                            min="0"
-                            {...field} 
-                            onChange={(e) => field.onChange(e.target.valueAsNumber)}
-                            className="mt-1 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none focus-visible:ring-2 focus-visible:ring-primary/50"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                />
-                <FormField
-                  control={form.control}
-                  name="classroomCount"
-                  render={({ field }) => (
-                      <FormItem>
-                        <FormLabel htmlFor="classroomCount" className="text-sm font-medium">
-                          教室数量
-                          <span className="text-destructive ml-1">*</span>
-                        </FormLabel>
-                        <FormControl>
-                          <Input 
-                            id="classroomCount" 
-                            type="number" 
-                            min="0"
-                            {...field} 
-                            onChange={(e) => field.onChange(e.target.valueAsNumber)}
-                            className="mt-1 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none focus-visible:ring-2 focus-visible:ring-primary/50"
+                          <Transfer
+                            options={userOptions}
+                            value={field.value.map((user) => user.staffId)}
+                            onValueChange={(value) => field.onChange(value.map((id) => ({ staffId: id, staffName: "" })))}
+                            titles={["搜索用户", "已选用户"]}
                           />
                         </FormControl>
                         <FormMessage />
@@ -306,6 +241,7 @@ export default function CampusEditPage({ params }: { params: Promise<{ id: strin
                 type="button" 
                 variant="outline" 
                 onClick={() => router.back()}
+                disabled={form.formState.isSubmitting}
                 className="border-border/50 hover:border-foreground/50"
               >
                 取消
@@ -313,6 +249,7 @@ export default function CampusEditPage({ params }: { params: Promise<{ id: strin
               <Button 
                 type="submit" 
                 className="bg-primary hover:bg-primary/90 transition-colors shadow-sm hover:shadow"
+                disabled={form.formState.isSubmitting}
               >
                 <Save className="mr-2 h-4 w-4" />
                 保存更改
