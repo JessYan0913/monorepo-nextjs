@@ -27,18 +27,8 @@ interface TransferContextValue {
   onSearch?: (query: string) => void
 }
 
-// ==================== Context ====================
 const TransferContext = React.createContext<TransferContextValue | null>(null)
 
-const useTransfer = () => {
-  const context = React.useContext(TransferContext)
-  if (!context) {
-    throw new Error("Transfer components must be used within Transfer")
-  }
-  return context
-}
-
-// ==================== Main Transfer Component ====================
 interface TransferProps {
   value?: string[]
   defaultValue?: string[]
@@ -315,7 +305,6 @@ const Transfer = React.forwardRef<HTMLDivElement, TransferProps>(
 )
 Transfer.displayName = "Transfer"
 
-// ==================== Transfer Item Component ====================
 interface TransferItemProps {
   option: TransferOption
   selected: boolean
