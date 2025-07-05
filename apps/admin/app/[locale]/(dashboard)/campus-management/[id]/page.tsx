@@ -10,24 +10,31 @@ import { ArrowLeft, Save, ArrowRight } from "lucide-react"
 import useSWR from "swr"
 
 import { Button } from "@repo/ui/components/ui/button"
+import { Badge } from "@repo/ui/components/ui/badge"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@repo/ui/components/ui/card"
 import { Input } from "@repo/ui/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui/components/ui/select"
 import { Textarea } from "@repo/ui/components/ui/textarea"
-import { Checkbox } from "@repo/ui/components/ui/checkbox"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/components/ui/form"
-import { Transfer, TransferPanel, TransferContent, TransferControl } from "@repo/ui/components/transfer-v1"
+import { TransferList, BaseTransferListItem } from "@repo/ui/components/transfer-list"
 
-const userOptions = [
-  { staffId: "1", staffName: "张三" },
-  { staffId: "2", staffName: "李四" },
-  { staffId: "3", staffName: "王五" },
-  { staffId: "4", staffName: "赵六" },
-  { staffId: "5", staffName: "钱七" },
-  { staffId: "6", staffName: "孙八" },
-  { staffId: "7", staffName: "吴十" },
-  { staffId: "8", staffName: "郑十一" },
-  { staffId: "9", staffName: "王十二" },
+// 定义包含role属性的自定义项目类型
+type StaffItem = BaseTransferListItem & {
+  role: string[]
+}
+
+const StaffTransferList = TransferList<StaffItem>
+
+const userOptions: StaffItem[] = [
+  { key: "1", label: "张三", role: ["管理员"], selected: true },
+  { key: "2", label: "李四", role: ["教师"] },
+  { key: "3", label: "王五", role: ["教师"] },
+  { key: "4", label: "赵六", role: ["教师"] },
+  { key: "5", label: "钱七", role: ["教师"] },
+  { key: "6", label: "孙八", role: ["教师"] },
+  { key: "7", label: "吴十", role: ["教师"] },
+  { key: "8", label: "郑十一", role: ["教师"] },
+  { key: "9", label: "王十二", role: ["教师"] },
 ]
 
 const campusEditSchema = z.object({
@@ -56,13 +63,34 @@ const campusEditSchema = z.object({
   }),
 })
 
+const mockCampusData = {
+  schoolId: "SCHOOL_001",
+  schoolName: "未来科技学院",
+  schoolIntro: "未来科技学院是一所专注于前沿科技教育的现代化学校，致力于培养未来的科技领袖和创新人才。",
+  schoolMvs: [
+    "https://example.com/videos/school-intro-1.mp4",
+    "https://example.com/videos/campus-tour.mp4"
+  ],
+  schoolPictures: [
+    "https://example.com/images/campus-1.jpg",
+    "https://example.com/images/campus-2.jpg",
+    "https://example.com/images/classroom-1.jpg"
+  ],
+  schoolStatus: "normal" as const,
+  schoolAddr: "北京市海淀区科技园路88号",
+  director: [
+    { staffId: "1", staffName: "张三" },
+    { staffId: "3", staffName: "王五" }
+  ]
+}
+
 type CampusFormValues = z.infer<typeof campusEditSchema>
 
 export default function CampusEditPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = React.use(params)
   const router = useRouter()
 
-  const { data: school, isLoading } = useSWR(`${process.env.BASE_URL}/school/manage/get`, async (url: string) => {
+  const { data: school = mockCampusData, isLoading } = useSWR(`${process.env.BASE_URL}/school/manage/get`, async (url: string) => {
     const res = await fetch(url, {
       method: "POST",
       headers: {
@@ -128,67 +156,23 @@ export default function CampusEditPage({ params }: { params: Promise<{ id: strin
                   control={form.control}
                   name="schoolName"
                   render={({ field }) => (
-                      <FormItem>
-                        <FormLabel htmlFor="schoolName" className="text-sm font-medium">
-                          校区名称
-                          <span className="text-destructive ml-1">*</span>
-                        </FormLabel>
-                        <FormControl>
-                          <Input 
-                            id="name" 
-                            type="text" 
-                            {...field} 
-                            className="mt-1 focus-visible:ring-2 focus-visible:ring-primary/50"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                <FormField
-                  control={form.control}
-                  name="schoolIntro"
-                  render={({ field }) => (
-                      <FormItem>
-                        <FormLabel htmlFor="schoolIntro" className="text-sm font-medium">
-                          校区介绍
-                          <span className="text-destructive ml-1">*</span>
-                        </FormLabel>
-                        <FormControl>
-                          <Textarea 
-                            id="schoolIntro" 
-                            {...field} 
-                            className="mt-1 min-h-[100px] focus-visible:ring-2 focus-visible:ring-primary/50"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-              </div>
-              
-              <FormField
-                control={form.control}
-                name="schoolAddr"
-                render={({ field }) => (
                     <FormItem>
-                      <FormLabel htmlFor="schoolAddr" className="text-sm font-medium">
-                        详细地址
+                      <FormLabel htmlFor="schoolName" className="text-sm font-medium">
+                        校区名称
                         <span className="text-destructive ml-1">*</span>
                       </FormLabel>
                       <FormControl>
-                        <Textarea 
-                          id="address" 
+                        <Input 
+                          id="name" 
+                          type="text" 
                           {...field} 
-                          className="mt-1 min-h-[100px] focus-visible:ring-2 focus-visible:ring-primary/50"
+                          className="mt-1 focus-visible:ring-2 focus-visible:ring-primary/50"
                         />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-              
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 <FormField
                   control={form.control}
                   name="schoolStatus"
@@ -216,59 +200,85 @@ export default function CampusEditPage({ params }: { params: Promise<{ id: strin
                     </FormItem>
                   )}
                 />
-                <FormField
+              </div>
+              
+              <FormField
+                control={form.control}
+                name="schoolAddr"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel htmlFor="schoolAddr" className="text-sm font-medium">
+                      详细地址
+                      <span className="text-destructive ml-1">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Textarea 
+                        id="address" 
+                        {...field} 
+                        className="mt-1 min-h-[100px] focus-visible:ring-2 focus-visible:ring-primary/50"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={form.control}
+                name="schoolIntro"
+                render={({ field }) => (
+                    <FormItem>
+                      <FormLabel htmlFor="schoolIntro" className="text-sm font-medium">
+                        校区介绍
+                        <span className="text-destructive ml-1">*</span>
+                      </FormLabel>
+                      <FormControl>
+                        <Textarea 
+                          id="schoolIntro" 
+                          {...field} 
+                          className="mt-1 min-h-[100px] focus-visible:ring-2 focus-visible:ring-primary/50"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              
+              <FormField
                   control={form.control}
                   name="director"
                   render={({ field }) => (
-                      <FormItem>
-                        <FormLabel htmlFor="director" className="text-sm font-medium">
-                          校区负责人
-                          <span className="text-destructive ml-1">*</span>
-                        </FormLabel>
-                        <FormControl>
-                          <Transfer
-                            values={field.value}
-                            options={userOptions}
-                            onChange={field.onChange}
-                            getValue={(item) => item.staffId}
-                          >
-                            <TransferPanel side="left">
-                              <TransferContent>
-                              {({ item, selected, toggle }) => (
-                                <div className="flex items-center gap-2 px-2 py-1">
-                                  <Checkbox checked={selected.has(item.staffId)} onCheckedChange={(c) => toggle(item.staffId, !!c)} />
-                                  <div>{item.staffName}</div>
-                                </div>
-                              )}
-                              </TransferContent>
-                            </TransferPanel>
-                            <TransferControl
-                              side="right"
-                            >
-                              <ArrowRight className="size-4" />
-                            </TransferControl>
-                            <TransferControl
-                              side="left"
-                            >
-                              <ArrowLeft className="size-4" />
-                            </TransferControl>
-                            <TransferPanel side="right">
-                              <TransferContent>
-                              {({ item, selected, toggle }) => (
-                                <div className="flex items-center gap-2 px-2 py-1">
-                                  <Checkbox checked={selected.has(item.staffId)} onCheckedChange={(c) => toggle(item.staffId, !!c)} />
-                                  <div>{item.staffName}</div>
-                                </div>
-                              )}
-                            </TransferContent>
-                          </TransferPanel>
-                          </Transfer>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
+                    <FormItem>
+                      <FormLabel htmlFor="director" className="text-sm font-medium">
+                        校区负责人
+                        <span className="text-destructive ml-1">*</span>
+                      </FormLabel>
+                      <FormControl>
+                        <StaffTransferList
+                          items={userOptions}
+                          onChange={(leftItems, rightItems) => {
+                            console.log('======>', rightItems);
+                            
+                            field.onChange(rightItems)
+                          }}
+                          renderItem={(item) => (
+                            <div>
+                              <div className="flex items-center"> 
+                                {item.label}
+                              </div>
+                              <div className="flex items-center">
+                                {item.role.map((role) => (
+                                  <Badge key={role} className="mr-2">{role}</Badge>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-              </div>
             </CardContent>
             <CardFooter className="flex flex-col sm:flex-row justify-end gap-3 px-6 py-4 border-t bg-muted/10">
               <Button 

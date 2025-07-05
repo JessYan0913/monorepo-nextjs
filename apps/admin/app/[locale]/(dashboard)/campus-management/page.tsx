@@ -24,7 +24,6 @@ export default async function SchoolManagementPage({ searchParams }: {
     page: Math.max(1, Number(page) || 1),
     size: itemsPerPage,
   })
-  console.log('======>', JSON.stringify(data, null, 2));
   
   const totalPages = Math.ceil(totalItems / itemsPerPage)
   return (
