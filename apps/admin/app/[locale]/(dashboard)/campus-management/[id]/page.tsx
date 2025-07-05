@@ -6,8 +6,10 @@ import Link from "next/link"
 import { z } from "zod"
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ArrowLeft, Save, ArrowRight } from "lucide-react"
+import { ArrowLeft, Save } from "lucide-react"
 import useSWR from "swr"
+import Image from "next/image"
+import { ImageGallery } from "@repo/ui/components/image-gallery"
 
 import { Button } from "@repo/ui/components/ui/button"
 import { Badge } from "@repo/ui/components/ui/badge"
@@ -17,6 +19,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@repo/ui/components/ui/textarea"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/components/ui/form"
 import { TransferList, BaseTransferListItem } from "@repo/ui/components/transfer-list"
+import { ImageUploader } from "@repo/ui/components/image-uploader"
 
 // 定义包含role属性的自定义项目类型
 type StaffItem = BaseTransferListItem & {
@@ -72,9 +75,9 @@ const mockCampusData = {
     "https://example.com/videos/campus-tour.mp4"
   ],
   schoolPictures: [
-    "https://example.com/images/campus-1.jpg",
-    "https://example.com/images/campus-2.jpg",
-    "https://example.com/images/classroom-1.jpg"
+    "https://gips2.baidu.com/it/u=1840289963,2728468038&fm=3042&app=3042&f=JPEG&wm=1,baiduai,0,0,13,9&wmo=0,0&w=480&h=640",
+    "https://gips1.baidu.com/it/u=21402277,1408661998&fm=3042&app=3042&f=JPEG&wm=1,baiduai,0,0,13,9&wmo=0,0&w=480&h=640",
+    "https://gips1.baidu.com/it/u=374234436,1730523546&fm=3042&app=3042&f=JPEG&wm=1,baiduai,0,0,13,9&wmo=0,0&w=480&h=640"
   ],
   schoolStatus: "normal" as const,
   schoolAddr: "北京市海淀区科技园路88号",
@@ -109,6 +112,8 @@ export default function CampusEditPage({ params }: { params: Promise<{ id: strin
   if (!school && id !== "add") {
     notFound()
   }
+
+
 
   const form = useForm<CampusFormValues>({
       resolver: zodResolver(campusEditSchema),
@@ -227,58 +232,83 @@ export default function CampusEditPage({ params }: { params: Promise<{ id: strin
                 control={form.control}
                 name="schoolIntro"
                 render={({ field }) => (
-                    <FormItem>
-                      <FormLabel htmlFor="schoolIntro" className="text-sm font-medium">
-                        校区介绍
-                        <span className="text-destructive ml-1">*</span>
-                      </FormLabel>
-                      <FormControl>
-                        <Textarea 
-                          id="schoolIntro" 
-                          {...field} 
-                          className="mt-1 min-h-[100px] focus-visible:ring-2 focus-visible:ring-primary/50"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                  <FormItem>
+                    <FormLabel htmlFor="schoolIntro" className="text-sm font-medium">
+                      校区介绍
+                      <span className="text-destructive ml-1">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Textarea 
+                        id="schoolIntro" 
+                        {...field} 
+                        className="mt-1 min-h-[100px] focus-visible:ring-2 focus-visible:ring-primary/50"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
                 />
               
               <FormField
-                  control={form.control}
-                  name="director"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel htmlFor="director" className="text-sm font-medium">
-                        校区负责人
-                        <span className="text-destructive ml-1">*</span>
-                      </FormLabel>
-                      <FormControl>
-                        <StaffTransferList
-                          items={userOptions}
-                          onChange={(leftItems, rightItems) => {
-                            console.log('======>', rightItems);
-                            
-                            field.onChange(rightItems)
-                          }}
-                          renderItem={(item) => (
-                            <div>
-                              <div className="flex items-center"> 
-                                {item.label}
-                              </div>
-                              <div className="flex items-center">
-                                {item.role.map((role) => (
-                                  <Badge key={role} className="mr-2">{role}</Badge>
-                                ))}
-                              </div>
+                control={form.control}
+                name="director"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel htmlFor="director" className="text-sm font-medium">
+                      校区负责人
+                      <span className="text-destructive ml-1">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <StaffTransferList
+                        items={userOptions}
+                        onChange={(leftItems, rightItems) => {
+                          console.log('======>', rightItems);
+                          
+                          field.onChange(rightItems)
+                        }}
+                        renderItem={(item) => (
+                          <div>
+                            <div className="flex items-center"> 
+                              {item.label}
                             </div>
-                          )}
+                            <div className="flex items-center">
+                              {item.role.map((role) => (
+                                <Badge key={role} className="mr-2">{role}</Badge>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="schoolPictures"
+                render={({ field }) => ( 
+                  <FormItem>
+                    <FormLabel htmlFor="schoolPictures" className="text-sm font-medium">
+                      校区图片
+                      <span className="text-destructive ml-1">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <div className="space-y-4">
+                        <ImageGallery 
+                          images={field.value} 
+                          altPrefix="校区图片" 
                         />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                        <ImageUploader
+                          className="mt-1 focus-visible:ring-2 focus-visible:ring-primary/50"
+                          onImageChange={field.onChange}
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </CardContent>
             <CardFooter className="flex flex-col sm:flex-row justify-end gap-3 px-6 py-4 border-t bg-muted/10">
               <Button 

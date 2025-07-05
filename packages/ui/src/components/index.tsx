@@ -4,6 +4,7 @@ export * from "./file-uploader"
 export * from "./multi-select"
 export * from "./transfer"
 export * from "./transfer-list"
+export * from "./image-gallery"
 
 export * from "./ui/accordion"
 export * from "./ui/alert-dialog"
