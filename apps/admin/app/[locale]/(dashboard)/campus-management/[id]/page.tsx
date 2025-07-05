@@ -20,6 +20,8 @@ import { Textarea } from "@repo/ui/components/ui/textarea"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/components/ui/form"
 import { TransferList, BaseTransferListItem } from "@repo/ui/components/transfer-list"
 import { ImageUploader } from "@repo/ui/components/image-uploader"
+import { VideoPlayer } from "@repo/ui/components/video-player"
+import { FileUploader } from "@repo/ui/components/file-uploader"
 
 // 定义包含role属性的自定义项目类型
 type StaffItem = BaseTransferListItem & {
@@ -71,8 +73,8 @@ const mockCampusData = {
   schoolName: "未来科技学院",
   schoolIntro: "未来科技学院是一所专注于前沿科技教育的现代化学校，致力于培养未来的科技领袖和创新人才。",
   schoolMvs: [
-    "https://example.com/videos/school-intro-1.mp4",
-    "https://example.com/videos/campus-tour.mp4"
+    "http://vjs.zencdn.net/v/oceans.mp4",
+    "https://www.w3school.com.cn/example/html5/mov_bbb.mp4"
   ],
   schoolPictures: [
     "https://gips2.baidu.com/it/u=1840289963,2728468038&fm=3042&app=3042&f=JPEG&wm=1,baiduai,0,0,13,9&wmo=0,0&w=480&h=640",
@@ -302,6 +304,33 @@ export default function CampusEditPage({ params }: { params: Promise<{ id: strin
                         <ImageUploader
                           className="mt-1 focus-visible:ring-2 focus-visible:ring-primary/50"
                           onImageChange={field.onChange}
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="schoolMvs"
+                render={({ field }) => ( 
+                  <FormItem>
+                    <FormLabel htmlFor="schoolMvs" className="text-sm font-medium">
+                      校区视频
+                      <span className="text-destructive ml-1">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <div className="space-y-4">
+                        {field.value.map((url, index) => (
+                          <VideoPlayer 
+                            key={index} 
+                            src={url}
+                          />
+                        ))}
+                        <FileUploader
+                          className="mt-1 focus-visible:ring-2 focus-visible:ring-primary/50"
+                          onFileChange={field.onChange}
                         />
                       </div>
                     </FormControl>
