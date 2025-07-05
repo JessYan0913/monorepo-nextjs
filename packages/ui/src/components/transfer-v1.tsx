@@ -126,7 +126,7 @@ export function TransferInput() {
   return <Input placeholder="搜索..." value={val} onChange={(e) => setVal(e.target.value)} />
 }
 
-export function TransferContent() {
+export function TransferContent({ children }: { children: (props: { item: any, selected: Set<string>, toggle: (id: string, checked: boolean) => void }) => React.ReactNode }) {
   const ctx = useTransferContext()
   const side = useTransferSide()
   const data = side === "left"
@@ -142,35 +142,19 @@ export function TransferContent() {
   return (
     <ScrollArea className="h-64 mt-2">
       {filtered.map((item) => (
-        <TransferItem key={ctx.getValue(item)} item={item} />
+        <div key={ctx.getValue(item)}>
+          {
+            children({
+            item,
+            selected: side === "left" ? ctx.leftSelected : ctx.rightSelected,
+            toggle: side === "left" ? ctx.toggleLeftSelect : ctx.toggleRightSelect
+            })
+          }
+        </div>
       ))}
     </ScrollArea>
   )
 }
-
-interface TransferItemProps<T> {
-  item: T;
-  children?: (props: { item: T; selected: boolean }) => React.ReactNode;
-}
-
-export function TransferItem<T>({ 
-  item, 
-  children 
-}: TransferItemProps<T>) {
-  const side = useTransferSide()
-  const ctx = useTransferContext<T>()
-  const id = ctx.getValue(item)
-  const selected = side === "left" ? ctx.leftSelected.has(id) : ctx.rightSelected.has(id)
-  const toggle = side === "left" ? ctx.toggleLeftSelect : ctx.toggleRightSelect
-
-  return (
-    <div className="flex items-center gap-2 px-2 py-1">
-      <Checkbox checked={selected} onCheckedChange={(c) => toggle(id, !!c)} />
-      {children ? children({ item, selected }) : <div>{String(ctx.getValue(item))}</div>}
-    </div>
-  )
-}
-
 
 export function TransferControl({ side, children }: { side: TransferSide; children: React.ReactNode }) {
   const ctx = useTransferContext()

@@ -11,7 +11,7 @@ import { Pagination, PaginationContent, PaginationItem, PaginationLink, Paginati
 import { DeleteCampusButton } from "@/components/campus-management/delete-campus"
 import { schoolList } from "@/lib/actions/campus"
 
-export default async function CampusManagementPage({ searchParams }: {
+export default async function SchoolManagementPage({ searchParams }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }) {
   const { query, page } = await searchParams
@@ -24,6 +24,8 @@ export default async function CampusManagementPage({ searchParams }: {
     page: Math.max(1, Number(page) || 1),
     size: itemsPerPage,
   })
+  console.log('======>', JSON.stringify(data, null, 2));
+  
   const totalPages = Math.ceil(totalItems / itemsPerPage)
   return (
     <div className="space-y-6 p-6">
@@ -55,39 +57,39 @@ export default async function CampusManagementPage({ searchParams }: {
 
       <Card>
         <CardHeader>
-          <CardTitle>校区列表</CardTitle>
-          <CardDescription>共有 {totalItems} 个校区</CardDescription>
+          <CardTitle>学校列表</CardTitle>
+          <CardDescription>共有 {totalItems} 个学校</CardDescription>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>校区名称</TableHead>
+                <TableHead>学校名称</TableHead>
                 <TableHead>地址</TableHead>
                 <TableHead>状态</TableHead>
-                <TableHead>校区负责人</TableHead>
+                <TableHead>学校负责人</TableHead>
                 <TableHead>创建时间</TableHead>
                 <TableHead className="text-right">操作</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data.map((campus) => (
-                <TableRow key={campus.schoolId}>
-                  <TableCell className="font-medium">{campus.schoolName}</TableCell>
-                  <TableCell>{campus.schoolAddr}</TableCell>
+              {data.map((school) => (
+                <TableRow key={school.schoolId}>
+                  <TableCell className="font-medium">{school.schoolName}</TableCell>
+                  <TableCell>{school.schoolAddr}</TableCell>
                   <TableCell>
-                    <Badge variant={campus.schoolStatus === "normal" ? "default" : "secondary"}>
-                      {campus.schoolStatus === "normal" ? "正常运营" : "暂停运营"}
+                    <Badge variant={school.schoolStatus === "normal" ? "default" : "secondary"}>
+                      {school.schoolStatus === "normal" ? "正常运营" : "暂停运营"}
                     </Badge>
                   </TableCell>
-                  <TableCell>{campus.director?.map((director) => director.staffName).join(", ")}</TableCell>
-                  <TableCell>{campus.createTime}</TableCell>
+                  <TableCell>{school.director?.map((director) => director.staffName).join(", ")}</TableCell>
+                  <TableCell>{school.createTime}</TableCell>
                   <TableCell className="flex items-center justify-center gap-2">
-                    <Link href={`/campus-management/${campus.schoolId}`} className="flex items-center gap-1">
+                    <Link href={`/campus-management/${school.schoolId}`} className="flex items-center gap-1">
                       <Edit className="h-4 w-4" />
                       编辑
                     </Link>
-                    <DeleteCampusButton id={campus.schoolId} />
+                    <DeleteCampusButton id={school.schoolId} />
                   </TableCell>
                 </TableRow>
               ))}

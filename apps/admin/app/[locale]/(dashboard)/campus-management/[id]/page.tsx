@@ -6,7 +6,7 @@ import Link from "next/link"
 import { z } from "zod"
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ArrowLeft, Save } from "lucide-react"
+import { ArrowLeft, Save, ArrowRight } from "lucide-react"
 import useSWR from "swr"
 
 import { Button } from "@repo/ui/components/ui/button"
@@ -14,20 +14,20 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@repo/ui/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui/components/ui/select"
 import { Textarea } from "@repo/ui/components/ui/textarea"
+import { Checkbox } from "@repo/ui/components/ui/checkbox"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/components/ui/form"
-import { Transfer } from "@repo/ui/components/transfer"
+import { Transfer, TransferPanel, TransferContent, TransferControl } from "@repo/ui/components/transfer-v1"
 
 const userOptions = [
-  { value: "1", label: "张三", description: "前端开发工程师" },
-  { value: "2", label: "李四", description: "后端开发工程师" },
-  { value: "3", label: "王五", description: "产品经理" },
-  { value: "4", label: "赵六", description: "UI设计师" },
-  { value: "5", label: "钱七", description: "测试工程师" },
-  { value: "6", label: "孙八", description: "运维工程师" },
-  { value: "7", label: "周九", description: "数据分析师" },
-  { value: "8", label: "吴十", description: "项目经理" },
-  { value: "9", label: "郑十一", description: "架构师", disabled: true },
-  { value: "10", label: "王十二", description: "技术总监" },
+  { staffId: "1", staffName: "张三" },
+  { staffId: "2", staffName: "李四" },
+  { staffId: "3", staffName: "王五" },
+  { staffId: "4", staffName: "赵六" },
+  { staffId: "5", staffName: "钱七" },
+  { staffId: "6", staffName: "孙八" },
+  { staffId: "7", staffName: "吴十" },
+  { staffId: "8", staffName: "郑十一" },
+  { staffId: "9", staffName: "王十二" },
 ]
 
 const campusEditSchema = z.object({
@@ -62,13 +62,16 @@ export default function CampusEditPage({ params }: { params: Promise<{ id: strin
   const { id } = React.use(params)
   const router = useRouter()
 
-  const { data: school, isLoading } = useSWR(`${process.env.BASE_URL}/school/manage/get?school=${id}`, async (url: string) => {
+  const { data: school, isLoading } = useSWR(`${process.env.BASE_URL}/school/manage/get`, async (url: string) => {
     const res = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "req-device": "pc"
       },
+      body: new URLSearchParams({
+        schoolId: id,
+      })
     })
     const { data } = await res.json()
     return data
@@ -224,11 +227,42 @@ export default function CampusEditPage({ params }: { params: Promise<{ id: strin
                         </FormLabel>
                         <FormControl>
                           <Transfer
+                            values={field.value}
                             options={userOptions}
-                            value={field.value.map((user) => user.staffId)}
-                            onValueChange={(value) => field.onChange(value.map((id) => ({ staffId: id, staffName: "" })))}
-                            titles={["搜索用户", "已选用户"]}
-                          />
+                            onChange={field.onChange}
+                            getValue={(item) => item.staffId}
+                          >
+                            <TransferPanel side="left">
+                              <TransferContent>
+                              {({ item, selected, toggle }) => (
+                                <div className="flex items-center gap-2 px-2 py-1">
+                                  <Checkbox checked={selected.has(item.staffId)} onCheckedChange={(c) => toggle(item.staffId, !!c)} />
+                                  <div>{item.staffName}</div>
+                                </div>
+                              )}
+                              </TransferContent>
+                            </TransferPanel>
+                            <TransferControl
+                              side="right"
+                            >
+                              <ArrowRight className="size-4" />
+                            </TransferControl>
+                            <TransferControl
+                              side="left"
+                            >
+                              <ArrowLeft className="size-4" />
+                            </TransferControl>
+                            <TransferPanel side="right">
+                              <TransferContent>
+                              {({ item, selected, toggle }) => (
+                                <div className="flex items-center gap-2 px-2 py-1">
+                                  <Checkbox checked={selected.has(item.staffId)} onCheckedChange={(c) => toggle(item.staffId, !!c)} />
+                                  <div>{item.staffName}</div>
+                                </div>
+                              )}
+                            </TransferContent>
+                          </TransferPanel>
+                          </Transfer>
                         </FormControl>
                         <FormMessage />
                       </FormItem>

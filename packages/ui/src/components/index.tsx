@@ -2,7 +2,7 @@ export * from "./theme-provider"
 export * from "./image-uploader"
 export * from "./file-uploader"
 export * from "./multi-select"
-export * from "./transfer"
+export * from "./transfer-v1"
 
 export * from "./ui/accordion"
 export * from "./ui/alert-dialog"
