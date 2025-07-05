@@ -1,19 +1,26 @@
 "use client"
 
-import { createContext, useContext, useState, useMemo } from "react"
+import { createContext, useContext, useState, useMemo, ReactNode } from "react"
 import { Card } from "@repo/ui/components/ui/card"
 import { cn } from "@repo/ui/lib/utils"
 import { Input } from "@repo/ui/components/ui/input"
 import { ScrollArea } from "@repo/ui/components/ui/scroll-area"
 import { Checkbox } from "@repo/ui/components/ui/checkbox"
-import { Button } from "@repo/ui/components/ui/button"
+
+// Create a context for the current side
+const TransferSideContext = createContext<TransferSide>('left')
+
+// Helper hook to use the side context
+const useTransferSide = () => {
+  const contextSide = useContext(TransferSideContext)
+  return contextSide || 'left'
+}
 
 export interface TransferProps<T> {
   options: T[]
   values: T[]
   onChange: (values: T[]) => void
   getValue: (item: T) => string
-  renderItem?: (item: T, checked: boolean) => React.ReactNode
   children: React.ReactNode
 }
 
@@ -22,7 +29,6 @@ export interface TransferContextValue<T> {
   values: T[]
   onChange: (values: T[]) => void
   getValue: (item: T) => string
-  renderItem: (item: T, checked: boolean) => React.ReactNode
   leftSearch: string
   rightSearch: string
   setLeftSearch: (val: string) => void
@@ -48,7 +54,6 @@ export function Transfer<T>({
   values,
   onChange,
   getValue,
-  renderItem = (item) => <div>{String(getValue(item))}</div>,
   children,
 }: TransferProps<T>) {
   const [leftSearch, setLeftSearch] = useState("")
@@ -62,7 +67,6 @@ export function Transfer<T>({
       values,
       onChange,
       getValue,
-      renderItem,
       leftSearch,
       rightSearch,
       setLeftSearch,
@@ -92,26 +96,39 @@ export function Transfer<T>({
         })
       }
     }),
-    [options, values, onChange, getValue, renderItem, leftSearch, rightSearch, leftSelected, rightSelected]
+    [options, values, onChange, getValue, leftSearch, rightSearch, leftSelected, rightSelected]
   )
 
   return <TransferContext.Provider value={ctxValue}>{children}</TransferContext.Provider>
 }
 
-export function TransferPanel({ className, children }: React.HTMLAttributes<HTMLDivElement>) {
-  return <Card className={cn("w-64 p-2", className)}>{children}</Card>
+interface TransferPanelProps extends React.HTMLAttributes<HTMLDivElement> {
+  side?: TransferSide
+  children: ReactNode
 }
 
-export function TransferInput({ side = "left" }: { side?: TransferSide }) {
+export function TransferPanel({ className, side = 'left', children, ...props }: TransferPanelProps) {
+  return (
+    <TransferSideContext.Provider value={side}>
+      <Card className={cn("w-64 p-2", className)} {...props}>
+        {children}
+      </Card>
+    </TransferSideContext.Provider>
+  )
+}
+
+export function TransferInput() {
   const ctx = useTransferContext()
+  const side = useTransferSide()
   const val = side === "left" ? ctx.leftSearch : ctx.rightSearch
   const setVal = side === "left" ? ctx.setLeftSearch : ctx.setRightSearch
 
   return <Input placeholder="搜索..." value={val} onChange={(e) => setVal(e.target.value)} />
 }
 
-export function TransferContent({ side = "left" }: { side?: TransferSide }) {
+export function TransferContent() {
   const ctx = useTransferContext()
+  const side = useTransferSide()
   const data = side === "left"
     ? ctx.options.filter((item) => !ctx.values.some((v) => ctx.getValue(v) === ctx.getValue(item)))
     : ctx.values
@@ -125,13 +142,22 @@ export function TransferContent({ side = "left" }: { side?: TransferSide }) {
   return (
     <ScrollArea className="h-64 mt-2">
       {filtered.map((item) => (
-        <TransferItem key={ctx.getValue(item)} item={item} side={side} />
+        <TransferItem key={ctx.getValue(item)} item={item} />
       ))}
     </ScrollArea>
   )
 }
 
-export function TransferItem<T>({ item, side }: { item: T; side: TransferSide }) {
+interface TransferItemProps<T> {
+  item: T;
+  children?: (props: { item: T; selected: boolean }) => React.ReactNode;
+}
+
+export function TransferItem<T>({ 
+  item, 
+  children 
+}: TransferItemProps<T>) {
+  const side = useTransferSide()
   const ctx = useTransferContext<T>()
   const id = ctx.getValue(item)
   const selected = side === "left" ? ctx.leftSelected.has(id) : ctx.rightSelected.has(id)
@@ -140,13 +166,13 @@ export function TransferItem<T>({ item, side }: { item: T; side: TransferSide })
   return (
     <div className="flex items-center gap-2 px-2 py-1">
       <Checkbox checked={selected} onCheckedChange={(c) => toggle(id, !!c)} />
-      {ctx.renderItem(item, selected)}
+      {children ? children({ item, selected }) : <div>{String(ctx.getValue(item))}</div>}
     </div>
   )
 }
 
 
-export function TransferControl() {
+export function TransferControl({ side, children }: { side: TransferSide; children: React.ReactNode }) {
   const ctx = useTransferContext()
 
   const moveRight = () => {
@@ -160,9 +186,8 @@ export function TransferControl() {
   }
 
   return (
-    <div className="flex flex-col justify-center gap-2">
-      <Button onClick={moveRight} disabled={ctx.leftSelected.size === 0}>→</Button>
-      <Button onClick={moveLeft} disabled={ctx.rightSelected.size === 0}>←</Button>
+    <div onClick={() => side === "left" ? moveRight() : moveLeft()}>
+      {children}
     </div>
   )
 }
