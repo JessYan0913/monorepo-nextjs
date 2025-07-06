@@ -20,7 +20,7 @@ import { Textarea } from "@repo/ui/components/ui/textarea"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/components/ui/form"
 import { TransferList, BaseTransferListItem } from "@repo/ui/components/transfer-list"
 import { ImageUploader } from "@repo/ui/components/image-uploader"
-import { VideoGallery } from "@repo/ui/components/video-player"
+import { VideoGallery } from "@repo/ui/components/video-gallery"
 import { FileUploader } from "@repo/ui/components/file-uploader"
 
 // 定义包含role属性的自定义项目类型
@@ -302,8 +302,8 @@ export default function CampusEditPage({ params }: { params: Promise<{ id: strin
                           gap={4}
                           columns={4}
                           showDeleteButton={true}
-                          onImagesChange={(images) => { 
-                            console.log('=====>', images);
+                          onImagesChange={(images) => {
+                            field.onChange(images.map(image => image.src))
                           }}
                         />
                         <ImageUploader
@@ -327,9 +327,15 @@ export default function CampusEditPage({ params }: { params: Promise<{ id: strin
                     </FormLabel>
                     <FormControl>
                       <div className="space-y-4">
-                        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                          <VideoGallery videos={field.value.map((url) => ({ src: url }))} />
-                        </div>
+                        <VideoGallery
+                          videos={field.value.map((url) => ({ src: url, id: url, title: "视频" }))}
+                          gap={4}
+                          columns={4}
+                          showDeleteButton={true}
+                          onVideosChange={(videos) => {
+                            field.onChange(videos.map(video => video.src))
+                          }}
+                        />
                         <FileUploader
                           className="mt-1 focus-visible:ring-2 focus-visible:ring-primary/50"
                           onFileChange={field.onChange}

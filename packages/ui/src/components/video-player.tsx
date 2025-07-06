@@ -222,7 +222,6 @@ function VideoThumbnail({
   );
 }
 
-// 视频画廊组件 - 支持多个视频
 export function VideoGallery({
   videos,
   width = "100%",
