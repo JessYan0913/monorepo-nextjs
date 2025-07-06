@@ -20,7 +20,7 @@ import { Textarea } from "@repo/ui/components/ui/textarea"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/components/ui/form"
 import { TransferList, BaseTransferListItem } from "@repo/ui/components/transfer-list"
 import { ImageUploader } from "@repo/ui/components/image-uploader"
-import { VideoPlayer } from "@repo/ui/components/video-player"
+import { VideoGallery } from "@repo/ui/components/video-player"
 import { FileUploader } from "@repo/ui/components/file-uploader"
 
 // 定义包含role属性的自定义项目类型
@@ -298,8 +298,9 @@ export default function CampusEditPage({ params }: { params: Promise<{ id: strin
                     <FormControl>
                       <div className="space-y-4">
                         <ImageGallery 
-                          images={field.value} 
-                          altPrefix="校区图片" 
+                          images={field.value.map((url, index) => ({ src: url, alt: "校区图片", id: `${index}` }))}
+                          gap={4}
+                          columns={4}
                         />
                         <ImageUploader
                           className="mt-1 focus-visible:ring-2 focus-visible:ring-primary/50"
@@ -322,12 +323,9 @@ export default function CampusEditPage({ params }: { params: Promise<{ id: strin
                     </FormLabel>
                     <FormControl>
                       <div className="space-y-4">
-                        {field.value.map((url, index) => (
-                          <VideoPlayer 
-                            key={index} 
-                            src={url}
-                          />
-                        ))}
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                          <VideoGallery videos={field.value.map((url) => ({ src: url }))} />
+                        </div>
                         <FileUploader
                           className="mt-1 focus-visible:ring-2 focus-visible:ring-primary/50"
                           onFileChange={field.onChange}
