@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react"
 import Image from "next/image"
 import { motion, AnimatePresence } from "framer-motion"
-import { X, ChevronLeft, ChevronRight } from "lucide-react"
+import { X, ChevronLeft, ChevronRight, Trash2 } from "lucide-react"
 import { cn } from "@repo/ui/lib/utils"
 
 interface ImageItem {
@@ -18,11 +18,23 @@ interface ImageGalleryProps {
   columns?: number
   gap?: number
   className?: string
+  onImagesChange?: (images: ImageItem[]) => void
+  disabled?: boolean
+  showDeleteButton?: boolean
 }
 
-export function ImageGallery({ images, columns = 3, gap = 4, className }: ImageGalleryProps) {
+export function ImageGallery({
+  images,
+  columns = 3,
+  gap = 4,
+  className,
+  onImagesChange,
+  disabled = false,
+  showDeleteButton = true,
+}: ImageGalleryProps) {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
   const [isFullscreen, setIsFullscreen] = useState(false)
+  const [hoveredImageId, setHoveredImageId] = useState<string | null>(null)
 
   // 防止背景滚动
   useEffect(() => {
@@ -38,6 +50,7 @@ export function ImageGallery({ images, columns = 3, gap = 4, className }: ImageG
   }, [isFullscreen])
 
   const openFullscreen = (index: number) => {
+    if (disabled) return
     setSelectedIndex(index)
     setIsFullscreen(true)
   }
@@ -74,13 +87,46 @@ export function ImageGallery({ images, columns = 3, gap = 4, className }: ImageG
         case "ArrowRight":
           navigateNext()
           break
+        case "Delete":
+        case "Backspace":
+          if (selectedIndex !== null && !disabled) {
+            handleDeleteImage(images[selectedIndex].id)
+          }
+          break
       }
     }
 
     document.addEventListener("keydown", handleKeyDown)
     return () => document.removeEventListener("keydown", handleKeyDown)
-  }, [isFullscreen, navigateNext, navigatePrevious, selectedIndex])
+  }, [isFullscreen, navigateNext, navigatePrevious, selectedIndex, images, disabled])
 
+  const handleDeleteImage = (imageId: string) => {
+    if (disabled) return
+
+    const newImages = images.filter((img) => img.id !== imageId)
+
+    // 如果当前在全屏模式且删除的是当前显示的图片
+    if (isFullscreen && selectedIndex !== null) {
+      const currentImage = images[selectedIndex]
+      if (currentImage.id === imageId) {
+        if (newImages.length === 0) {
+          // 如果没有图片了，关闭全屏
+          closeFullscreen()
+        } else {
+          // 调整选中的索引
+          const newIndex = selectedIndex >= newImages.length ? newImages.length - 1 : selectedIndex
+          setSelectedIndex(newIndex)
+        }
+      } else {
+        // 重新计算当前图片在新数组中的索引
+        const currentImageIndex = newImages.findIndex((img) => img.id === currentImage.id)
+        setSelectedIndex(currentImageIndex)
+      }
+    }
+
+    // 只调用 onImagesChange 回调
+    onImagesChange?.(newImages)
+  }
 
   const gridCols = {
     1: "grid-cols-1",
@@ -93,6 +139,19 @@ export function ImageGallery({ images, columns = 3, gap = 4, className }: ImageG
 
   const gapClass = `gap-${gap}`
 
+  if (images.length === 0) {
+    return (
+      <div
+        className={cn(
+          "flex items-center justify-center h-32 border-2 border-dashed border-gray-300 rounded-lg",
+          className,
+        )}
+      >
+        <p className="text-gray-500">暂无图片</p>
+      </div>
+    )
+  }
+
   return (
     <>
       {/* 网格布局 */}
@@ -100,26 +159,52 @@ export function ImageGallery({ images, columns = 3, gap = 4, className }: ImageG
         {images.map((image, index) => (
           <motion.div
             key={image.id}
-            className="relative aspect-square cursor-pointer overflow-hidden rounded-lg bg-gray-100"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            className={cn(
+              "relative aspect-square cursor-pointer overflow-hidden rounded-lg bg-gray-100",
+              disabled && "cursor-not-allowed opacity-60",
+            )}
+            whileHover={!disabled ? { scale: 1.05 } : {}}
+            whileTap={!disabled ? { scale: 0.95 } : {}}
             onClick={() => openFullscreen(index)}
+            onMouseEnter={() => setHoveredImageId(image.id)}
+            onMouseLeave={() => setHoveredImageId(null)}
           >
             <Image
               src={image.thumbnail || image.src}
               alt={image.alt}
               fill
-              className="object-cover transition-transform duration-300 hover:scale-110"
+              className={cn("object-cover transition-transform duration-300", !disabled && "hover:scale-110")}
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             />
             <div className="absolute inset-0 bg-black/0 transition-colors duration-300 hover:bg-black/10" />
+
+            {/* 删除按钮 */}
+            {showDeleteButton && !disabled && (
+              <AnimatePresence>
+                {hoveredImageId === image.id && (
+                  <motion.button
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    className="absolute top-2 right-2 z-10 rounded-full bg-red-500 p-1.5 text-white shadow-lg transition-colors hover:bg-red-600"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      handleDeleteImage(image.id)
+                    }}
+                  >
+                    <Trash2 size={16} />
+                  </motion.button>
+                )}
+              </AnimatePresence>
+            )}
           </motion.div>
         ))}
       </div>
 
       {/* 全屏预览 */}
       <AnimatePresence>
-        {isFullscreen && selectedIndex !== null && (
+        {isFullscreen && selectedIndex !== null && selectedIndex < images.length && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -138,6 +223,20 @@ export function ImageGallery({ images, columns = 3, gap = 4, className }: ImageG
             >
               <X size={24} />
             </button>
+
+            {/* 删除按钮 */}
+            {showDeleteButton && !disabled && (
+              <button
+                className="absolute top-4 right-16 z-10 rounded-full bg-red-500/80 p-2 text-white transition-colors hover:bg-red-600/80"
+                onClick={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  handleDeleteImage(images[selectedIndex].id)
+                }}
+              >
+                <Trash2 size={24} />
+              </button>
+            )}
 
             {/* 左箭头 */}
             <button

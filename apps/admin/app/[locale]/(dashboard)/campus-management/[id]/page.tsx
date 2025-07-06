@@ -301,6 +301,10 @@ export default function CampusEditPage({ params }: { params: Promise<{ id: strin
                           images={field.value.map((url, index) => ({ src: url, alt: "校区图片", id: `${index}` }))}
                           gap={4}
                           columns={4}
+                          showDeleteButton={true}
+                          onImagesChange={(images) => { 
+                            console.log('=====>', images);
+                          }}
                         />
                         <ImageUploader
                           className="mt-1 focus-visible:ring-2 focus-visible:ring-primary/50"
