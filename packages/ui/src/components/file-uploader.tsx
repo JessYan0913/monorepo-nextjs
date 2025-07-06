@@ -2,7 +2,7 @@
 
 import { useCallback, useState } from 'react';
 
-import { FileText, Upload, File } from 'lucide-react';
+import { FileText, Upload, File, Video } from 'lucide-react';
 
 export interface FileUploaderProps {
   onFileChange: (file: File | null) => void;
@@ -23,10 +23,74 @@ function getFileIcon(fileType: string | undefined) {
     return <FileText />;
   } else if (fileType.includes('sheet') || fileType.includes('excel') || fileType.includes('xls')) {
     return <FileText />;
+  } else if (fileType.includes('video')) {
+    return <Video className="h-4 w-4" />;
   } else {
     return <File />;
   }
 }
+
+// Helper function to map file extensions to display names
+const getFileTypeDisplayName = (ext: string): string => {
+  const typeMap: Record<string, string> = {
+    '.pdf': 'PDF',
+    '.doc': 'Word',
+    '.docx': 'Word',
+    '.xls': 'Excel',
+    '.xlsx': 'Excel',
+    '.ppt': 'PowerPoint',
+    '.pptx': 'PowerPoint',
+    '.mp4': 'MP4',
+    '.webm': 'WebM',
+    '.mov': 'MOV',
+    '.avi': 'AVI',
+    '.mkv': 'MKV',
+  };
+  return typeMap[ext.toLowerCase()] || ext.toUpperCase().replace('.', '');
+};
+
+// Generate user-friendly supported file types text
+const getSupportedFileTypesText = (acceptedTypes: string): string => {
+  // Group similar file types
+  const typeGroups: Record<string, string[]> = {
+    '文档': ['.pdf'],
+    'Word': ['.doc', '.docx'],
+    'Excel': ['.xls', '.xlsx'],
+    'PowerPoint': ['.ppt', '.pptx'],
+    '视频': ['.mp4', '.webm', '.mov', '.avi', '.mkv'],
+  };
+
+  // Extract extensions from acceptedTypes
+  const extensions = acceptedTypes
+    .split(',')
+    .map(ext => ext.trim().toLowerCase())
+    .filter(ext => ext.startsWith('.'));
+
+  // Find which groups are fully included in accepted types
+  const includedGroups = Object.entries(typeGroups)
+    .filter(([, groupExts]) => 
+      groupExts.every(ext => extensions.includes(ext))
+    )
+    .map(([name]) => name);
+
+  // Find individual extensions not in any group
+  const individualExts = extensions.filter(ext => 
+    !Object.values(typeGroups).flat().includes(ext)
+  );
+
+  // Build the result string
+  const parts = [
+    ...includedGroups,
+    ...individualExts.map(ext => getFileTypeDisplayName(ext))
+  ];
+
+  // Format the result with Chinese commas and conjunctions
+  if (parts.length <= 1) return parts[0] || '';
+  if (parts.length === 2) return parts.join('、');
+  
+  const last = parts.pop();
+  return `${parts.join('、')}(${acceptedTypes})、${last}`;
+};
 
 export function FileUploader({
   onFileChange,
@@ -34,7 +98,7 @@ export function FileUploader({
   className = '',
   disabled = false,
   status = 'idle',
-  acceptedFileTypes = '.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx'
+  acceptedFileTypes = '.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.mp4,.webm,.mov,.avi,.mkv'
 }: FileUploaderProps) {
   const [localFile, setLocalFile] = useState<File | null>(null);
   const isDisabled = disabled || status === 'loading';
@@ -51,6 +115,11 @@ export function FileUploader({
           case 'doc': case 'docx': return 'application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document';
           case 'xls': case 'xlsx': return 'application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
           case 'ppt': case 'pptx': return 'application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation';
+          case 'mp4': return 'video/mp4';
+          case 'webm': return 'video/webm';
+          case 'mov': return 'video/quicktime';
+          case 'avi': return 'video/x-msvideo';
+          case 'mkv': return 'video/x-matroska';
           default: return `application/${extension}`;
         }
       }
@@ -160,7 +229,7 @@ export function FileUploader({
           ) : (
             <div className="space-y-1.5">
               <p className="text-muted-foreground text-sm">点击或拖拽文件到此处上传</p>
-              <p className="text-muted-foreground/80 text-xs">支持 PDF, Word, Excel, PPT 格式，最大 10MB</p>
+              <p className="text-muted-foreground/80 text-xs">支持 {getSupportedFileTypesText(acceptedFileTypes)}，最大 10MB</p>
             </div>
           )}
         </div>

@@ -338,6 +338,7 @@ export default function CampusEditPage({ params }: { params: Promise<{ id: strin
                         />
                         <FileUploader
                           className="mt-1 focus-visible:ring-2 focus-visible:ring-primary/50"
+                          acceptedFileTypes=".mp4,.webm,.mov,.avi,.mkv"
                           onFileChange={field.onChange}
                         />
                       </div>
