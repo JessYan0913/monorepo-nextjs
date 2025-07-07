@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@repo/ui/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@repo/ui/components/ui/table"
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@repo/ui/components/ui/pagination"
-
+import { DeleteRoleButton } from "@/components/roles/delete-role"
 import { roleList } from "@/lib/actions/role"
 
 export default async function RoleManagementPage({ searchParams }: {
@@ -78,9 +78,7 @@ export default async function RoleManagementPage({ searchParams }: {
                       <Edit className="h-4 w-4" />
                       编辑
                     </Link>
-                    <Button variant="ghost" className="h-8 w-8 p-0 text-red-500">
-                      删除
-                    </Button>
+                    <DeleteRoleButton id={`${role.roleId}`} />
                   </TableCell>
                 </TableRow>
               ))}

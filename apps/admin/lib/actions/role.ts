@@ -38,13 +38,15 @@ export async function roleList({
     }),
   })
   const { data } = await res.json()
+  console.log("roleList", data)
+  
   return data
 }
 
 /**
  * Delete a role by ID
  */
-export async function deleteRole(roleId: number): Promise<{ success: boolean; message: string }> {
+export async function deleteRole(roleId: string): Promise<{ success: boolean; message: string }> {
   const res = await fetch(`${process.env.BASE_URL}/role/delete`, {
     method: "POST",
     headers: {
