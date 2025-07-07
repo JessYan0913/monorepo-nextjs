@@ -9,7 +9,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@repo/ui/components/ui/badge"
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@repo/ui/components/ui/pagination"
 import { DeleteCampusButton } from "@/components/campus-management/delete-campus"
-import { schoolList } from "@/lib/actions/campus"
+import { schoolList } from "@/lib/actions/school"
 
 export default async function SchoolManagementPage({ searchParams }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
