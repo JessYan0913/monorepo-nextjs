@@ -71,12 +71,12 @@ export async function schoolDetail(id: string) {
   return data
 }
 
-export async function deleteCampus(formData: FormData) {
+export async function deleteSchool(formData: FormData) {
   const id = formData.get('id') as string
   console.log("删除校区:", id)
 }
 
-export async function saveCampus(data: Campus) {
+export async function saveSchool(data: Campus) {
   if (data.id === "add") {
     console.log("添加校区:", data)
   } else {

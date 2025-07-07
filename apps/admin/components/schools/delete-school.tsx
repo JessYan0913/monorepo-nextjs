@@ -5,16 +5,16 @@ import { useState } from "react"
 import { Trash2 } from "lucide-react"
 import { Button } from "@repo/ui/components/ui/button"
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@repo/ui/components/ui/dialog"
-import { deleteCampus } from "@/lib/actions/campus"
+import { deleteSchool } from "@/lib/actions/school"
 
-export function DeleteCampusButton({ id }: { id: string }) {
+export function DeleteSchoolButton({ id }: { id: string }) {
   const [open, setOpen] = useState(false)
   const router = useRouter()
 
   async function onConfirmDelete() {
     const formData = new FormData()
     formData.set("id", id)
-    await deleteCampus(formData)
+    await deleteSchool(formData)
     setOpen(false)
     router.refresh()
   }

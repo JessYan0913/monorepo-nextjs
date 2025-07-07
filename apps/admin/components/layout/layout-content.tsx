@@ -20,6 +20,7 @@ const pathMap: Record<string, string> = {
   'sales-dashboard': '销售数据',
   'schools': '校区管理',
   'add': '添加',
+  'roles': '角色管理',
 }
 
 export function LayoutContent({
