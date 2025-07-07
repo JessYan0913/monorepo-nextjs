@@ -18,7 +18,7 @@ import { Separator } from "@repo/ui/components/ui/separator"
 const pathMap: Record<string, string> = {
   profile: "个人中心",
   'sales-dashboard': '销售数据',
-  'campus-management': '校区管理',
+  'schools': '校区管理',
   'add': '添加',
 }
 

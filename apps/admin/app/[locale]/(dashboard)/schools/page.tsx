@@ -84,7 +84,7 @@ export default async function SchoolManagementPage({ searchParams }: {
                   <TableCell>{school.director?.map((director) => director.staffName).join(", ")}</TableCell>
                   <TableCell>{school.createTime}</TableCell>
                   <TableCell className="flex items-center justify-center gap-2">
-                    <Link href={`/campus-management/${school.schoolId}`} className="flex items-center gap-1">
+                    <Link href={`/schools/${school.schoolId}`} className="flex items-center gap-1">
                       <Edit className="h-4 w-4" />
                       编辑
                     </Link>

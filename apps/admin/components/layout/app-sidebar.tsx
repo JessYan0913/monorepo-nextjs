@@ -61,7 +61,7 @@ const data = {
       items: [
         {
           title: "校区管理",
-          url: "/campus-management",
+          url: "/schools",
         },
         {
           title: "教室管理",

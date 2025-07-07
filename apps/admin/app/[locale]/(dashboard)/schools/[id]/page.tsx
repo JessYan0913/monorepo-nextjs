@@ -8,7 +8,6 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ArrowLeft, Save } from "lucide-react"
 import useSWR from "swr"
-import Image from "next/image"
 import { ImageGallery } from "@repo/ui/components/image-gallery"
 
 import { Button } from "@repo/ui/components/ui/button"
@@ -42,7 +41,7 @@ const userOptions: StaffItem[] = [
   { key: "9", label: "王十二", role: ["教师"] },
 ]
 
-const campusEditSchema = z.object({
+const schoolEditSchema = z.object({
   schoolId: z.string({
     required_error: "请输入校区ID",
   }),
@@ -68,7 +67,7 @@ const campusEditSchema = z.object({
   }),
 })
 
-const mockCampusData = {
+const mockSchoolData = {
   schoolId: "SCHOOL_001",
   schoolName: "未来科技学院",
   schoolIntro: "未来科技学院是一所专注于前沿科技教育的现代化学校，致力于培养未来的科技领袖和创新人才。",
@@ -89,13 +88,13 @@ const mockCampusData = {
   ]
 }
 
-type CampusFormValues = z.infer<typeof campusEditSchema>
+type SchoolFormValues = z.infer<typeof schoolEditSchema>
 
-export default function CampusEditPage({ params }: { params: Promise<{ id: string }> }) {
+export default function SchoolEditPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = React.use(params)
   const router = useRouter()
 
-  const { data: school = mockCampusData, isLoading } = useSWR(`${process.env.BASE_URL}/school/manage/get`, async (url: string) => {
+  const { data: school = mockSchoolData, isLoading } = useSWR(`${process.env.BASE_URL}/school/manage/get`, async (url: string) => {
     const res = await fetch(url, {
       method: "POST",
       headers: {
@@ -117,8 +116,8 @@ export default function CampusEditPage({ params }: { params: Promise<{ id: strin
 
 
 
-  const form = useForm<CampusFormValues>({
-      resolver: zodResolver(campusEditSchema),
+  const form = useForm<SchoolFormValues>({
+      resolver: zodResolver(schoolEditSchema),
     defaultValues: {
       schoolId: school?.schoolId,
       schoolName: school?.schoolName,
@@ -139,7 +138,7 @@ export default function CampusEditPage({ params }: { params: Promise<{ id: strin
     <div className="container max-w-6xl mx-auto p-4 sm:p-6 space-y-6 transition-all duration-200">
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
         <Link 
-          href="/campus-management" 
+          href="/schools" 
           className="inline-flex items-center text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
         >
           <ArrowLeft className="mr-2 h-4 w-4" />
