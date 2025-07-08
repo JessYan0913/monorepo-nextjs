@@ -3,8 +3,9 @@
 import * as React from "react"
 import { useRouter, notFound } from "next/navigation"
 import { z } from "zod"
+import Link from "next/link"
 import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod';
+import { zodResolver } from '@hookform/resolvers/zod'
 import { ArrowLeft, Save } from "lucide-react"
 import useSWR from "swr"
 
@@ -84,25 +85,20 @@ export default function RoleEditPage({ params }: { params: Promise<{ id: string 
 
   // Handle form submission
   const submit = form.handleSubmit(async () => { 
-    
+
     router.back()
   })
 
   return (
     <div className="space-y-6 p-6">
       <div className="flex items-center">
-        <Button
-          variant="ghost"
-          size="sm"
-          className="mr-2"
-          onClick={() => router.back()}
+        <Link 
+          href="/roles" 
+          className="inline-flex items-center text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
         >
-          <ArrowLeft className="h-4 w-4" />
-        </Button>
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">编辑角色</h1>
-          <p className="text-muted-foreground">修改角色信息</p>
-        </div>
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          返回列表
+        </Link>
       </div>
 
       <Card className="border rounded-lg shadow-sm">
@@ -113,7 +109,7 @@ export default function RoleEditPage({ params }: { params: Promise<{ id: string 
               <CardTitle>角色信息</CardTitle>
               <CardDescription>编辑角色的基本信息</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-6 p-6">
               <FormField
                 control={form.control}
                 name="roleName"
