@@ -116,6 +116,10 @@ const data = {
           title: "角色管理",
           url: "/roles",
         },
+        {
+          title: "菜单管理",
+          url: "/menus",
+        },
       ],
     },
   ],
