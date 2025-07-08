@@ -1,6 +1,6 @@
 "use server"
 
-import { http } from "@/lib/utils";
+import { http, defaultHeaders, type PaginatedResponse } from "@/lib/utils";
 
 // Define the Menu type based on the provided API response structure
 export interface Menu {
@@ -27,24 +27,17 @@ export async function menuList({
   menuName?: string;
   page: number;
   size: number;
-}): Promise<{ data: Menu[]; page: number; size: number; total: number}> {
+}): Promise<PaginatedResponse<Menu>> {
   try {
-    const data = await http.post<{ data: { data: Menu[]; page: number; size: number; total: number } }>(
+    const data = await http.post<{ data: PaginatedResponse<Menu> }>(
       `${process.env.BASE_URL}/permission/manage/list/menu`,
       {
         menuName,
         page,
         size,
       },
-      {
-        headers: {
-          "req-device": "pc"
-        },
-        debug: false // Disable debug for list operations
-      }
+      { headers: defaultHeaders, debug: false }
     );
-    
-    console.log("menuList", data);
     return data.data;
   } catch (error) {
     console.error('Failed to fetch menu list:', error);
@@ -59,25 +52,8 @@ export async function deleteMenu(menuId: string): Promise<{ success: boolean; me
   return http.post(
     `${process.env.BASE_URL}/menu/delete`,
     { menuId },
-    {
-      headers: {
-        "req-device": "pc"
-      }
-    }
+    { headers: defaultHeaders, debug: true }
   );
-}
-
-const mockMenuData = {
-  menuId: "1",
-  menuName: "系统管理",
-  menuPath: "/system",
-  menuType: "dir",
-  createId: 1,
-  createName: "系统",
-  createTime: "2023-01-01 00:00:00",
-  updateId: 1,
-  updateName: "系统",
-  updateTime: "2023-01-01 00:00:00"
 }
 
 /**
@@ -88,11 +64,7 @@ export async function getMenu(menuId: string): Promise<Menu> {
     const { data } = await http.post<{ data: Menu }>(
       `${process.env.BASE_URL}/permission/manage/get/menu`,
       { menuId },
-      {
-        headers: {
-          "req-device": "pc"
-        }
-      }
+      { headers: defaultHeaders, debug: true }
     )
     return data
   } catch (error) {
@@ -106,11 +78,7 @@ export async function createMenu(data: Omit<Menu, "menuId" | "createId" | "creat
     const response = await http.post<{ data: Menu }>(
       `${process.env.BASE_URL}/permission/manage/add/menu`,
       data,
-      {
-        headers: {
-          "req-device": "pc"
-        }
-      }
+      { headers: defaultHeaders, debug: true }
     )
     return response.data
   } catch (error) {
@@ -129,12 +97,7 @@ export async function updateMenu(menu: Omit<Menu, "createId" | "createName" | "c
     const response = await http.put<{ data: Menu }>(
       `${process.env.BASE_URL}/permission/manage/update/menu`,
       menu,
-      {
-        headers: {
-          "req-device": "pc"
-        },
-        debug: true // Enable debug for better error tracking
-      }
+      { headers: defaultHeaders, debug: true }
     )
     
     return response.data

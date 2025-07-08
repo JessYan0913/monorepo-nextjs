@@ -157,3 +157,14 @@ export const http = {
   delete: <T = any>(url: string, options: Omit<FetchOptions, 'method'> = {}) =>
     fetchWithDebug<T>(url, { ...options, method: 'DELETE' }),
 };
+
+export const defaultHeaders = {
+  "req-device": "pc"
+}
+
+export interface PaginatedResponse<T> {
+ data: T[];
+ page: number;
+ size: number;
+ total: number;
+}
