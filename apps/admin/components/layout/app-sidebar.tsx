@@ -80,7 +80,7 @@ const data = {
         },
         {
           title: "学生管理",
-          url: "#",
+          url: "/students",
         },
       ],
     },
