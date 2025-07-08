@@ -22,6 +22,7 @@ const pathMap: Record<string, string> = {
   'add': '添加',
   'roles': '角色管理',
   'menus': '菜单管理',
+  'staffs': '人员管理',
 }
 
 export function LayoutContent({

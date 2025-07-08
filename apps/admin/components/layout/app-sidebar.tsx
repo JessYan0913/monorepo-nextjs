@@ -76,7 +76,7 @@ const data = {
       items: [
         {
           title: "员工管理",
-          url: "#",
+          url: "/staffs",
         },
         {
           title: "学生管理",
