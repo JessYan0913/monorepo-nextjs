@@ -1,14 +1,6 @@
 "use server"
 
-export interface Campus {
-  id: string
-  name: string
-  address: string
-  region: string
-  status: "active" | "inactive"
-  studentCount: number
-  classroomCount: number
-}
+import { http, defaultHeaders, type PaginatedResponse } from "@/lib/utils"
 
 export interface Director {
   staffId: string // 负责人ID
@@ -20,8 +12,8 @@ export interface School {
   schoolIntro: string // 校区介绍
   schoolName: string // 校区名称
   schoolMvs: string[] // 校区MV
-  schoolStatus: string // 校区状态
-  schoolPictures: string [] // 校区图片
+  schoolStatus: 'normal' | 'closed' // 校区状态
+  schoolPictures: string[] // 校区图片
   schoolAddr: string // 校区地址
   director: Director[] // 校区负责人
   createId: string // 创建人ID
@@ -32,54 +24,117 @@ export interface School {
   updateTime?: string // 修改时间
 }
 
-export async function schoolList({ addEndTime, addStartTime, schoolDirectorIds, schoolName, page, size }: {
+type SchoolListParams = {
   addEndTime?: string;
   addStartTime?: string;
   schoolDirectorIds?: string[];
   schoolName?: string;
   page: number;
   size: number;
-}): Promise<{ data: School[]; page: number; size: number; total: number}> {
-  const res = await fetch(`${process.env.BASE_URL}/school/manage/list`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "req-device": "pc"
-    },
-    body: JSON.stringify({
-      addEndTime: addEndTime,
-      addStartTime: addStartTime,
-      schoolDirectorIds: schoolDirectorIds,
-      schoolName: schoolName,
-      page: page,
-      size: size,
-    }),
-  })
-  const { data } = await res.json()
-  return data
+};
+
+/**
+ * 获取校区列表
+ */
+export async function schoolList({
+  addEndTime,
+  addStartTime,
+  schoolDirectorIds,
+  schoolName,
+  page,
+  size
+}: SchoolListParams): Promise<PaginatedResponse<School>> {
+  try {
+    const response = await http.post<{ data: PaginatedResponse<School> }>(
+      `${process.env.BASE_URL}/school/manage/list`,
+      {
+        addEndTime,
+        addStartTime,
+        schoolDirectorIds,
+        schoolName,
+        page,
+        size,
+      },
+      { headers: defaultHeaders, debug: false }
+    );
+    
+    return response.data;
+  } catch (error) {
+    console.error('Failed to fetch school list:', error);
+    throw error;
+  }
 }
 
-export async function schoolDetail(id: string) {
-  const res = await fetch(`${process.env.BASE_URL}/school/manage/get?school=${id}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "req-device": "pc"
-    },
-  })
-  const { data } = await res.json()
-  return data
+/**
+ * 获取校区详情
+ */
+export async function getSchool(id: string): Promise<School> {
+  try {
+    const { data } = await http.post<{ data: School }>(
+      `${process.env.BASE_URL}/school/manage/get`,
+      { schoolId: id },
+      { headers: defaultHeaders }
+    );
+    
+    return data;
+  } catch (error) {
+    console.error(`Failed to fetch school ${id}:`, error);
+    throw new Error('Failed to fetch school details');
+  }
 }
 
-export async function deleteSchool(formData: FormData) {
-  const id = formData.get('id') as string
-  console.log("删除校区:", id)
+/**
+ * 创建校区
+ */
+export async function addSchool(
+  schoolData: Omit<School, 'schoolId' | 'createId' | 'createName' | 'createTime' | 'updateId' | 'updateName' | 'updateTime'>
+): Promise<School> {
+  try {
+    const { data } = await http.post<{ data: School }>(
+      `${process.env.BASE_URL}/school/manage/add`,
+      schoolData,
+      { headers: defaultHeaders, debug: true }
+    );
+    
+    return data;
+  } catch (error) {
+    console.error('Failed to create school:', error);
+    throw error;
+  }
 }
 
-export async function saveSchool(data: Campus) {
-  if (data.id === "add") {
-    console.log("添加校区:", data)
-  } else {
-    console.log("更新校区:", data)
+/**
+ * 更新校区信息
+ */
+export async function updateSchool(
+  schoolData: Omit<School, 'createId' | 'createName' | 'createTime' | 'updateId' | 'updateName' | 'updateTime'>
+): Promise<School> {
+  try {
+    const { data } = await http.put<{ data: School }>(
+      `${process.env.BASE_URL}/school/manage/update`,
+      schoolData,
+      { headers: defaultHeaders, debug: true }
+    );
+    
+    return data;
+  } catch (error) {
+    console.error(`Failed to update school ${schoolData.schoolId}:`, error);
+    throw error;
+  }
+}
+
+/**
+ * 删除校区
+ */
+export async function deleteSchool(id: string): Promise<{ success: boolean; message: string }> {
+  try {
+    return await http.post(
+      `${process.env.BASE_URL}/school/manage/delete`,
+      { schoolId: id },
+      { headers: defaultHeaders, debug: true }
+    );
+  } catch (error) {
+    console.error(`Failed to delete school ${id}:`, error);
+    throw error;
   }
 }
