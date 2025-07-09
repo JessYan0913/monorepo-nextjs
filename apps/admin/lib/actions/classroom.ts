@@ -58,7 +58,7 @@ export async function classroomList({
 /**
  * 获取教室详情
  */
-export async function getClassroom(id: number): Promise<Classroom> {
+export async function getClassroom(id: number | string): Promise<Classroom> {
   try {
     const { data } = await http.post<{ data: Classroom }>(
       `${process.env.BASE_URL}/classroom/manage/get`,
