@@ -3,6 +3,7 @@
 import React from "react"
 import { Home } from "lucide-react"
 import { usePathname } from "next/navigation"
+import { ProgressProvider } from '@bprogress/next/app';
 import { AppSidebar } from "@/components/layout/app-sidebar"
 import { SidebarProvider, SidebarTrigger, SidebarInset } from "@repo/ui/components/ui/sidebar"
 import {
@@ -29,7 +30,7 @@ export function LayoutContent({
   children,
 }: {
   children: React.ReactNode
-  }) {
+}) {
   const pathname = usePathname()
 
   // 分割路径并过滤空段
@@ -85,7 +86,14 @@ export function LayoutContent({
           </div>
         </header>
         <main className="flex-1 overflow-auto p-4">
-          {children}
+          <ProgressProvider 
+            height="4px"
+            color="#000"
+            options={{ showSpinner: false }}
+            shallowRouting
+          >
+            {children}
+          </ProgressProvider>
         </main>
       </SidebarInset>
     </SidebarProvider>

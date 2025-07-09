@@ -46,7 +46,6 @@ const data = {
       title: '数据看板',
       icon: PieChart,
       url: '#',
-      isActive: true,
       items: [
         {
           title: '销售看板',

@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@bprogress/next": "^3.2.12",
     "@hello-pangea/dnd": "latest",
     "@hookform/resolvers": "latest",
     "@repo/ui": "workspace:^",
