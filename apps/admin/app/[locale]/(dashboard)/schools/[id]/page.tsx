@@ -1,11 +1,11 @@
-import { getRole } from "@/lib/actions/role"
-import { RoleInfo } from "@/components/roles/role-info"
+import { getSchool } from "@/lib/actions/school"
+import { SchoolInfo } from "@/components/schools/school-info"
 
 export default async function SchoolEditPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
 
-  const role = await getRole(id)  
+  const school = await getSchool(id)  
   return (
-    <RoleInfo role={role} />
+    <SchoolInfo school={school} />
   )
 }
