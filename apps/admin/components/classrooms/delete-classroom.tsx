@@ -16,9 +16,9 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@repo/ui/components/ui/alert-dialog"
-import { deleteMenu } from "@/lib/actions/menu"
+import { deleteClassroom } from "@/lib/actions/classroom"
 
-export function DeleteMenuButton({ id }: { id: string }) {
+export function DeleteClassroomButton({ id }: { id: string | number }) {
   const [open, setOpen] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
   const router = useRouter()
@@ -26,16 +26,16 @@ export function DeleteMenuButton({ id }: { id: string }) {
   const handleDelete = async () => {
     try {
       setIsDeleting(true)
-      const success = await deleteMenu(id)
+      const success = await deleteClassroom(id)
       
       if (success) {
         setOpen(false)
         router.refresh()
       } else {
-        console.error("Failed to delete menu")
+        console.error("Failed to delete classroom")
       }
     } catch (error) {
-      console.error("Error deleting menu:", error)
+      console.error("Error deleting classroom:", error)
     } finally {
       setIsDeleting(false)
     }
@@ -58,7 +58,7 @@ export function DeleteMenuButton({ id }: { id: string }) {
           <AlertDialogHeader>
             <AlertDialogTitle>确认删除</AlertDialogTitle>
             <AlertDialogDescription>
-              您确定要删除这个菜单吗？此操作无法撤销，菜单信息将被永久删除。
+              您确定要删除这个教室吗？此操作无法撤销，教室信息将被永久删除。
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

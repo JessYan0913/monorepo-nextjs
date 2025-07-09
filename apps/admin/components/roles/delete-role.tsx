@@ -1,42 +1,81 @@
-'use client'
+"use client"
 
-import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { Trash2 } from "lucide-react"
+import { useRouter } from "next/navigation"
+
 import { Button } from "@repo/ui/components/ui/button"
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@repo/ui/components/ui/dialog"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@repo/ui/components/ui/alert-dialog"
 import { deleteRole } from "@/lib/actions/role"
 
 export function DeleteRoleButton({ id }: { id: string }) {
   const [open, setOpen] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
   const router = useRouter()
 
-  async function onConfirmDelete() {
-    await deleteRole(id)
-    setOpen(false)
-    router.refresh()
+  const handleDelete = async () => {
+    try {
+      setIsDeleting(true)
+      const success = await deleteRole(id)
+      
+      if (success) {
+        setOpen(false)
+        router.refresh()
+      } else {
+        console.error("Failed to delete role")
+      }
+    } catch (error) {
+      console.error("Error deleting role:", error)
+    } finally {
+      setIsDeleting(false)
+    }
   }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        {/* ⛳️ type="button" 避免误触提交 */}
-        <div className="text-red-600 flex items-center gap-1">
-          <Trash2 className="h-4 w-4" />
-          删除
-        </div>
-      </DialogTrigger>
-
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>确认删除？</DialogTitle>
-        </DialogHeader>
-        <div>你确定要删除这个角色吗？此操作无法撤销。</div>
-        <DialogFooter>
-          <Button variant="outline" onClick={() => setOpen(false)}>取消</Button>
-          <Button variant="destructive" onClick={onConfirmDelete}>确认删除</Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+    <>
+      <AlertDialog open={open} onOpenChange={setOpen}>
+        <AlertDialogTrigger asChild>
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="text-red-500 hover:text-red-700"
+          >
+            <Trash2 className="h-4 w-4 mr-1" />
+            删除
+          </Button>
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>确认删除</AlertDialogTitle>
+            <AlertDialogDescription>
+              您确定要删除这个角色吗？此操作无法撤销，角色信息将被永久删除。
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={isDeleting}>取消</AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={(e) => {
+                e.preventDefault()
+                handleDelete()
+              }}
+              disabled={isDeleting}
+              className="bg-red-500 hover:bg-red-600"
+            >
+              {isDeleting ? "删除中..." : "删除"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   )
 }

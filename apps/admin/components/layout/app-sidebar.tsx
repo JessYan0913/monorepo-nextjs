@@ -65,7 +65,7 @@ const data = {
         },
         {
           title: "教室管理",
-          url: "#",
+          url: "/classrooms",
         },
       ],
     },

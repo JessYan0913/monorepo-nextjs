@@ -14,6 +14,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
+  AlertDialogTrigger,
 } from "@repo/ui/components/ui/alert-dialog"
 import { deleteStaff } from "@/lib/actions/staff"
 
@@ -42,16 +43,17 @@ export function DeleteStaffButton({ id }: { id: number }) {
 
   return (
     <>
-      <Button 
-        variant="ghost" 
-        size="sm" 
-        className="text-red-500 hover:text-red-700"
-        onClick={() => setOpen(true)}
-      >
-        <Trash2 className="h-4 w-4 mr-1" />
-        删除
-      </Button>
       <AlertDialog open={open} onOpenChange={setOpen}>
+        <AlertDialogTrigger asChild>
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="text-red-500 hover:text-red-700"
+          >
+            <Trash2 className="h-4 w-4 mr-1" />
+            删除
+          </Button>
+        </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>确认删除</AlertDialogTitle>
