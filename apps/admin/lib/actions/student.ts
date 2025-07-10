@@ -9,7 +9,7 @@ export interface StudentListParams {
   size?: number
 }
 
-export interface StudentData {
+export interface Student {
   studentId: number
   studentName: string
   studentAccount: string
@@ -33,7 +33,7 @@ export interface StudentData {
 }
 
 export interface StudentListResponse {
-  data: StudentData[]
+  data: Student[]
   page: number
   size: number
   total: number
@@ -206,7 +206,7 @@ export async function deleteStudent(id: number): Promise<boolean> {
   }
 }
 
-export async function studentDetail(id: string): Promise<StudentData | null> {
+export async function getStudent(id: string): Promise<Student | null> {
   try {
     const response = await fetch(`${process.env.BASE_URL}/api/students/${id}`, {
       method: "GET",
@@ -228,7 +228,7 @@ export async function studentDetail(id: string): Promise<StudentData | null> {
   }
 }
 
-export async function updateStudent(data: StudentData): Promise<boolean> {
+export async function updateStudent(data: Student): Promise<boolean> {
   try {
     const response = await fetch(`${process.env.BASE_URL}/api/students/${data.studentId}`, {
       method: "PUT",
