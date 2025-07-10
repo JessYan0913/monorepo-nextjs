@@ -25,6 +25,8 @@ const pathMap: Record<string, string> = {
   'menus': '菜单管理',
   'staffs': '人员管理',
   'vip-level': '会员等级管理',
+  'classrooms': '教室管理',
+  'students': '学生管理',
 }
 
 export function LayoutContent({
