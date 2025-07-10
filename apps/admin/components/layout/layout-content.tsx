@@ -24,6 +24,7 @@ const pathMap: Record<string, string> = {
   'roles': '角色管理',
   'menus': '菜单管理',
   'staffs': '人员管理',
+  'vip-level': '会员等级管理',
 }
 
 export function LayoutContent({

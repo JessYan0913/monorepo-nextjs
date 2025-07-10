@@ -104,6 +104,10 @@ const data = {
       icon: Settings2,
       items: [
         {
+          title: "VIP等级管理",
+          url: "/vip-level",
+        },
+        {
           title: "教师端设置",
           url: "#",
         },
