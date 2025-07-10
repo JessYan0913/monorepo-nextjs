@@ -9,7 +9,7 @@ export interface StaffListParams {
   size?: number
 }
 
-export interface StaffData {
+export interface Staff {
   staffId: number
   staffName: string
   staffNick: string
@@ -34,7 +34,7 @@ export interface StaffData {
 }
 
 export interface StaffListResponse {
-  data: StaffData[]
+  data: Staff[]
   page: number
   size: number
   total: number
@@ -95,7 +95,7 @@ export async function deleteStaff(id: number): Promise<boolean> {
   }
 }
 
-export async function staffDetail(id: string): Promise<StaffData | null> {
+export async function getStaff(id: string): Promise<Staff | undefined> {
   try {
     const response = await fetch(`${process.env.BASE_URL}/api/staffs/${id}`, {
       method: "GET",
@@ -113,11 +113,11 @@ export async function staffDetail(id: string): Promise<StaffData | null> {
     return data
   } catch (error) {
     console.error("Error fetching staff details:", error)
-    return null
+    return undefined
   }
 }
 
-export async function updateStaff(data: StaffData): Promise<boolean> {
+export async function updateStaff(data: Staff): Promise<boolean> {
   try {
     const response = await fetch(`${process.env.BASE_URL}/api/staffs/${data.staffId}`, {
       method: "PUT",

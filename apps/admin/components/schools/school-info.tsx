@@ -2,11 +2,10 @@
 
 import * as React from "react"
 import { useRouter } from "next/navigation"
-import Link from "next/link"
 import { z } from "zod"
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ArrowLeft, Save } from "lucide-react"
+import { Save } from "lucide-react"
 import { ImageGallery } from "@repo/ui/components/image-gallery"
 
 import { Button } from "@repo/ui/components/ui/button"
@@ -91,240 +90,228 @@ export function SchoolInfo({ school }: { school?: School }) {
   })
 
   return (
-    <div className="container max-w-6xl mx-auto p-4 sm:p-6 space-y-6 transition-all duration-200">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
-        <Link 
-          href="/schools" 
-          className="inline-flex items-center text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-        >
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          返回列表
-        </Link>
-      </div>
-
-      <Card className="overflow-hidden border border-border/50 shadow-sm transition-all hover:shadow-md">
-        <CardHeader className="bg-muted/10 border-b">
-          <div className="space-y-1">
-            <CardTitle className="text-xl">校区信息</CardTitle>
-            <CardDescription className="text-sm">更新校区的详细信息和运营数据</CardDescription>
-          </div>
-        </CardHeader>
-        <Form {...form}>
-          <form onSubmit={submit}>
-            <input type="hidden" {...form.register("schoolId")} value={school?.schoolId} />
-            <CardContent className="p-6 space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <FormField
-                  control={form.control}
-                  name="schoolName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel htmlFor="schoolName" className="text-sm font-medium">
-                        校区名称
-                        <span className="text-destructive ml-1">*</span>
-                      </FormLabel>
-                      <FormControl>
-                        <Input 
-                          id="name" 
-                          type="text" 
-                          {...field} 
-                          className="mt-1 focus-visible:ring-2 focus-visible:ring-primary/50"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="schoolStatus"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel htmlFor="schoolStatus" className="text-sm font-medium">
-                        运营状态
-                        <span className="text-destructive ml-1">*</span>
-                      </FormLabel>
-                      <FormControl>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
-                          <SelectTrigger 
-                            id="status" 
-                            className="w-full focus:ring-2 focus:ring-primary/50"
-                          >
-                            <SelectValue placeholder="选择状态" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="normal">正常运营</SelectItem>
-                            <SelectItem value="closed">暂停运营</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              
+    <Card className="overflow-hidden border border-border/50 shadow-sm transition-all hover:shadow-md">
+      <CardHeader className="bg-muted/10 border-b">
+        <div className="space-y-1">
+          <CardTitle className="text-xl">校区信息</CardTitle>
+          <CardDescription className="text-sm">更新校区的详细信息和运营数据</CardDescription>
+        </div>
+      </CardHeader>
+      <Form {...form}>
+        <form onSubmit={submit}>
+          <input type="hidden" {...form.register("schoolId")} value={school?.schoolId} />
+          <CardContent className="p-6 space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <FormField
                 control={form.control}
-                name="schoolAddr"
+                name="schoolName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel htmlFor="schoolAddr" className="text-sm font-medium">
-                      详细地址
+                    <FormLabel htmlFor="schoolName" className="text-sm font-medium">
+                      校区名称
                       <span className="text-destructive ml-1">*</span>
                     </FormLabel>
                     <FormControl>
-                      <Textarea 
-                        id="address" 
+                      <Input 
+                        id="name" 
+                        type="text" 
                         {...field} 
-                        className="mt-1 min-h-[100px] focus-visible:ring-2 focus-visible:ring-primary/50"
+                        className="mt-1 focus-visible:ring-2 focus-visible:ring-primary/50"
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              
               <FormField
                 control={form.control}
-                name="schoolIntro"
+                name="schoolStatus"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel htmlFor="schoolIntro" className="text-sm font-medium">
-                      校区介绍
+                    <FormLabel htmlFor="schoolStatus" className="text-sm font-medium">
+                      运营状态
                       <span className="text-destructive ml-1">*</span>
                     </FormLabel>
                     <FormControl>
-                      <Textarea 
-                        id="schoolIntro" 
-                        {...field} 
-                        className="mt-1 min-h-[100px] focus-visible:ring-2 focus-visible:ring-primary/50"
-                      />
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <SelectTrigger 
+                          id="status" 
+                          className="w-full focus:ring-2 focus:ring-primary/50"
+                        >
+                          <SelectValue placeholder="选择状态" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="normal">正常运营</SelectItem>
+                          <SelectItem value="closed">暂停运营</SelectItem>
+                        </SelectContent>
+                      </Select>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
-                />
-              
-              <FormField
-                control={form.control}
-                name="director"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel htmlFor="director" className="text-sm font-medium">
-                      校区负责人
-                      <span className="text-destructive ml-1">*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <StaffTransferList
-                        items={userOptions}
-                        onChange={(leftItems, rightItems) => {
-                          console.log('======>', rightItems);
-                          
-                          field.onChange(rightItems)
-                        }}
-                        renderItem={(item) => (
-                          <div>
-                            <div className="flex items-center"> 
-                              {item.label}
-                            </div>
-                            <div className="flex items-center">
-                              {item.role.map((role) => (
-                                <Badge key={role} className="mr-2">{role}</Badge>
-                              ))}
-                            </div>
+              />
+            </div>
+            
+            <FormField
+              control={form.control}
+              name="schoolAddr"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="schoolAddr" className="text-sm font-medium">
+                    详细地址
+                    <span className="text-destructive ml-1">*</span>
+                  </FormLabel>
+                  <FormControl>
+                    <Textarea 
+                      id="address" 
+                      {...field} 
+                      className="mt-1 min-h-[100px] focus-visible:ring-2 focus-visible:ring-primary/50"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            
+            <FormField
+              control={form.control}
+              name="schoolIntro"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="schoolIntro" className="text-sm font-medium">
+                    校区介绍
+                    <span className="text-destructive ml-1">*</span>
+                  </FormLabel>
+                  <FormControl>
+                    <Textarea 
+                      id="schoolIntro" 
+                      {...field} 
+                      className="mt-1 min-h-[100px] focus-visible:ring-2 focus-visible:ring-primary/50"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+              />
+            
+            <FormField
+              control={form.control}
+              name="director"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="director" className="text-sm font-medium">
+                    校区负责人
+                    <span className="text-destructive ml-1">*</span>
+                  </FormLabel>
+                  <FormControl>
+                    <StaffTransferList
+                      items={userOptions}
+                      onChange={(leftItems, rightItems) => {
+                        console.log('======>', rightItems);
+                        
+                        field.onChange(rightItems)
+                      }}
+                      renderItem={(item) => (
+                        <div>
+                          <div className="flex items-center"> 
+                            {item.label}
                           </div>
-                        )}
+                          <div className="flex items-center">
+                            {item.role?.map((role) => (
+                              <Badge key={role} className="mr-2">{role}</Badge>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="schoolPictures"
+              render={({ field }) => ( 
+                <FormItem>
+                  <FormLabel htmlFor="schoolPictures" className="text-sm font-medium">
+                    校区图片
+                    <span className="text-destructive ml-1">*</span>
+                  </FormLabel>
+                  <FormControl>
+                    <div className="space-y-4">
+                      <ImageGallery 
+                        images={field.value?.map((url, index) => ({ src: url, alt: "校区图片", id: `${index}` }))}
+                        gap={4}
+                        columns={4}
+                        showDeleteButton={true}
+                        onImagesChange={(images) => {
+                          field.onChange(images?.map(image => image.src))
+                        }}
                       />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="schoolPictures"
-                render={({ field }) => ( 
-                  <FormItem>
-                    <FormLabel htmlFor="schoolPictures" className="text-sm font-medium">
-                      校区图片
-                      <span className="text-destructive ml-1">*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <div className="space-y-4">
-                        <ImageGallery 
-                          images={field.value.map((url, index) => ({ src: url, alt: "校区图片", id: `${index}` }))}
-                          gap={4}
-                          columns={4}
-                          showDeleteButton={true}
-                          onImagesChange={(images) => {
-                            field.onChange(images.map(image => image.src))
-                          }}
-                        />
-                        <ImageUploader
-                          className="mt-1 focus-visible:ring-2 focus-visible:ring-primary/50"
-                          onImageChange={field.onChange}
-                        />
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="schoolMvs"
-                render={({ field }) => ( 
-                  <FormItem>
-                    <FormLabel htmlFor="schoolMvs" className="text-sm font-medium">
-                      校区视频
-                      <span className="text-destructive ml-1">*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <div className="space-y-4">
-                        <VideoGallery
-                          videos={field.value.map((url) => ({ src: url, id: url, title: "视频" }))}
-                          gap={4}
-                          columns={4}
-                          showDeleteButton={true}
-                          onVideosChange={(videos) => {
-                            field.onChange(videos.map(video => video.src))
-                          }}
-                        />
-                        <FileUploader
-                          className="mt-1 focus-visible:ring-2 focus-visible:ring-primary/50"
-                          acceptedFileTypes=".mp4,.webm,.mov,.avi,.mkv"
-                          onFileChange={field.onChange}
-                        />
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </CardContent>
-            <CardFooter className="flex flex-col sm:flex-row justify-end gap-3 px-6 py-4 border-t bg-muted/10">
-              <Button 
-                type="button" 
-                variant="outline" 
-                onClick={() => router.back()}
-                disabled={form.formState.isSubmitting}
-                className="border-border/50 hover:border-foreground/50"
-              >
-                取消
-              </Button>
-              <Button 
-                type="submit" 
-                className="bg-primary hover:bg-primary/90 transition-colors shadow-sm hover:shadow"
-                disabled={form.formState.isSubmitting}
-              >
-                <Save className="mr-2 h-4 w-4" />
-                保存更改
-              </Button>
-            </CardFooter>
-          </form>
-        </Form>
-      </Card>
-    </div>
+                      <ImageUploader
+                        className="mt-1 focus-visible:ring-2 focus-visible:ring-primary/50"
+                        onImageChange={field.onChange}
+                      />
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="schoolMvs"
+              render={({ field }) => ( 
+                <FormItem>
+                  <FormLabel htmlFor="schoolMvs" className="text-sm font-medium">
+                    校区视频
+                    <span className="text-destructive ml-1">*</span>
+                  </FormLabel>
+                  <FormControl>
+                    <div className="space-y-4">
+                      <VideoGallery
+                        videos={field.value?.map((url) => ({ src: url, id: url, title: "视频" }))}
+                        gap={4}
+                        columns={4}
+                        showDeleteButton={true}
+                        onVideosChange={(videos) => {
+                          field.onChange(videos?.map(video => video.src))
+                        }}
+                      />
+                      <FileUploader
+                        className="mt-1 focus-visible:ring-2 focus-visible:ring-primary/50"
+                        acceptedFileTypes=".mp4,.webm,.mov,.avi,.mkv"
+                        onFileChange={field.onChange}
+                      />
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </CardContent>
+          <CardFooter className="flex flex-col sm:flex-row justify-end gap-3 px-6 py-4 border-t bg-muted/10">
+            <Button 
+              type="button" 
+              variant="outline" 
+              onClick={() => router.back()}
+              disabled={form.formState.isSubmitting}
+              className="border-border/50 hover:border-foreground/50"
+            >
+              取消
+            </Button>
+            <Button 
+              type="submit" 
+              className="bg-primary hover:bg-primary/90 transition-colors shadow-sm hover:shadow"
+              disabled={form.formState.isSubmitting}
+            >
+              <Save className="mr-2 h-4 w-4" />
+              保存更改
+            </Button>
+          </CardFooter>
+        </form>
+      </Form>
+    </Card>
   )
 }
