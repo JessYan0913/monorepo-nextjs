@@ -2,11 +2,10 @@
 
 import * as React from "react"
 import { useRouter } from "next/navigation"
-import Link from "next/link"
 import { z } from "zod"
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { ArrowLeft, Save } from "lucide-react"
+import { Save } from "lucide-react"
 
 import { Button } from "@repo/ui/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@repo/ui/components/ui/card"
@@ -75,185 +74,173 @@ export function VipLevelInfo({ vipLevel }: { vipLevel?: VipLevel }) {
   })
 
   return (
-    <div className="container max-w-3xl mx-auto p-4 sm:p-6 space-y-6 transition-all duration-200">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
-        <Link 
-          href="/vip-level" 
-          className="inline-flex items-center text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-        >
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          返回列表
-        </Link>
-      </div>
-
-      <Card className="overflow-hidden border border-border/50 shadow-sm transition-all hover:shadow-md">
-        <CardHeader className="bg-muted/10 border-b">
-          <div className="space-y-1">
-            <CardTitle className="text-xl">VIP等级信息</CardTitle>
-            <CardDescription>编辑VIP等级信息及权益</CardDescription>
-          </div>
-        </CardHeader>
-        
-        <Form {...form}>
-          <form onSubmit={submit} className="space-y-6">
-            <CardContent className="space-y-6 pt-6">
-              {/* Display error message if any */}
-              {error && (
-                <div className="p-3 text-sm rounded-md bg-destructive/15 text-destructive">
-                  {error}
-                </div>
-              )}
-              
-              {/* ID field - read only */}
-              <FormField
-                control={form.control}
-                name="id"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel htmlFor="id" className="text-sm font-medium">
-                      VIP等级ID
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        id="id"
-                        placeholder="VIP等级ID"
-                        {...field}
-                        value={field.value?.toString() || ""}
-                        disabled={true}
-                        className="bg-muted/50"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              
-              {/* Level field - read only */}
-              <FormField
-                control={form.control}
-                name="level"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel htmlFor="level" className="text-sm font-medium">
-                      VIP等级
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        id="level"
-                        placeholder="VIP等级"
-                        {...field}
-                        value={field.value?.toString() || ""}
-                        disabled={true}
-                        className="bg-muted/50"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              
-              {/* Consumption Amount field */}
-              <FormField
-                control={form.control}
-                name="consumptionAmount"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel htmlFor="consumptionAmount" className="text-sm font-medium">
-                      累计消费金额
-                      <span className="text-destructive ml-1">*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        id="consumptionAmount"
-                        placeholder="请输入达到此等级所需的累计消费金额"
-                        {...field}
-                        value={field.value?.toString() || ""}
-                        onChange={(e) => field.onChange(Number(e.target.value))}
-                        type="number"
-                        min={0}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              
-              {/* Discount Percentage field */}
-              <FormField
-                control={form.control}
-                name="discountPercentage"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel htmlFor="discountPercentage" className="text-sm font-medium">
-                      折扣百分比
-                      <span className="text-destructive ml-1">*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        id="discountPercentage"
-                        placeholder="请输入折扣百分比（如95表示95折，即5%的折扣）"
-                        {...field}
-                        value={field.value?.toString() || ""}
-                        onChange={(e) => field.onChange(Number(e.target.value))}
-                        type="number"
-                        min={1}
-                        max={100}
-                      />
-                    </FormControl>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      例如：95表示95%的原价，即5%的折扣
-                    </p>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              
-              {/* Benefits Description field */}
-              <FormField
-                control={form.control}
-                name="benefitsDescription"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel htmlFor="benefitsDescription" className="text-sm font-medium">
-                      会员权益描述
-                      <span className="text-destructive ml-1">*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Textarea
-                        id="benefitsDescription"
-                        placeholder="请输入此VIP等级的会员权益描述"
-                        className="min-h-[120px] resize-y"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </CardContent>
+    <Card className="overflow-hidden border border-border/50 shadow-sm transition-all hover:shadow-md">
+      <CardHeader className="bg-muted/10 border-b">
+        <div className="space-y-1">
+          <CardTitle className="text-xl">VIP等级信息</CardTitle>
+          <CardDescription>编辑VIP等级信息及权益</CardDescription>
+        </div>
+      </CardHeader>
+      
+      <Form {...form}>
+        <form onSubmit={submit} className="space-y-6">
+          <CardContent className="space-y-6 pt-6">
+            {/* Display error message if any */}
+            {error && (
+              <div className="p-3 text-sm rounded-md bg-destructive/15 text-destructive">
+                {error}
+              </div>
+            )}
             
-            <CardFooter className="flex flex-col sm:flex-row justify-end gap-3 px-6 py-4 border-t bg-muted/10">
-              <Button 
-                type="button" 
-                variant="outline" 
-                onClick={() => router.back()}
-                disabled={isSubmitting}
-                className="border-border/50 hover:border-foreground/50"
-              >
-                取消
-              </Button>
-              <Button 
-                type="submit" 
-                className="bg-primary hover:bg-primary/90 transition-colors shadow-sm hover:shadow"
-                disabled={isSubmitting}
-              >
-                <Save className="mr-2 h-4 w-4" />
-                {isSubmitting ? '保存中...' : '保存更改'}
-              </Button>
-            </CardFooter>
-          </form>
-        </Form>
-      </Card>
-    </div>
+            {/* ID field - read only */}
+            <FormField
+              control={form.control}
+              name="id"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="id" className="text-sm font-medium">
+                    VIP等级ID
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      id="id"
+                      placeholder="VIP等级ID"
+                      {...field}
+                      value={field.value?.toString() || ""}
+                      disabled={true}
+                      className="bg-muted/50"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            
+            {/* Level field - read only */}
+            <FormField
+              control={form.control}
+              name="level"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="level" className="text-sm font-medium">
+                    VIP等级
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      id="level"
+                      placeholder="VIP等级"
+                      {...field}
+                      value={field.value?.toString() || ""}
+                      disabled={true}
+                      className="bg-muted/50"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            
+            {/* Consumption Amount field */}
+            <FormField
+              control={form.control}
+              name="consumptionAmount"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="consumptionAmount" className="text-sm font-medium">
+                    累计消费金额
+                    <span className="text-destructive ml-1">*</span>
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      id="consumptionAmount"
+                      placeholder="请输入达到此等级所需的累计消费金额"
+                      {...field}
+                      value={field.value?.toString() || ""}
+                      onChange={(e) => field.onChange(Number(e.target.value))}
+                      type="number"
+                      min={0}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            
+            {/* Discount Percentage field */}
+            <FormField
+              control={form.control}
+              name="discountPercentage"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="discountPercentage" className="text-sm font-medium">
+                    折扣百分比
+                    <span className="text-destructive ml-1">*</span>
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      id="discountPercentage"
+                      placeholder="请输入折扣百分比（如95表示95折，即5%的折扣）"
+                      {...field}
+                      value={field.value?.toString() || ""}
+                      onChange={(e) => field.onChange(Number(e.target.value))}
+                      type="number"
+                      min={1}
+                      max={100}
+                    />
+                  </FormControl>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    例如：95表示95%的原价，即5%的折扣
+                  </p>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            
+            {/* Benefits Description field */}
+            <FormField
+              control={form.control}
+              name="benefitsDescription"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="benefitsDescription" className="text-sm font-medium">
+                    会员权益描述
+                    <span className="text-destructive ml-1">*</span>
+                  </FormLabel>
+                  <FormControl>
+                    <Textarea
+                      id="benefitsDescription"
+                      placeholder="请输入此VIP等级的会员权益描述"
+                      className="min-h-[120px] resize-y"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </CardContent>
+          
+          <CardFooter className="flex flex-col sm:flex-row justify-end gap-3 px-6 py-4 border-t bg-muted/10">
+            <Button 
+              type="button" 
+              variant="outline" 
+              onClick={() => router.back()}
+              disabled={isSubmitting}
+              className="border-border/50 hover:border-foreground/50"
+            >
+              取消
+            </Button>
+            <Button 
+              type="submit" 
+              className="bg-primary hover:bg-primary/90 transition-colors shadow-sm hover:shadow"
+              disabled={isSubmitting}
+            >
+              <Save className="mr-2 h-4 w-4" />
+              {isSubmitting ? '保存中...' : '保存更改'}
+            </Button>
+          </CardFooter>
+        </form>
+      </Form>
+    </Card>
   )
 }
