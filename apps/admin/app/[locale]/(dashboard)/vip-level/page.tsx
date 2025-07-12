@@ -1,6 +1,5 @@
 import { Plus, Edit, Star, Sparkles, Clock, CreditCard } from "lucide-react"
 import Link from "next/link"
-import { cn } from "@repo/ui/lib/utils"
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@repo/ui/components/ui/card"
 import { Badge } from "@repo/ui/components/ui/badge"

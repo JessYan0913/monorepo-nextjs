@@ -6,10 +6,11 @@ import { Trash2 } from "lucide-react"
 import { Button } from "@repo/ui/components/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@repo/ui/components/ui/dialog"
 import { Alert, AlertDescription, AlertTitle } from "@repo/ui/components/ui/alert"
+import { type VipLevel } from "@/lib/actions/vip-level"
 
 // Client component for deleting a VIP level
-export function DeleteVipLevelButton({ id }: { 
-  id: number, 
+export function DeleteVipLevelButton({ vipLevel }: { 
+  vipLevel: VipLevel, 
 }) {
   const [open, setOpen] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
@@ -40,7 +41,7 @@ export function DeleteVipLevelButton({ id }: {
         <DialogHeader>
           <DialogTitle>删除VIP等级</DialogTitle>
           <DialogDescription>
-            确定要删除VIP {id} 等级吗？此操作不可撤销。
+            确定要删除VIP {vipLevel.level} 等级吗？此操作不可撤销。
           </DialogDescription>
         </DialogHeader>
         

@@ -7,6 +7,7 @@ import {
   Settings2,
   Users,
   School,
+  CreditCard
 } from "lucide-react"
 
 import { NavMain } from "@/components/layout/nav-main"
@@ -95,6 +96,17 @@ const data = {
         {
           title: "上课历史",
           url: "#",
+        },
+      ],
+    },
+    {
+      title: "收银管理",
+      url: "#",
+      icon: CreditCard,
+      items: [
+        {
+          title: "收银员管理",
+          url: "/cashiers",
         },
       ],
     },
