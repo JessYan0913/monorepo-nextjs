@@ -1,4 +1,4 @@
-import { Plus, Edit, User, Phone, Mail, Clock, Building } from "lucide-react"
+import { Plus, Phone, Mail, Clock, Building } from "lucide-react"
 import Link from "next/link"
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@repo/ui/components/ui/card"
@@ -113,7 +113,7 @@ export default function CashierManagementPage() {
           <p className="text-muted-foreground">管理店铺收银员账号及权限</p>
         </div>
         <Link 
-          href="/cashier/add" 
+          href="/cashiers/add" 
           className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
         >
           <Plus className="mr-2 h-4 w-4" />
@@ -188,14 +188,6 @@ export default function CashierManagementPage() {
                   </CardContent>
                   
                   <CardFooter className="relative flex justify-end gap-2 pt-2 border-t bg-background/80">
-                    <Link 
-                      href={`/cashier/${cashier.id}`} 
-                      className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-3 py-2"
-                    >
-                      <Edit className="mr-1 h-3.5 w-3.5" />
-                      编辑
-                    </Link>
-                    
                     <DeleteCashierButton cashier={cashier} />
                   </CardFooter>
                 </Card>
