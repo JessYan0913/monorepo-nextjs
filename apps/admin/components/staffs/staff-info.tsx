@@ -125,8 +125,8 @@ export function StaffInfo({ staff }: { staff?: Staff  }) {
       <Form {...form}>
         <form onSubmit={submit}>
           <input type="hidden" {...form.register("staffId")} value={staff?.staffId} />
-          <CardContent className="p-6 space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <CardContent className="p-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               <FormField
                 control={form.control}
                 name="staffName"
@@ -168,9 +168,6 @@ export function StaffInfo({ staff }: { staff?: Staff  }) {
                   </FormItem>
                 )}
               />
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <FormField
                 control={form.control}
                 name="staffAccount"
@@ -213,9 +210,6 @@ export function StaffInfo({ staff }: { staff?: Staff  }) {
                   </FormItem>
                 )}
               />
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <FormField
                 control={form.control}
                 name="staffIdcard"
@@ -251,7 +245,7 @@ export function StaffInfo({ staff }: { staff?: Staff  }) {
                       defaultValue={field.value?.toString()}
                     >
                       <FormControl>
-                        <SelectTrigger className="mt-1 focus-visible:ring-2 focus-visible:ring-primary/50">
+                        <SelectTrigger className="mt-1 w-full focus-visible:ring-2 focus-visible:ring-primary/50">
                           <SelectValue placeholder="请选择性别" />
                         </SelectTrigger>
                       </FormControl>
@@ -264,9 +258,6 @@ export function StaffInfo({ staff }: { staff?: Staff  }) {
                   </FormItem>
                 )}
               />
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <FormField
                 control={form.control}
                 name="staffBirthday"
@@ -302,9 +293,6 @@ export function StaffInfo({ staff }: { staff?: Staff  }) {
                   </FormItem>
                 )}
               />
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <FormField
                 control={form.control}
                 name="staffAddr"
@@ -339,7 +327,7 @@ export function StaffInfo({ staff }: { staff?: Staff  }) {
                       defaultValue={field.value}
                     >
                       <FormControl>
-                        <SelectTrigger className="mt-1 focus-visible:ring-2 focus-visible:ring-primary/50">
+                        <SelectTrigger className="mt-1 w-full focus-visible:ring-2 focus-visible:ring-primary/50">
                           <SelectValue placeholder="请选择状态" />
                         </SelectTrigger>
                       </FormControl>
@@ -352,59 +340,57 @@ export function StaffInfo({ staff }: { staff?: Staff  }) {
                   </FormItem>
                 )}
               />
-            </div>
-            
-            <FormField
-              control={form.control}
-              name="staffIntro"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor="staffIntro" className="text-sm font-medium">
-                    个人介绍
-                  </FormLabel>
-                  <FormControl>
-                    <Textarea
-                      id="staffIntro"
-                      placeholder="请输入个人介绍"
-                      {...field}
-                      className="mt-1 focus-visible:ring-2 focus-visible:ring-primary/50"
-                      rows={4}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            
-            <FormField
-              control={form.control}
-              name="staffProfilePicture"
-              render={({ field }) => ( 
-                <FormItem>
-                  <FormLabel htmlFor="staffProfilePicture" className="text-sm font-medium">
-                    头像
-                  </FormLabel>
-                  <FormControl>
-                    <div className="space-y-4">
-                      {field.value && (
-                        <div className="relative w-32 h-32 rounded-full overflow-hidden">
-                          <img 
-                            src={field.value} 
-                            alt="员工头像" 
-                            className="object-cover w-full h-full"
-                          />
-                        </div>
-                      )}
-                      <ImageUploader
+              <FormField
+                control={form.control}
+                name="staffIntro"
+                render={({ field }) => (
+                  <FormItem className="col-span-1 sm:col-span-2 lg:col-span-3">
+                    <FormLabel htmlFor="staffIntro" className="text-sm font-medium">
+                      个人介绍
+                    </FormLabel>
+                    <FormControl>
+                      <Textarea
+                        id="staffIntro"
+                        placeholder="请输入个人介绍"
+                        {...field}
                         className="mt-1 focus-visible:ring-2 focus-visible:ring-primary/50"
-                        onImageChange={(url) => field.onChange(url)}
+                        rows={4}
                       />
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="staffProfilePicture"
+                render={({ field }) => ( 
+                  <FormItem className="col-span-1 sm:col-span-2 lg:col-span-3">
+                    <FormLabel htmlFor="staffProfilePicture" className="text-sm font-medium">
+                      头像
+                    </FormLabel>
+                    <FormControl>
+                      <div className="space-y-4">
+                        {field.value && (
+                          <div className="relative w-32 h-32 rounded-full overflow-hidden">
+                            <img 
+                              src={field.value} 
+                              alt="员工头像" 
+                              className="object-cover w-full h-full"
+                            />
+                          </div>
+                        )}
+                        <ImageUploader
+                          className="mt-1 focus-visible:ring-2 focus-visible:ring-primary/50"
+                          onImageChange={(url) => field.onChange(url)}
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
           </CardContent>
           <CardFooter className="flex flex-col sm:flex-row justify-end gap-3 px-6 py-4 border-t bg-muted/10">
             <Button 
