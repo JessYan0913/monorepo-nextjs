@@ -17,7 +17,8 @@ const mockCashiers: Cashier[] = [
     avatar: "",
     school: {
       schoolId: "1",
-      schoolName: "总店"
+      schoolName: "北京校区",
+      schoolAddr: "北京市海淀区中关村大街1号"
     },
     status: "active",
     createTime: "2025-07-01 10:00:00",
@@ -31,7 +32,8 @@ const mockCashiers: Cashier[] = [
     avatar: "",
     school: {
       schoolId: "2",
-      schoolName: "分店一"
+      schoolName: "上海校区",
+      schoolAddr: "上海市浦东新区陆家嘴环路888号"
     },
     status: "active",
     createTime: "2025-07-01 10:05:00",
@@ -45,7 +47,8 @@ const mockCashiers: Cashier[] = [
     avatar: "",
     school: {
       schoolId: "3",
-      schoolName: "分店二"
+      schoolName: "广州校区",
+      schoolAddr: "广州市天河区珠江新城冼村路21号"
     },
     status: "inactive",
     createTime: "2025-07-01 10:10:00",
@@ -59,7 +62,8 @@ const mockCashiers: Cashier[] = [
     avatar: "",
     school: {
       schoolId: "4",
-      schoolName: "分店三"
+      schoolName: "深圳校区",
+      schoolAddr: "深圳市南山区科技园南区高新南一道3号"
     },
     status: "active",
     createTime: "2025-07-02 09:00:00",
@@ -73,7 +77,8 @@ const mockCashiers: Cashier[] = [
     avatar: "",
     school: {
       schoolId: "1",
-      schoolName: "总店"
+      schoolName: "北京校区",
+      schoolAddr: "北京市海淀区中关村大街1号"
     },
     status: "active",
     createTime: "2025-07-02 10:30:00",
@@ -87,7 +92,8 @@ const mockCashiers: Cashier[] = [
     avatar: "",
     school: {
       schoolId: "2",
-      schoolName: "分店一"
+      schoolName: "上海校区",
+      schoolAddr: "上海市浦东新区陆家嘴环路888号"
     },
     status: "inactive",
     createTime: "2025-07-03 11:20:00",
@@ -145,7 +151,10 @@ export default function CashierManagementPage() {
                           <CardDescription className="mt-1">
                             <div className="flex items-center gap-1 text-sm">
                               <Building className="h-3.5 w-3.5 text-muted-foreground" />
-                              <span>{cashier.school.schoolName}</span>
+                              <Link href={`/schools/${cashier.school.schoolId}`}>{cashier.school.schoolName}</Link>
+                            </div>
+                            <div className="flex items-center gap-1 text-xs text-muted-foreground mt-1">
+                              <span className="ml-4">{cashier.school.schoolAddr}</span>
                             </div>
                           </CardDescription>
                         </div>

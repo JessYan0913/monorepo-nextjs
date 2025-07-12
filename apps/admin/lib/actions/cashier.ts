@@ -6,7 +6,7 @@ export interface Cashier {
   phone: string
   email: string
   avatar?: string
-  school: Pick<School, "schoolId" | "schoolName">
+  school: Pick<School, "schoolId" | "schoolName" | "schoolAddr">
   status: "active" | "inactive"
   createTime: string
   updateTime: string
