@@ -90,6 +90,10 @@ const data = {
       icon: BookOpen,
       items: [
         {
+          title: "排课管理",
+          url: "/course-schedule",
+        },
+        {
           title: "教案管理",
           url: "#",
         },
