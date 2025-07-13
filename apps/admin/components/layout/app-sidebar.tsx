@@ -108,6 +108,10 @@ const data = {
           title: "收银员管理",
           url: "/cashiers",
         },
+        {
+          title: "收银统计",
+          url: "/cashier-statistics",
+        },
       ],
     },
     {
