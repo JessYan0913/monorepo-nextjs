@@ -4,17 +4,68 @@ import { useMemo } from "react"
 import CourseCard from "./course-card"
 import type { TimeSlot, ClassGroup } from "@/lib/actions/course"
 
+const timeSlots: TimeSlot[] = [
+  {
+    id: "1",
+    startTime: "09:30",
+    endTime: "10:30",
+    courseId: "1",
+    course: {
+      id: "1",
+      name: "儿童心理沙盘",
+      type: "单人",
+      ageGroup: "3-6岁",
+      duration: 60,
+      color: "orange",
+      status: "scheduled",
+    },
+    teacherId: "1",
+    classroomId: "1",
+    classGroupId: "1",
+    studentCount: 8,
+    maxStudents: 10,
+  },
+  {
+    id: "2",
+    startTime: "10:40",
+    endTime: "11:40",
+    courseId: "2",
+    course: {
+      id: "2",
+      name: "木工坊",
+      type: "小组",
+      ageGroup: "7-12岁",
+      duration: 60,
+      color: "red",
+      status: "conflict",
+    },
+    teacherId: "2",
+    classroomId: "2",
+    studentCount: 12,
+    maxStudents: 10,
+  },
+]
+
+const classGroups: ClassGroup[] = [
+  {
+    id: "1",
+    name: "火星V6班",
+    level: "高级",
+    studentCount: 10,
+  },
+  {
+    id: "2",
+    name: "火星V5班",
+    level: "中级",
+    studentCount: 8,
+  },
+]
+
 interface ClassGroupScheduleProps {
-  selectedDate: Date
-  timeSlots: TimeSlot[]
-  classGroups: ClassGroup[]
   onTimeSlotClick: (timeSlot: TimeSlot) => void
 }
 
 export default function ClassGroupSchedule({
-  selectedDate,
-  timeSlots,
-  classGroups,
   onTimeSlotClick,
 }: ClassGroupScheduleProps) {
   const scheduleByClassGroup = useMemo(() => {

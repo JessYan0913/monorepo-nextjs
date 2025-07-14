@@ -67,7 +67,7 @@ export default function CreateCourseModal({ isOpen, onClose, onSubmit }: CreateC
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+      <DialogContent showCloseButton={false} className="max-w-8xl max-h-[90vh] overflow-y-auto">
         <DialogHeader className="flex flex-row items-center justify-between">
           <DialogTitle className="text-lg font-medium">新建排课</DialogTitle>
           <Button variant="ghost" size="sm" onClick={onClose}>

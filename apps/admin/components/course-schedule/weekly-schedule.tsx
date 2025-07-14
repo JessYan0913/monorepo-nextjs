@@ -4,16 +4,56 @@ import { useMemo } from "react"
 import CourseCard from "./course-card"
 import type { TimeSlot } from "@/lib/actions/course"
 
+const timeSlots: TimeSlot[] = [
+  {
+    id: "1",
+    startTime: "09:30",
+    endTime: "10:30",
+    courseId: "1",
+    course: {
+      id: "1",
+      name: "儿童心理沙盘",
+      type: "单人",
+      ageGroup: "3-6岁",
+      duration: 60,
+      color: "orange",
+      status: "scheduled",
+    },
+    teacherId: "1",
+    classroomId: "1",
+    classGroupId: "1",
+    studentCount: 8,
+    maxStudents: 10,
+  },
+  {
+    id: "2",
+    startTime: "10:40",
+    endTime: "11:40",
+    courseId: "2",
+    course: {
+      id: "2",
+      name: "木工坊",
+      type: "小组",
+      ageGroup: "7-12岁",
+      duration: 60,
+      color: "red",
+      status: "conflict",
+    },
+    teacherId: "2",
+    classroomId: "2",
+    studentCount: 12,
+    maxStudents: 10,
+  },
+]
+
 interface WeeklyScheduleProps {
-  selectedDate: Date
-  timeSlots: TimeSlot[]
   onTimeSlotClick: (timeSlot: TimeSlot) => void
 }
 
-export default function WeeklySchedule({ selectedDate, timeSlots, onTimeSlotClick }: WeeklyScheduleProps) {
+export default function WeeklySchedule({ onTimeSlotClick }: WeeklyScheduleProps) {
   const { weekDays, timeSlotsByDayAndHour } = useMemo(() => {
     // 获取当前周的开始日期（周一）
-    const startOfWeek = new Date(selectedDate)
+    const startOfWeek = new Date()
     const day = startOfWeek.getDay()
     const diff = startOfWeek.getDate() - day + (day === 0 ? -6 : 1)
     startOfWeek.setDate(diff)
@@ -52,7 +92,7 @@ export default function WeeklySchedule({ selectedDate, timeSlots, onTimeSlotClic
       weekDays: days,
       timeSlotsByDayAndHour: slotsByDayAndHour,
     }
-  }, [selectedDate, timeSlots])
+  }, [timeSlots])
 
   // 生成7:00到22:00的时间段
   const hours = Array.from({ length: 16 }, (_, i) => i + 7) // 7:00 - 22:00

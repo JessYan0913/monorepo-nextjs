@@ -5,14 +5,67 @@ import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/components/ui/avat
 import CourseCard from "./course-card"
 import type { TimeSlot, Teacher } from "@/lib/actions/course"
 
+const timeSlots: TimeSlot[] = [
+  {
+    id: "1",
+    startTime: "09:30",
+    endTime: "10:30",
+    courseId: "1",
+    course: {
+      id: "1",
+      name: "儿童心理沙盘",
+      type: "单人",
+      ageGroup: "3-6岁",
+      duration: 60,
+      color: "orange",
+      status: "scheduled",
+    },
+    teacherId: "1",
+    classroomId: "1",
+    classGroupId: "1",
+    studentCount: 8,
+    maxStudents: 10,
+  },
+  {
+    id: "2",
+    startTime: "10:40",
+    endTime: "11:40",
+    courseId: "2",
+    course: {
+      id: "2",
+      name: "木工坊",
+      type: "小组",
+      ageGroup: "7-12岁",
+      duration: 60,
+      color: "red",
+      status: "conflict",
+    },
+    teacherId: "2",
+    classroomId: "2",
+    studentCount: 12,
+    maxStudents: 10,
+  },
+]
+
+const teachers: Teacher[] = [
+  {
+    id: "1",
+    name: "小江老师",
+    avatar: "/placeholder.svg?height=32&width=32",
+    specialties: ["心理沙盘", "儿童心理"],
+  },
+  {
+    id: "2",
+    name: "李老师",
+    specialties: ["手工制作", "创意思维"],
+  },
+]
+
 interface TeacherScheduleProps {
-  selectedDate: Date
-  timeSlots: TimeSlot[]
-  teachers: Teacher[]
   onTimeSlotClick: (timeSlot: TimeSlot) => void
 }
 
-export default function TeacherSchedule({ selectedDate, timeSlots, teachers, onTimeSlotClick }: TeacherScheduleProps) {
+export default function TeacherSchedule({ onTimeSlotClick }: TeacherScheduleProps) {
   const scheduleByTeacher = useMemo(() => {
     const schedule: { [teacherId: string]: { [day: string]: TimeSlot[] } } = {}
 

@@ -4,16 +4,56 @@ import { useMemo } from "react"
 import CourseCard from "./course-card"
 import type { TimeSlot } from "@/lib/actions/course"
 
+const timeSlots: TimeSlot[] = [
+  {
+    id: "1",
+    startTime: "09:30",
+    endTime: "10:30",
+    courseId: "1",
+    course: {
+      id: "1",
+      name: "儿童心理沙盘",
+      type: "单人",
+      ageGroup: "3-6岁",
+      duration: 60,
+      color: "orange",
+      status: "scheduled",
+    },
+    teacherId: "1",
+    classroomId: "1",
+    classGroupId: "1",
+    studentCount: 8,
+    maxStudents: 10,
+  },
+  {
+    id: "2",
+    startTime: "10:40",
+    endTime: "11:40",
+    courseId: "2",
+    course: {
+      id: "2",
+      name: "木工坊",
+      type: "小组",
+      ageGroup: "7-12岁",
+      duration: 60,
+      color: "red",
+      status: "conflict",
+    },
+    teacherId: "2",
+    classroomId: "2",
+    studentCount: 12,
+    maxStudents: 10,
+  },
+]
+
 interface MonthlyCalendarProps {
-  selectedDate: Date
-  timeSlots: TimeSlot[]
   onTimeSlotClick: (timeSlot: TimeSlot) => void
 }
 
-export default function MonthlyCalendar({ selectedDate, timeSlots, onTimeSlotClick }: MonthlyCalendarProps) {
+export default function MonthlyCalendar({ onTimeSlotClick }: MonthlyCalendarProps) {
   const { calendarDays, weekDays } = useMemo(() => {
-    const year = selectedDate.getFullYear()
-    const month = selectedDate.getMonth()
+    const year = new Date().getFullYear()
+    const month = new Date().getMonth()
 
     const firstDay = new Date(year, month, 1)
     const lastDay = new Date(year, month + 1, 0)
@@ -32,7 +72,7 @@ export default function MonthlyCalendar({ selectedDate, timeSlots, onTimeSlotCli
       calendarDays: days,
       weekDays: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"],
     }
-  }, [selectedDate])
+  }, [])
 
   const getTimeSlotsForDate = (date: Date) => {
     const dateStr = date.toISOString().split("T")[0]
@@ -57,7 +97,7 @@ export default function MonthlyCalendar({ selectedDate, timeSlots, onTimeSlotCli
       <div className="grid grid-cols-7">
         {calendarDays.map((date, index) => {
           const dayTimeSlots = getTimeSlotsForDate(date)
-          const isCurrentMonth = date.getMonth() === selectedDate.getMonth()
+          const isCurrentMonth = date.getMonth() === new Date().getMonth()
           const isToday = date.toDateString() === new Date().toDateString()
 
           return (
