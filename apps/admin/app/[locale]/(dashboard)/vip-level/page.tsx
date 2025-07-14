@@ -121,7 +121,7 @@ export default function VipLevelManagementPage() {
                     </Link>
                     
                     {level.level === Math.max(...vipLevels.map(l => l.level)) && (
-                      <DeleteVipLevelButton id={level.id} />
+                      <DeleteVipLevelButton vipLevel={level} />
                     )}
                   </CardFooter>
                 </Card>

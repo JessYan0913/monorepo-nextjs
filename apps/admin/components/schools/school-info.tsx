@@ -72,7 +72,7 @@ export function SchoolInfo({ school }: { school?: School }) {
   const router = useRouter()
 
   const form = useForm<SchoolFormValues>({
-      resolver: zodResolver(schoolEditSchema),
+    resolver: zodResolver(schoolEditSchema),
     defaultValues: {
       schoolId: school?.schoolId,
       schoolName: school?.schoolName,
