@@ -188,6 +188,12 @@ export default function CashierManagementPage() {
                   </CardContent>
                   
                   <CardFooter className="relative flex justify-end gap-2 pt-2 border-t bg-background/80">
+                    <Link
+                      href={`/cashiers/${cashier.id}`}
+                      className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-3 py-2"
+                    >
+                      编辑
+                    </Link>
                     <DeleteCashierButton cashier={cashier} />
                   </CardFooter>
                 </Card>

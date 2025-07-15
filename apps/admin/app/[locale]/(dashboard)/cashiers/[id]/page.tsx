@@ -132,7 +132,6 @@ export default function AddCashierPage() {
   const [availableCashiers, setAvailableCashiers] = useState(mockCashiers)
   const [isLoadingCashiers, setIsLoadingCashiers] = useState(false)
   const [selectedCashier, setSelectedCashier] = useState<MockCashier | null>(null)
-  const [selectedPermissions, setSelectedPermissions] = useState<string[]>([])
   
   // 定义表单类型
   type FormValues = z.infer<typeof formSchema>
@@ -191,12 +190,6 @@ export default function AddCashierPage() {
       form.setValue("status", selectedCashier.status || "active")
     }
   }, [selectedCashier, form])
-  // 处理权限变更
-  const handlePermissionsChange = (leftItems: TransferListItem<{description: string}>[], rightItems: TransferListItem<{description: string}>[]) => {
-    const selectedPermissionKeys = rightItems.map(item => item.key)
-    setSelectedPermissions(selectedPermissionKeys)
-    form.setValue("permissions", selectedPermissionKeys)
-  }
 
   // 表单提交处理
   const onSubmit: SubmitHandler<FormValues> = async (values) => {
@@ -503,7 +496,9 @@ export default function AddCashierPage() {
                           <div className="border rounded-md p-4">
                             <TransferList<{description: string}>
                               items={permissionItems}
-                              onChange={handlePermissionsChange}
+                              onChange={({ reduceRight }) => { 
+                                field.onChange(reduceRight)
+                              }}
                               titles={["可用权限", "已分配权限"]}
                               searchPlaceholders={["搜索可用权限", "搜索已分配权限"]}
                               height={300}
@@ -526,16 +521,6 @@ export default function AddCashierPage() {
               </div>
               
               <div className="flex justify-between items-center mt-6">
-                <Button 
-                  type="button" 
-                  variant="outline" 
-                  onClick={() => router.push("/cashiers")}
-                  disabled={isSubmitting}
-                >
-                  <ArrowLeft className="mr-2 h-4 w-4" />
-                  返回列表
-                </Button>
-                
                 <Button type="submit" disabled={isSubmitting || isLoadingSchools}>
                   {isSubmitting ? (
                     <>
