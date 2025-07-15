@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation"
 import { useForm, type SubmitHandler } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
-import { ArrowLeft, Loader2, Shield } from "lucide-react"
+import { ArrowLeft, Loader2, Shield, Save } from "lucide-react"
 import Link from "next/link"
 
 import { Button } from "@repo/ui/components/ui/button"
@@ -25,7 +25,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@repo/ui/components/ui/select"
-import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@repo/ui/components/ui/card"
 import { toast } from "@repo/ui/components/ui/sonner"
 
 import { type Cashier } from "@/lib/actions/cashier"
@@ -280,9 +280,9 @@ export default function AddCashierPage() {
         <CardHeader>
           <CardTitle>收银员信息</CardTitle>
         </CardHeader>
-        <CardContent>
-          <Form {...form as any}>
-            <form onSubmit={form.handleSubmit(onSubmit as any)} className="space-y-8">
+        <Form {...form as any}>
+          <form onSubmit={form.handleSubmit(onSubmit as any)} className="space-y-8">
+            <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* 校区选择 */}
                 <FormField
@@ -493,7 +493,7 @@ export default function AddCashierPage() {
                       <FormItem>
                         <FormLabel>请选择要分配的权限</FormLabel>
                         <FormControl>
-                          <div className="border rounded-md p-4">
+                          <div className="p-4">
                             <TransferList<{description: string}>
                               items={permissionItems}
                               onChange={({ reduceRight }) => { 
@@ -519,22 +519,28 @@ export default function AddCashierPage() {
                   />
                 </div>
               </div>
-              
-              <div className="flex justify-between items-center mt-6">
-                <Button type="submit" disabled={isSubmitting || isLoadingSchools}>
-                  {isSubmitting ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      正在添加...
-                    </>
-                  ) : (
-                    "添加收银员"
-                  )}
-                </Button>
-              </div>
-            </form>
-          </Form>
-        </CardContent>
+            </CardContent>
+            <CardFooter className="flex flex-col sm:flex-row justify-end gap-3 px-6 py-4 border-t bg-muted/10">
+              <Button 
+                type="button" 
+                variant="outline" 
+                onClick={() => router.back()}
+                disabled={form.formState.isSubmitting}
+                className="border-border/50 hover:border-foreground/50"
+              >
+                取消
+              </Button>
+              <Button 
+                type="submit" 
+                className="bg-primary hover:bg-primary/90 transition-colors shadow-sm hover:shadow"
+                disabled={form.formState.isSubmitting}
+              >
+                <Save className="mr-2 h-4 w-4" />
+                保存更改
+              </Button>
+            </CardFooter>
+          </form>
+        </Form>
       </Card>
     </div>
   )

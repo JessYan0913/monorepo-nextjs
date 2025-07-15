@@ -28,6 +28,7 @@ const pathMap: Record<string, string> = {
   'classrooms': '教室管理',
   'students': '学生管理',
   'course-schedule': '排课管理',
+  'cashiers': '收银员管理',
 }
 
 export function LayoutContent({
