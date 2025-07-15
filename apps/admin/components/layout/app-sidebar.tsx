@@ -7,7 +7,8 @@ import {
   Settings2,
   Users,
   School,
-  CreditCard
+  CreditCard,
+  ShoppingCart
 } from "lucide-react"
 
 import { NavMain } from "@/components/layout/nav-main"
@@ -83,6 +84,17 @@ const data = {
           url: "/students",
         },
       ],
+    },
+    {
+      title: "商城管理",
+      url: "#",
+      icon: ShoppingCart,
+      items: [
+        {
+          title: "课程包",
+          url: "/products",
+        }
+      ]
     },
     {
       title: "教学管理",
