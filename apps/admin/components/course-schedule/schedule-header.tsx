@@ -1,5 +1,7 @@
 "use client"
 
+import Link from "next/link"
+
 import { Button } from "@repo/ui/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui/components/ui/select"
 import { Input } from "@repo/ui/components/ui/input"
@@ -9,13 +11,11 @@ import type { ScheduleFilter } from "@/lib/actions/course"
 interface ScheduleHeaderProps {
   filters: ScheduleFilter
   onFilterChange: (key: keyof ScheduleFilter, value: string) => void
-  onCreateCourse: () => void
 }
 
 export default function ScheduleHeader({
   filters,
   onFilterChange,
-  onCreateCourse,
 }: ScheduleHeaderProps) {
 
   return (
@@ -23,10 +23,12 @@ export default function ScheduleHeader({
       {/* 主要操作栏 */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <Button onClick={onCreateCourse}>
-            <Plus className="w-4 h-4 mr-1" />
-            新增排课
-          </Button>
+          <Link href="/course-schedule/add">
+            <Button>
+              <Plus className="w-4 h-4 mr-1" />
+              新增排课
+            </Button>
+          </Link>
           <Button variant="outline" size="sm">
             导入
           </Button>

@@ -8,7 +8,6 @@ import TeacherSchedule from "@/components/course-schedule/teacher-schedule"
 import ClassGroupSchedule from "@/components/course-schedule/class-group-schedule"
 import CourseDetailModal from "@/components/course-schedule/course-detail-modal"
 import type { TimeSlot, ScheduleFilter } from "@/lib/actions/course"
-import CreateCourseModal from "@/components/course-schedule/create-course-modal"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@repo/ui/components/ui/tabs"
 
 export default function ScheduleManagement() {
@@ -24,21 +23,10 @@ export default function ScheduleManagement() {
   }, [])
 
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false)
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
 
   const handleTimeSlotClick = (timeSlot: TimeSlot) => {
     setSelectedTimeSlot(timeSlot)
     setIsDetailModalOpen(true)
-  }
-
-  const handleCreateCourse = () => {
-    setIsCreateModalOpen(true)
-  }
-
-  const handleCreateCourseSubmit = (courseData: any) => {
-    console.log("创建课程:", courseData)
-    // 这里应该调用API创建课程
-    setIsCreateModalOpen(false)
   }
 
   const handleEditCourse = (timeSlot: TimeSlot) => {
@@ -56,7 +44,6 @@ export default function ScheduleManagement() {
       <ScheduleHeader
         filters={filters}
         onFilterChange={updateFilter}
-        onCreateCourse={handleCreateCourse}
       />
 
       <Tabs defaultValue="time">
@@ -86,12 +73,6 @@ export default function ScheduleManagement() {
         onClose={() => setIsDetailModalOpen(false)}
         onEdit={handleEditCourse}
         onDelete={handleDeleteCourse}
-      />
-
-      <CreateCourseModal
-        isOpen={isCreateModalOpen}
-        onClose={() => setIsCreateModalOpen(false)}
-        onSubmit={handleCreateCourseSubmit}
       />
     </div>
   )

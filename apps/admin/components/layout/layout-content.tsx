@@ -27,6 +27,7 @@ const pathMap: Record<string, string> = {
   'vip-level': '会员等级管理',
   'classrooms': '教室管理',
   'students': '学生管理',
+  'course-schedule': '排课管理',
 }
 
 export function LayoutContent({
