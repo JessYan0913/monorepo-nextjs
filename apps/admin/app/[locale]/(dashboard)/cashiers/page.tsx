@@ -5,105 +5,21 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter }
 import { Badge } from "@repo/ui/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/components/ui/avatar"
 import { DeleteCashierButton } from "@/components/cashiers/delete-cashier"
-import { type Cashier } from "@/lib/actions/cashier"
-
-// Mock data for cashiers
-const mockCashiers: Cashier[] = [
-  {
-    id: 1,
-    name: "张三",
-    phone: "13800138001",
-    email: "zhangsan@example.com",
-    avatar: "",
-    school: {
-      schoolId: "1",
-      schoolName: "北京校区",
-      schoolAddr: "北京市海淀区中关村大街1号"
-    },
-    status: "active",
-    createTime: "2025-07-01 10:00:00",
-    updateTime: "2025-07-01 10:00:00"
-  },
-  {
-    id: 2,
-    name: "李四",
-    phone: "13800138002",
-    email: "lisi@example.com",
-    avatar: "",
-    school: {
-      schoolId: "2",
-      schoolName: "上海校区",
-      schoolAddr: "上海市浦东新区陆家嘴环路888号"
-    },
-    status: "active",
-    createTime: "2025-07-01 10:05:00",
-    updateTime: "2025-07-01 10:05:00"
-  },
-  {
-    id: 3,
-    name: "王五",
-    phone: "13800138003",
-    email: "wangwu@example.com",
-    avatar: "",
-    school: {
-      schoolId: "3",
-      schoolName: "广州校区",
-      schoolAddr: "广州市天河区珠江新城冼村路21号"
-    },
-    status: "inactive",
-    createTime: "2025-07-01 10:10:00",
-    updateTime: "2025-07-01 10:10:00"
-  },
-  {
-    id: 4,
-    name: "赵六",
-    phone: "13800138004",
-    email: "zhaoliu@example.com",
-    avatar: "",
-    school: {
-      schoolId: "4",
-      schoolName: "深圳校区",
-      schoolAddr: "深圳市南山区科技园南区高新南一道3号"
-    },
-    status: "active",
-    createTime: "2025-07-02 09:00:00",
-    updateTime: "2025-07-02 09:00:00"
-  },
-  {
-    id: 5,
-    name: "钱七",
-    phone: "13800138005",
-    email: "qianqi@example.com",
-    avatar: "",
-    school: {
-      schoolId: "1",
-      schoolName: "北京校区",
-      schoolAddr: "北京市海淀区中关村大街1号"
-    },
-    status: "active",
-    createTime: "2025-07-02 10:30:00",
-    updateTime: "2025-07-02 10:30:00"
-  },
-  {
-    id: 6,
-    name: "孙八",
-    phone: "13800138006",
-    email: "sunba@example.com",
-    avatar: "",
-    school: {
-      schoolId: "2",
-      schoolName: "上海校区",
-      schoolAddr: "上海市浦东新区陆家嘴环路888号"
-    },
-    status: "inactive",
-    createTime: "2025-07-03 11:20:00",
-    updateTime: "2025-07-03 11:20:00"
-  }
-]
+import { cashierList, type Cashier } from "@/lib/actions/cashier"
 
 // Client component for the entire page
-export default function CashierManagementPage() {
-  const cashiers = mockCashiers
+export default async function CashierManagementPage() {
+  const cashiers = await cashierList({
+    name: "",
+    phone: "",
+    email: "",
+    schoolId: "",
+    status: "active",
+    startTime: "",
+    endTime: "",
+    page: 1,
+    size: 10
+  })
   
   return (
     <div className="space-y-6 p-6">
@@ -124,16 +40,16 @@ export default function CashierManagementPage() {
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold">收银员列表</h2>
-          <p className="text-sm text-muted-foreground">共有 {cashiers.length} 个收银员账号</p>
+          <p className="text-sm text-muted-foreground">共有 {cashiers.total} 个收银员账号</p>
         </div>
         
-        {cashiers.length === 0 ? (
+        {cashiers.data.length === 0 ? (
           <Card className="flex items-center justify-center p-8">
             <p className="text-muted-foreground">暂无收银员账号，请添加</p>
           </Card>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {cashiers.map((cashier) => {
+            {cashiers.data.map((cashier) => {
               return (
                 <Card 
                   key={cashier.id} 
