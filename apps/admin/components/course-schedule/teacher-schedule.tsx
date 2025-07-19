@@ -1,71 +1,41 @@
 "use client"
 
-import { useMemo } from "react"
+import { useMemo, useState, useEffect } from "react"
 import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/components/ui/avatar"
 import CourseCard from "./course-card"
 import type { TimeSlot, Teacher } from "@/lib/actions/course"
-
-const timeSlots: TimeSlot[] = [
-  {
-    id: "1",
-    startTime: "09:30",
-    endTime: "10:30",
-    courseId: "1",
-    course: {
-      id: "1",
-      name: "儿童心理沙盘",
-      type: "单人",
-      ageGroup: "3-6岁",
-      duration: 60,
-      color: "orange",
-      status: "scheduled",
-    },
-    teacherId: "1",
-    classroomId: "1",
-    classGroupId: "1",
-    studentCount: 8,
-    maxStudents: 10,
-  },
-  {
-    id: "2",
-    startTime: "10:40",
-    endTime: "11:40",
-    courseId: "2",
-    course: {
-      id: "2",
-      name: "木工坊",
-      type: "小组",
-      ageGroup: "7-12岁",
-      duration: 60,
-      color: "red",
-      status: "conflict",
-    },
-    teacherId: "2",
-    classroomId: "2",
-    studentCount: 12,
-    maxStudents: 10,
-  },
-]
-
-const teachers: Teacher[] = [
-  {
-    id: "1",
-    name: "小江老师",
-    avatar: "/placeholder.svg?height=32&width=32",
-    specialties: ["心理沙盘", "儿童心理"],
-  },
-  {
-    id: "2",
-    name: "李老师",
-    specialties: ["手工制作", "创意思维"],
-  },
-]
+import { getTimeSlots, getTeachers } from "@/lib/actions/course"
 
 interface TeacherScheduleProps {
   onTimeSlotClick: (timeSlot: TimeSlot) => void
 }
 
 export default function TeacherSchedule({ onTimeSlotClick }: TeacherScheduleProps) {
+  const [timeSlots, setTimeSlots] = useState<TimeSlot[]>([]);
+  const [teachers, setTeachers] = useState<Teacher[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // 获取教师和时间段数据
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const [timeSlotsData, teachersData] = await Promise.all([
+          getTimeSlots(),
+          getTeachers()
+        ]);
+        setTimeSlots(timeSlotsData);
+        setTeachers(teachersData);
+      } catch (error) {
+        console.error('Failed to fetch schedule data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   const scheduleByTeacher = useMemo(() => {
     const schedule: { [teacherId: string]: { [day: string]: TimeSlot[] } } = {}
 
@@ -76,7 +46,8 @@ export default function TeacherSchedule({ onTimeSlotClick }: TeacherScheduleProp
         schedule[slot.teacherId] = {}
       }
 
-      const day = "monday" // 简化处理
+      // 使用时间段中的 day 属性，如果没有则默认为 monday
+      const day = slot.day || "monday";
       if (!schedule[slot.teacherId][day]) {
         schedule[slot.teacherId][day] = []
       }
@@ -87,15 +58,35 @@ export default function TeacherSchedule({ onTimeSlotClick }: TeacherScheduleProp
     return schedule
   }, [timeSlots])
 
-  const weekDays = [
-    { key: "monday", label: "周一(07.07)" },
-    { key: "tuesday", label: "周二(07.08)" },
-    { key: "wednesday", label: "周三(07.09)" },
-    { key: "thursday", label: "周四(07.10)" },
-    { key: "friday", label: "周五(07.11)" },
-    { key: "saturday", label: "周六(07.12)" },
-    { key: "sunday", label: "周日(07.13)" },
-  ]
+  // 生成包含日期的星期几标签
+  const weekDays = useMemo(() => {
+    const today = new Date();
+    const day = today.getDay();
+    const diff = day === 0 ? -6 : 1 - day; // 调整到本周一
+    
+    const weekDays = [];
+    const dayNames = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"];
+    const dayKeys = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
+    
+    for (let i = 0; i < 7; i++) {
+      const date = new Date(today);
+      date.setDate(today.getDate() + diff + i);
+      const month = date.getMonth() + 1;
+      const day = date.getDate();
+      const formattedDate = `${month.toString().padStart(2, '0')}.${day.toString().padStart(2, '0')}`;
+      
+      weekDays.push({
+        key: dayKeys[i],
+        label: `${dayNames[i]}(${formattedDate})`
+      });
+    }
+    
+    return weekDays;
+  }, []);
+
+  if (loading) {
+    return <div className="p-4 text-center">加载中...</div>;
+  }
 
   return (
     <div className="bg-white">
