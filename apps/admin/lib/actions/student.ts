@@ -1,5 +1,119 @@
 "use server"
 
+// Mock data for students
+let mockStudents: Student[] = [
+  {
+    studentId: 1,
+    studentName: "张三",
+    studentAccount: "zhangsan",
+    studentPhone: "13800138001",
+    studentIdcard: "110101200001011234",
+    studentAddr: "北京市海淀区",
+    studentBirthday: "2000-01-01",
+    studentEnrollDate: "2022-09-01",
+    studentSex: 0,
+    studentStatus: "active",
+    studentSerial: 20220001,
+    studentClass: "计算机科学1班",
+    studentGrade: "2022级",
+    studentProfilePicture: "",
+    createId: 1,
+    createName: "系统",
+    createTime: "2022-08-15T10:00:00Z",
+    updateId: 1,
+    updateName: "系统",
+    updateTime: "2022-08-15T10:00:00Z"
+  },
+  {
+    studentId: 2,
+    studentName: "李四",
+    studentAccount: "lisi",
+    studentPhone: "13800138002",
+    studentIdcard: "110101200002022345",
+    studentAddr: "北京市朝阳区",
+    studentBirthday: "2000-02-02",
+    studentEnrollDate: "2022-09-01",
+    studentSex: 0,
+    studentStatus: "active",
+    studentSerial: 20220002,
+    studentClass: "计算机科学1班",
+    studentGrade: "2022级",
+    studentProfilePicture: "",
+    createId: 1,
+    createName: "系统",
+    createTime: "2022-08-15T11:00:00Z",
+    updateId: 1,
+    updateName: "系统",
+    updateTime: "2022-08-15T11:00:00Z"
+  },
+  {
+    studentId: 3,
+    studentName: "王五",
+    studentAccount: "wangwu",
+    studentPhone: "13800138003",
+    studentIdcard: "110101200003033456",
+    studentAddr: "北京市西城区",
+    studentBirthday: "2000-03-03",
+    studentEnrollDate: "2022-09-01",
+    studentSex: 0,
+    studentStatus: "inactive",
+    studentSerial: 20220003,
+    studentClass: "计算机科学2班",
+    studentGrade: "2022级",
+    studentProfilePicture: "",
+    createId: 1,
+    createName: "系统",
+    createTime: "2022-08-16T10:00:00Z",
+    updateId: 1,
+    updateName: "系统",
+    updateTime: "2022-08-16T10:00:00Z"
+  },
+  {
+    studentId: 4,
+    studentName: "赵六",
+    studentAccount: "zhaoliu",
+    studentPhone: "13800138004",
+    studentIdcard: "110101200004044567",
+    studentAddr: "北京市东城区",
+    studentBirthday: "2000-04-04",
+    studentEnrollDate: "2022-09-01",
+    studentSex: 1,
+    studentStatus: "active",
+    studentSerial: 20220004,
+    studentClass: "计算机科学2班",
+    studentGrade: "2022级",
+    studentProfilePicture: "",
+    createId: 1,
+    createName: "系统",
+    createTime: "2022-08-16T11:00:00Z",
+    updateId: 1,
+    updateName: "系统",
+    updateTime: "2022-08-16T11:00:00Z"
+  },
+  {
+    studentId: 5,
+    studentName: "钱七",
+    studentAccount: "qianqi",
+    studentPhone: "13800138005",
+    studentIdcard: "110101200005055678",
+    studentAddr: "北京市丰台区",
+    studentBirthday: "2000-05-05",
+    studentEnrollDate: "2022-09-01",
+    studentSex: 1,
+    studentStatus: "active",
+    studentSerial: 20220005,
+    studentClass: "计算机科学3班",
+    studentGrade: "2022级",
+    studentProfilePicture: "",
+    createId: 1,
+    createName: "系统",
+    createTime: "2022-08-17T10:00:00Z",
+    updateId: 1,
+    updateName: "系统",
+    updateTime: "2022-08-17T10:00:00Z"
+  }
+];
+
 export interface StudentListParams {
   studentName?: string
   studentPhone?: string
@@ -39,212 +153,112 @@ export interface StudentListResponse {
   total: number
 }
 
-export async function studentList(params: StudentListParams): Promise<StudentListResponse> {
+export async function studentList(params: StudentListParams = {}): Promise<StudentListResponse> {
   try {
-    const queryParams = new URLSearchParams()
+    // Filter students based on query parameters
+    let filteredStudents = [...mockStudents];
     
-    if (params.studentName) queryParams.append("studentName", params.studentName)
-    if (params.studentPhone) queryParams.append("studentPhone", params.studentPhone)
-    if (params.studentIdcard) queryParams.append("studentIdcard", params.studentIdcard)
-    if (params.studentStatus) queryParams.append("studentStatus", params.studentStatus)
-    if (params.page) queryParams.append("page", params.page.toString())
-    if (params.size) queryParams.append("size", params.size.toString())
-    
-    const response = await fetch(`${process.env.BASE_URL}/api/students?${queryParams.toString()}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      cache: "no-store",
-    })
-
-    if (!response.ok) {
-      throw new Error(`Failed to fetch student list: ${response.status}`)
+    if (params.studentName) {
+      filteredStudents = filteredStudents.filter(student => 
+        student.studentName.includes(params.studentName!)
+      );
     }
-
-    return await response.json()
-  } catch (error) {
-    console.error("Error fetching student list:", error)
-    // Return mock data for development
+    
+    if (params.studentPhone) {
+      filteredStudents = filteredStudents.filter(student => 
+        student.studentPhone.includes(params.studentPhone!)
+      );
+    }
+    
+    if (params.studentIdcard) {
+      filteredStudents = filteredStudents.filter(student => 
+        student.studentIdcard.includes(params.studentIdcard!)
+      );
+    }
+    
+    if (params.studentStatus) {
+      filteredStudents = filteredStudents.filter(student => 
+        student.studentStatus === params.studentStatus
+      );
+    }
+    
+    // Pagination
+    const page = params.page || 1;
+    const size = params.size || 10;
+    const start = (page - 1) * size;
+    const paginatedItems = filteredStudents.slice(start, start + size);
+    
     return {
-      data: [
-        {
-          studentId: 1,
-          studentName: "张三",
-          studentAccount: "zhangsan",
-          studentPhone: "13800138001",
-          studentIdcard: "110101200001011234",
-          studentAddr: "北京市海淀区",
-          studentBirthday: "2000-01-01",
-          studentEnrollDate: "2022-09-01",
-          studentSex: 0,
-          studentStatus: "active",
-          studentSerial: 20220001,
-          studentClass: "计算机科学1班",
-          studentGrade: "2022级",
-          studentProfilePicture: "",
-          createId: 1,
-          createName: "admin",
-          createTime: "2022-08-15T10:00:00",
-          updateId: 1,
-          updateName: "admin",
-          updateTime: "2022-08-15T10:00:00"
-        },
-        {
-          studentId: 2,
-          studentName: "李四",
-          studentAccount: "lisi",
-          studentPhone: "13800138002",
-          studentIdcard: "110101200002022345",
-          studentAddr: "北京市朝阳区",
-          studentBirthday: "2000-02-02",
-          studentEnrollDate: "2022-09-01",
-          studentSex: 0,
-          studentStatus: "active",
-          studentSerial: 20220002,
-          studentClass: "计算机科学1班",
-          studentGrade: "2022级",
-          studentProfilePicture: "",
-          createId: 1,
-          createName: "admin",
-          createTime: "2022-08-15T11:00:00",
-          updateId: 1,
-          updateName: "admin",
-          updateTime: "2022-08-15T11:00:00"
-        },
-        {
-          studentId: 3,
-          studentName: "王五",
-          studentAccount: "wangwu",
-          studentPhone: "13800138003",
-          studentIdcard: "110101200003033456",
-          studentAddr: "北京市西城区",
-          studentBirthday: "2000-03-03",
-          studentEnrollDate: "2022-09-01",
-          studentSex: 0,
-          studentStatus: "inactive",
-          studentSerial: 20220003,
-          studentClass: "计算机科学2班",
-          studentGrade: "2022级",
-          studentProfilePicture: "",
-          createId: 1,
-          createName: "admin",
-          createTime: "2022-08-16T10:00:00",
-          updateId: 1,
-          updateName: "admin",
-          updateTime: "2022-08-16T10:00:00"
-        },
-        {
-          studentId: 4,
-          studentName: "赵六",
-          studentAccount: "zhaoliu",
-          studentPhone: "13800138004",
-          studentIdcard: "110101200004044567",
-          studentAddr: "北京市东城区",
-          studentBirthday: "2000-04-04",
-          studentEnrollDate: "2022-09-01",
-          studentSex: 1,
-          studentStatus: "active",
-          studentSerial: 20220004,
-          studentClass: "计算机科学2班",
-          studentGrade: "2022级",
-          studentProfilePicture: "",
-          createId: 1,
-          createName: "admin",
-          createTime: "2022-08-16T11:00:00",
-          updateId: 1,
-          updateName: "admin",
-          updateTime: "2022-08-16T11:00:00"
-        },
-        {
-          studentId: 5,
-          studentName: "钱七",
-          studentAccount: "qianqi",
-          studentPhone: "13800138005",
-          studentIdcard: "110101200005055678",
-          studentAddr: "北京市丰台区",
-          studentBirthday: "2000-05-05",
-          studentEnrollDate: "2022-09-01",
-          studentSex: 1,
-          studentStatus: "active",
-          studentSerial: 20220005,
-          studentClass: "计算机科学3班",
-          studentGrade: "2022级",
-          studentProfilePicture: "",
-          createId: 1,
-          createName: "admin",
-          createTime: "2022-08-17T10:00:00",
-          updateId: 1,
-          updateName: "admin",
-          updateTime: "2022-08-17T10:00:00"
-        }
-      ],
+      data: paginatedItems,
+      page,
+      size,
+      total: filteredStudents.length,
+    };
+  } catch (error) {
+    console.error("获取学生列表失败:", error);
+    return {
+      data: [],
       page: params.page || 1,
       size: params.size || 10,
-      total: 5,
-    }
+      total: 0,
+    };
   }
 }
 
 export async function deleteStudent(id: number): Promise<boolean> {
   try {
-    const response = await fetch(`${process.env.BASE_URL}/api/students/${id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-
-    if (!response.ok) {
-      throw new Error(`Failed to delete student: ${response.status}`)
+    const initialLength = mockStudents.length;
+    mockStudents = mockStudents.filter(student => student.studentId !== id);
+    
+    if (mockStudents.length === initialLength) {
+      console.error(`删除失败: 未找到ID为 ${id} 的学生`);
+      return false;
     }
-
-    return true
+    
+    return true;
   } catch (error) {
-    console.error("Error deleting student:", error)
-    return false
+    console.error("删除学生失败:", error);
+    return false;
   }
 }
 
 export async function getStudent(id: string): Promise<Student | null> {
   try {
-    const response = await fetch(`${process.env.BASE_URL}/api/students/${id}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      cache: "no-store",
-    })
-
-    if (!response.ok) {
-      throw new Error(`Failed to fetch student details: ${response.status}`)
+    const student = mockStudents.find(student => student.studentId === Number(id));
+    
+    if (!student) {
+      console.error(`未找到ID为 ${id} 的学生`);
+      return null;
     }
-
-    const { data } = await response.json()
-    return data
+    
+    return { ...student };
   } catch (error) {
-    console.error("Error fetching student details:", error)
-    return null
+    console.error("获取学生详情失败:", error);
+    return null;
   }
 }
 
 export async function updateStudent(data: Student): Promise<boolean> {
   try {
-    const response = await fetch(`${process.env.BASE_URL}/api/students/${data.studentId}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-
-    if (!response.ok) {
-      throw new Error(`Failed to update student: ${response.status}`)
+    const index = mockStudents.findIndex(student => student.studentId === data.studentId);
+    
+    if (index === -1) {
+      console.error(`更新失败: 未找到ID为 ${data.studentId} 的学生`);
+      return false;
     }
-
-    return true
+    
+    const updatedStudent = {
+      ...mockStudents[index],
+      ...data,
+      updateTime: new Date().toISOString(),
+      updateId: 1, // In a real app, this would be the current user's ID
+      updateName: '当前用户'
+    };
+    
+    mockStudents[index] = updatedStudent;
+    return true;
   } catch (error) {
-    console.error("Error updating student:", error)
-    return false
+    console.error("更新学生信息失败:", error);
+    return false;
   }
 }

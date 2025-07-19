@@ -1,6 +1,40 @@
 "use server"
 
-import { http, defaultHeaders, type PaginatedResponse } from "@/lib/utils"
+import { type PaginatedResponse } from "@/lib/utils"
+
+// Mock data for schools
+const mockSchools: School[] = [
+  {
+    schoolId: '1',
+    schoolName: '上海中心校区',
+    schoolIntro: '位于上海市中心的旗舰校区',
+    schoolAddr: '上海市黄浦区南京东路123号',
+    schoolStatus: 'normal',
+    schoolMvs: [],
+    schoolPictures: [],
+    director: [
+      { staffId: '1', staffName: '张老师' }
+    ],
+    createId: 'system',
+    createName: '系统',
+    createTime: '2024-01-01T00:00:00Z'
+  },
+  {
+    schoolId: '2',
+    schoolName: '北京朝阳校区',
+    schoolIntro: '北京朝阳区重点校区',
+    schoolAddr: '北京市朝阳区建国路88号',
+    schoolStatus: 'normal',
+    schoolMvs: [],
+    schoolPictures: [],
+    director: [
+      { staffId: '2', staffName: '李老师' }
+    ],
+    createId: 'system',
+    createName: '系统',
+    createTime: '2024-02-01T00:00:00Z'
+  }
+];
 
 export interface Director {
   staffId: string // 负责人ID
@@ -41,27 +75,55 @@ export async function schoolList({
   addStartTime,
   schoolDirectorIds,
   schoolName,
-  page,
-  size
+  page = 1,
+  size = 10
 }: SchoolListParams): Promise<PaginatedResponse<School>> {
   try {
-    const response = await http.post<{ data: PaginatedResponse<School> }>(
-      `${process.env.BASE_URL}/school/manage/list`,
-      {
-        addEndTime,
-        addStartTime,
-        schoolDirectorIds,
-        schoolName,
-        page,
-        size,
-      },
-      { headers: defaultHeaders, debug: false }
-    );
+    // Filter schools based on query parameters
+    let filteredSchools = [...mockSchools];
     
-    return response.data;
+    if (schoolName) {
+      filteredSchools = filteredSchools.filter(school => 
+        school.schoolName.includes(schoolName)
+      );
+    }
+    
+    if (schoolDirectorIds?.length) {
+      filteredSchools = filteredSchools.filter(school => 
+        school.director.some(d => schoolDirectorIds.includes(d.staffId))
+      );
+    }
+    
+    // Date range filtering
+    if (addStartTime || addEndTime) {
+      const startDate = addStartTime ? new Date(addStartTime) : null;
+      const endDate = addEndTime ? new Date(addEndTime) : null;
+      
+      filteredSchools = filteredSchools.filter(school => {
+        const createDate = new Date(school.createTime);
+        return (!startDate || createDate >= startDate) && 
+               (!endDate || createDate <= endDate);
+      });
+    }
+    
+    // Pagination
+    const start = (page - 1) * size;
+    const paginatedItems = filteredSchools.slice(start, start + size);
+    
+    return {
+      data: paginatedItems,
+      total: filteredSchools.length,
+      size,
+      page
+    };
   } catch (error) {
-    console.error('Failed to fetch school list:', error);
-    throw error;
+    console.error('Error fetching school list:', error);
+    return {
+      data: [],
+      total: 0,
+      size,
+      page
+    };
   }
 }
 
@@ -70,13 +132,13 @@ export async function schoolList({
  */
 export async function getSchool(id: string): Promise<School> {
   try {
-    const { data } = await http.post<{ data: School }>(
-      `${process.env.BASE_URL}/school/manage/get`,
-      { schoolId: id },
-      { headers: defaultHeaders }
-    );
+    const school = mockSchools.find(s => s.schoolId === id);
     
-    return data;
+    if (!school) {
+      throw new Error(`School with ID ${id} not found`);
+    }
+    
+    return { ...school };
   } catch (error) {
     console.error(`Failed to fetch school ${id}:`, error);
     throw new Error('Failed to fetch school details');
@@ -90,13 +152,19 @@ export async function addSchool(
   schoolData: Omit<School, 'schoolId' | 'createId' | 'createName' | 'createTime' | 'updateId' | 'updateName' | 'updateTime'>
 ): Promise<School> {
   try {
-    const { data } = await http.post<{ data: School }>(
-      `${process.env.BASE_URL}/school/manage/add`,
-      schoolData,
-      { headers: defaultHeaders, debug: true }
-    );
+    const newSchool: School = {
+      ...schoolData,
+      schoolId: (mockSchools.length + 1).toString(),
+      createId: 'current-user',
+      createName: '当前用户',
+      createTime: new Date().toISOString(),
+      schoolMvs: schoolData.schoolMvs || [],
+      schoolPictures: schoolData.schoolPictures || [],
+      director: schoolData.director || []
+    };
     
-    return data;
+    mockSchools.push(newSchool);
+    return { ...newSchool };
   } catch (error) {
     console.error('Failed to create school:', error);
     throw error;
@@ -110,13 +178,22 @@ export async function updateSchool(
   schoolData: Omit<School, 'createId' | 'createName' | 'createTime' | 'updateId' | 'updateName' | 'updateTime'>
 ): Promise<School> {
   try {
-    const { data } = await http.put<{ data: School }>(
-      `${process.env.BASE_URL}/school/manage/update`,
-      schoolData,
-      { headers: defaultHeaders, debug: true }
-    );
+    const index = mockSchools.findIndex(s => s.schoolId === schoolData.schoolId);
     
-    return data;
+    if (index === -1) {
+      throw new Error(`School with ID ${schoolData.schoolId} not found`);
+    }
+    
+    const updatedSchool = {
+      ...mockSchools[index],
+      ...schoolData,
+      updateId: 'current-user',
+      updateName: '当前用户',
+      updateTime: new Date().toISOString()
+    };
+    
+    mockSchools[index] = updatedSchool;
+    return { ...updatedSchool };
   } catch (error) {
     console.error(`Failed to update school ${schoolData.schoolId}:`, error);
     throw error;
@@ -128,13 +205,18 @@ export async function updateSchool(
  */
 export async function deleteSchool(id: string): Promise<{ success: boolean; message: string }> {
   try {
-    return await http.post(
-      `${process.env.BASE_URL}/school/manage/delete`,
-      { schoolId: id },
-      { headers: defaultHeaders, debug: true }
-    );
+    const index = mockSchools.findIndex(s => s.schoolId === id);
+    
+    if (index === -1) {
+      return { success: false, message: '校区不存在' };
+    }
+    
+    // In a real app, we would just mark it as deleted
+    mockSchools.splice(index, 1);
+    
+    return { success: true, message: '删除成功' };
   } catch (error) {
     console.error(`Failed to delete school ${id}:`, error);
-    throw error;
+    return { success: false, message: '删除失败' };
   }
 }
