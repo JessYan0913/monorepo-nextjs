@@ -30,11 +30,11 @@ export default function Home() {
                 </div>
 
                 {/* 欢迎文案 */}
-                <div className="pt-[27px] text-[32px] p-4 text-orange-500">
-                  <p className="font-bold leading-tight">
+                <div className="pt-2 p-4 text-orange-500">
+                  <p className="font-bold text-2xl">
                     Hello，你好
                   </p>
-                  <p className="text-[32px]">
+                  <p className="text-lg">
                     欢迎使用博思优教学系统
                   </p>
                 </div>
@@ -59,7 +59,7 @@ export default function Home() {
                       <div className="bg-white rounded-2xl p-6 shadow-lg border-2 hover:border-orange-300 hover:shadow-xl transition-all duration-300 group-hover:scale-105">
                         <div className="flex flex-col items-center space-y-4">
                           <span className="font-bold text-lg text-gray-800">我是老师</span>
-                          <Image src="/home-4.png" alt="老师" className="w-30 h-30" width={100} height={100} />
+                          <Image src="/home-4.png" alt="老师" className="w-25 h-30" width={100} height={100} />
                         </div>
                       </div>
                     </Link>
