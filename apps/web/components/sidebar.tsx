@@ -9,17 +9,17 @@ import { Home, BookOpen, ShoppingBag, User } from "lucide-react"
 const menuItems = [
   {
     title: "首页",
-    href: "/",
+    href: "/student",
     icon: Home,
   },
   {
     title: "学习中心",
-    href: "/learning",
+    href: "/student/learning",
     icon: BookOpen,
   },
   {
     title: "商城",
-    href: "/mall",
+    href: "/student/mall",
     icon: ShoppingBag,
   },
   {

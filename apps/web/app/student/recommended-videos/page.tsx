@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { Play, ArrowLeft } from 'lucide-react'
 
-export default function HotVideosPage() {
+export default function RecommendVideosPage() {
   // 模拟热门视频数据
   const hotVideos = [
     {
@@ -70,7 +70,7 @@ export default function HotVideosPage() {
             
             {/* iPad上显示的页面标题 */}
             <h2 className="hidden md:block text-lg font-medium text-gray-700 dark:text-gray-300">
-              热门视频
+              推荐课程
             </h2>
           </div>
         </div>
@@ -81,7 +81,7 @@ export default function HotVideosPage() {
         <div className="max-w-6xl mx-auto p-4 md:p-8">
           {/* 页面标题 - 移动端显示 */}
           <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-6 md:mb-8 md:hidden">
-            热门视频
+            推荐课程
           </h1>
           
           {/* 视频列表 - 响应式网格布局 */}
