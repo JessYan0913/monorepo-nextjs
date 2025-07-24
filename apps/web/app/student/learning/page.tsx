@@ -235,7 +235,7 @@ export default function LearningPage() {
                 课后作业
               </h2>
             </div>
-            <Link href="/student/recommended-videos" className="flex items-center gap-1 text-sm md:text-base text-orange-500 hover:text-orange-600 transition-colors">
+            <Link href="/student/home-work" className="flex items-center gap-1 text-sm md:text-base text-orange-500 hover:text-orange-600 transition-colors">
               更多
               <ChevronRight className="w-4 h-4" />
             </Link>
