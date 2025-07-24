@@ -137,7 +137,7 @@ export default function HomeWorkPage() {
           <div className="space-y-4">
             {filteredHomeworks.map((homework) => (
               <Link 
-                href={`/student/homework/${homework.id}`} 
+                href={`/student/home-work/${homework.id}`} 
                 key={homework.id}
                 className="block bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-md border border-gray-100 dark:border-gray-700 overflow-hidden transition-all duration-300"
               >
