@@ -189,7 +189,7 @@ export default function LearningPage() {
                 体验课程
               </h2>
             </div>
-            <Link href="/student/trial-course" className="flex items-center gap-1 text-sm md:text-base text-orange-500 hover:text-orange-600 transition-colors">
+            <Link href="/student/learning/trial-course" className="flex items-center gap-1 text-sm md:text-base text-orange-500 hover:text-orange-600 transition-colors">
               更多
               <ChevronRight className="w-4 h-4" />
             </Link>
@@ -212,7 +212,7 @@ export default function LearningPage() {
                 我的课程
               </h2>
             </div>
-            <Link href="/student/my-course" className="flex items-center gap-1 text-sm md:text-base text-orange-500 hover:text-orange-600 transition-colors">
+            <Link href="/student/learning/my-course" className="flex items-center gap-1 text-sm md:text-base text-orange-500 hover:text-orange-600 transition-colors">
               更多
               <ChevronRight className="w-4 h-4" />
             </Link>
@@ -235,7 +235,7 @@ export default function LearningPage() {
                 课后作业
               </h2>
             </div>
-            <Link href="/student/home-work" className="flex items-center gap-1 text-sm md:text-base text-orange-500 hover:text-orange-600 transition-colors">
+            <Link href="/student/learning/home-work" className="flex items-center gap-1 text-sm md:text-base text-orange-500 hover:text-orange-600 transition-colors">
               更多
               <ChevronRight className="w-4 h-4" />
             </Link>
@@ -258,7 +258,7 @@ export default function LearningPage() {
                 推荐课程
               </h2>
             </div>
-            <Link href="/student/recommended-videos" className="flex items-center gap-1 text-sm md:text-base text-orange-500 hover:text-orange-600 transition-colors">
+            <Link href="/student/learning/recommended-videos" className="flex items-center gap-1 text-sm md:text-base text-orange-500 hover:text-orange-600 transition-colors">
               更多
               <ChevronRight className="w-4 h-4" />
             </Link>

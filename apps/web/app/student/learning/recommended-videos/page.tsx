@@ -1,7 +1,12 @@
+'use client'
+
 import Link from 'next/link'
-import { Play, ArrowLeft } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { Play, ChevronLeft } from 'lucide-react'
+import { Button } from '@repo/ui/components/ui/button'
 
 export default function RecommendVideosPage() {
+  const router = useRouter()
   // 模拟热门视频数据
   const hotVideos = [
     {
@@ -60,13 +65,14 @@ export default function RecommendVideosPage() {
       <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-10 flex-shrink-0">
         <div className="max-w-6xl mx-auto px-6 py-4 md:py-5">
           <div className="flex justify-between items-center">
-            <Link 
-              href="/student" 
-              className="inline-flex items-center text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors duration-200 text-base md:text-lg"
+            <Button
+              variant="ghost"
+              onClick={() => router.back()}
+              className="inline-flex items-center text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors duration-200"
             >
-              <ArrowLeft className="w-5 h-5 md:w-6 md:h-6 mr-2" />
+              <ChevronLeft className="w-5 h-5 mr-2" />
               <span>返回</span>
-            </Link>
+            </Button>
             
             {/* iPad上显示的页面标题 */}
             <h2 className="hidden md:block text-lg font-medium text-gray-700 dark:text-gray-300">

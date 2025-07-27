@@ -9,7 +9,7 @@ import { Home, BookOpen, ShoppingBag, User } from "lucide-react"
 const menuItems = [
   {
     title: "首页",
-    href: "/student",
+    href: "/student/home",
     icon: Home,
   },
   {

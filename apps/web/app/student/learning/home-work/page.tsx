@@ -1,10 +1,13 @@
 "use client"
 
 import Link from 'next/link'
-import { ArrowLeft, Clock, User, CheckCircle, AlertCircle } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { ChevronLeft } from 'lucide-react'
 import { useState } from 'react'
+import { Button } from '@repo/ui/components/ui/button'
 
 export default function HomeWorkPage() {
+  const router = useRouter()
   // 状态管理
   const [activeTab, setActiveTab] = useState<'online' | 'offline'>('online')
   
@@ -91,15 +94,21 @@ export default function HomeWorkPage() {
     <div className="min-h-screen bg-orange-50 dark:bg-gray-900 flex flex-col">
       {/* 顶部导航栏 */}
       <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-10 flex-shrink-0">
-        <div className="max-w-7xl mx-auto px-4 py-3">
-          <div className="flex items-center">
-            <Link 
-              href="/student/learning" 
+      <div className="max-w-6xl mx-auto px-6 py-4 md:py-5">
+      <div className="flex justify-between items-center">
+            <Button
+              variant="ghost"
+              onClick={() => router.back()}
               className="inline-flex items-center text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors duration-200"
             >
-              <ArrowLeft className="w-5 h-5 mr-2" />
+              <ChevronLeft className="w-5 h-5 mr-2" />
               <span>返回</span>
-            </Link>
+            </Button>
+
+            {/* iPad上显示的页面标题 */}
+            <h2 className="hidden md:block text-lg font-medium text-gray-700 dark:text-gray-300">
+              课后作业
+            </h2>
           </div>
         </div>
       </div>
@@ -137,7 +146,7 @@ export default function HomeWorkPage() {
           <div className="space-y-4">
             {filteredHomeworks.map((homework) => (
               <Link 
-                href={`/student/home-work/${homework.id}`} 
+                href={`/student/learning/home-work/${homework.id}`} 
                 key={homework.id}
                 className="block bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-md border border-gray-100 dark:border-gray-700 overflow-hidden transition-all duration-300"
               >

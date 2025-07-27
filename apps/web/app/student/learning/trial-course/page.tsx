@@ -1,86 +1,85 @@
-import Link from 'next/link'
-import { Play, ArrowLeft, Clock, User } from 'lucide-react'
+'use client'
 
-export default function MyCourseListPage() {
-  // 我的课程数据
-  const myCourses = [
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { Button } from '@repo/ui/components/ui/button'
+import { Play, ChevronLeft, Clock, User } from 'lucide-react'
+
+export default function TrialCoursePage() {
+  const router = useRouter()
+  // 体验课程数据
+  const trialCourses = [
     {
-      id: 'course-1',
-      title: '乐动智趣课程 - 第一阶段',
-      description: '音乐与运动结合的综合能力培养课程',
-      duration: '12课时',
-      tag: '综合能力',
+      id: 'trial-1',
+      title: '乐动智趣体验课 - 音乐启蒙',
+      description: '通过音乐和节奏培养孩子的乐感和协调能力',
+      duration: '45分钟',
+      tag: '音乐启蒙',
       level: '初级',
-      progress: 75,
+      students: 128,
       teacher: '张老师',
       thumbnail: '/api/placeholder/800/450',
-      category: '综合',
-      nextClass: '2025.07.26'
+      category: '艺术'
     },
     {
-      id: 'course-2',
-      title: '儿童编程思维培养',
-      description: '通过图形化编程培养逻辑思维和创造力',
-      duration: '16课时',
-      tag: '编程启蒙',
-      level: '中级',
-      progress: 50,
-      teacher: '陈老师',
-      thumbnail: '/api/placeholder/800/450',
-      category: '科技',
-      nextClass: '2025.07.25'
-    },
-    {
-      id: 'course-3',
-      title: '英语口语强化训练',
-      description: '通过情景对话提升英语口语表达能力',
-      duration: '24课时',
-      tag: '语言学习',
-      level: '进阶',
-      progress: 30,
-      teacher: 'Sarah',
-      thumbnail: '/api/placeholder/800/450',
-      category: '语言',
-      nextClass: '2025.07.27'
-    },
-    {
-      id: 'course-4',
-      title: '数学思维训练营',
-      description: '培养数学逻辑思维和解题能力',
-      duration: '20课时',
-      tag: '数学思维',
-      level: '中级',
-      progress: 60,
+      id: 'trial-2',
+      title: '小小科学家 - 物理实验',
+      description: '简单有趣的物理实验，激发孩子科学兴趣',
+      duration: '60分钟',
+      tag: '科学实验',
+      level: '初级',
+      students: 95,
       teacher: '李教授',
       thumbnail: '/api/placeholder/800/450',
-      category: '学科',
-      nextClass: '2025.07.29'
+      category: '科学'
     },
     {
-      id: 'course-5',
-      title: '创意美术进阶课程',
-      description: '多种绘画技法与艺术表现形式的探索',
-      duration: '18课时',
-      tag: '艺术创作',
-      level: '进阶',
-      progress: 40,
+      id: 'trial-3',
+      title: '创意美术 - 水彩画基础',
+      description: '学习基本水彩技巧，培养艺术创造力',
+      duration: '50分钟',
+      tag: '美术创作',
+      level: '入门',
+      students: 76,
       teacher: '王老师',
       thumbnail: '/api/placeholder/800/450',
-      category: '艺术',
-      nextClass: '2025.07.30'
+      category: '艺术'
     },
     {
-      id: 'course-6',
-      title: '科学实验探索课',
-      description: '通过动手实验了解科学原理',
-      duration: '15课时',
-      tag: '科学探索',
-      level: '初级',
-      progress: 20,
-      teacher: '赵博士',
+      id: 'trial-4',
+      title: '少儿编程 - Scratch入门',
+      description: '通过游戏学习编程思维',
+      duration: '60分钟',
+      tag: '编程启蒙',
+      level: '入门',
+      students: 203,
+      teacher: '陈老师',
       thumbnail: '/api/placeholder/800/450',
-      category: '科学',
-      nextClass: '2025.08.01'
+      category: '科技'
+    },
+    {
+      id: 'trial-5',
+      title: '趣味英语 - 动物世界',
+      description: '通过动物主题学习基础英语',
+      duration: '40分钟',
+      tag: '英语启蒙',
+      level: '初级',
+      students: 156,
+      teacher: 'Sarah',
+      thumbnail: '/api/placeholder/800/450',
+      category: '语言'
+    },
+    {
+      id: 'trial-6',
+      title: '少儿体适能 - 基础训练',
+      description: '培养孩子基础运动能力',
+      duration: '55分钟',
+      tag: '体能训练',
+      level: '初级',
+      students: 89,
+      teacher: '张教练',
+      thumbnail: '/api/placeholder/800/450',
+      category: '体育'
     }
   ]
 
@@ -90,17 +89,18 @@ export default function MyCourseListPage() {
       <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-10 flex-shrink-0">
         <div className="max-w-6xl mx-auto px-6 py-4 md:py-5">
           <div className="flex justify-between items-center">
-            <Link 
-              href="/student" 
+            <Button 
+              variant="ghost"
+              onClick={() => router.back()}
               className="inline-flex items-center text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors duration-200 text-base md:text-lg"
             >
-              <ArrowLeft className="w-5 h-5 md:w-6 md:h-6 mr-2" />
+              <ChevronLeft className="w-5 h-5 md:w-6 md:h-6 mr-2" />
               <span>返回</span>
-            </Link>
+            </Button>
             
             {/* iPad上显示的页面标题 */}
             <h2 className="hidden md:block text-lg font-medium text-gray-700 dark:text-gray-300">
-              我的课程
+              体验课程
             </h2>
           </div>
         </div>
@@ -111,12 +111,12 @@ export default function MyCourseListPage() {
         <div className="max-w-6xl mx-auto p-4 md:p-8">
           {/* 页面标题 - 移动端显示 */}
           <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-6 md:mb-8 md:hidden">
-            我的课程
+            体验课程
           </h1>
           
-          {/* 课程列表 - 响应式网格布局 */}
+          {/* 视频列表 - 响应式网格布局 */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-            {myCourses.map((course) => (
+            {trialCourses.map((course) => (
               <Link 
                 href={`/student/course/${course.id}`} 
                 key={course.id}
@@ -145,14 +145,6 @@ export default function MyCourseListPage() {
                     <Clock className="w-3 h-3 mr-1" />
                     {course.duration}
                   </div>
-                  
-                  {/* 进度条 */}
-                  <div className="absolute bottom-3 left-3 right-16 bg-gray-200 dark:bg-gray-700 h-1.5 rounded-full overflow-hidden">
-                    <div 
-                      className="h-full bg-orange-500" 
-                      style={{ width: `${course.progress}%` }}
-                    ></div>
-                  </div>
                 </div>
                 
                 {/* 课程信息区域 */}
@@ -179,7 +171,7 @@ export default function MyCourseListPage() {
                       {course.teacher}
                     </div>
                     <div className="text-sm text-gray-500 dark:text-gray-400">
-                      下节课：{course.nextClass}
+                      {course.students}人已体验
                     </div>
                   </div>
                 </div>
@@ -190,7 +182,7 @@ export default function MyCourseListPage() {
           {/* 分页或加载更多按钮 - 适应iPad */}
           <div className="mt-8 md:mt-12 flex justify-center">
             <button className="px-6 py-3 md:py-4 bg-orange-600 hover:bg-orange-700 text-white font-medium rounded-lg transition-colors duration-200 flex items-center shadow-md">
-              <span>查看全部课程</span>
+              <span>加载更多</span>
             </button>
           </div>
         </div>
