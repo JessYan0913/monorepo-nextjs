@@ -1,7 +1,12 @@
+'use client'
+
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Play, ArrowLeft } from 'lucide-react'
+import { Play, ArrowLeft, ChevronLeft } from 'lucide-react'
+import { Button } from '@repo/ui/components/ui/button'
 
 export default function HotVideosPage() {
+  const router = useRouter()
   // 模拟热门视频数据
   const hotVideos = [
     {
@@ -60,13 +65,14 @@ export default function HotVideosPage() {
       <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-10 flex-shrink-0">
         <div className="max-w-6xl mx-auto px-6 py-4 md:py-5">
           <div className="flex justify-between items-center">
-            <Link 
-              href="/student" 
+            <Button 
+              variant="ghost"
+              onClick={() => router.back()}
               className="inline-flex items-center text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors duration-200 text-base md:text-lg"
             >
-              <ArrowLeft className="w-5 h-5 md:w-6 md:h-6 mr-2" />
+              <ChevronLeft className="w-5 h-5 md:w-6 md:h-6 mr-2" />
               <span>返回</span>
-            </Link>
+            </Button>
             
             {/* iPad上显示的页面标题 */}
             <h2 className="hidden md:block text-lg font-medium text-gray-700 dark:text-gray-300">
@@ -88,7 +94,7 @@ export default function HotVideosPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {hotVideos.map((video) => (
               <Link 
-                href={`/student/course/${video.id}`} 
+                href={`/student/home/hot-videos/${video.id}`} 
                 key={video.id}
                 className="group bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden transition-all duration-300"
               >
