@@ -2,8 +2,8 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { ArrowLeft, ChevronLeft, FileText, CheckCircle2, Image as ImageIcon } from 'lucide-react'
+import { FileText, CheckCircle2, Image as ImageIcon } from 'lucide-react'
+import { DetailLayout } from '@/components/detail-layout'
 import { Button } from '@repo/ui/components/ui/button'
 
 interface HomeworkDetailPageProps {
@@ -13,7 +13,6 @@ interface HomeworkDetailPageProps {
 }
 
 export default function HomeworkDetailPage({ params }: HomeworkDetailPageProps) {
-  const router = useRouter()
   const [submissionText, setSubmissionText] = useState('')
   const [uploadedImages, setUploadedImages] = useState<string[]>([])
 
@@ -40,23 +39,8 @@ export default function HomeworkDetailPage({ params }: HomeworkDetailPageProps) 
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
-      {/* 导航栏 */}
-      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-        <div className="max-w-6xl mx-auto px-4 py-3">
-          <Button 
-            variant="ghost"
-            onClick={() => router.back()}
-            className="inline-flex items-center text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors duration-200"
-          >
-            <ChevronLeft className="w-5 h-5 mr-2" />
-            <span>返回</span>
-          </Button>
-        </div>
-      </div>
-
-      {/* 主要内容区域 */}
-      <div className="flex-1 p-6 overflow-y-auto">
+    <DetailLayout title="作业详情">
+      <div className="max-w-6xl mx-auto p-4 md:p-8">
         {/* 作业标题和基本信息 */}
         <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 mb-6 shadow-sm border border-gray-100 dark:border-gray-700">
           <h1 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
@@ -158,6 +142,6 @@ export default function HomeworkDetailPage({ params }: HomeworkDetailPageProps) 
           </button>
         </div>
       </div>
-    </div>
+    </DetailLayout>
   )
 }

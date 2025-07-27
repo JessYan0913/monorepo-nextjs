@@ -1,13 +1,11 @@
 "use client"
 
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { ChevronLeft } from 'lucide-react'
 import { useState } from 'react'
 import { Button } from '@repo/ui/components/ui/button'
+import { DetailLayout } from '@/components/detail-layout'
 
 export default function HomeWorkPage() {
-  const router = useRouter()
   // 状态管理
   const [activeTab, setActiveTab] = useState<'online' | 'offline'>('online')
   
@@ -91,33 +89,12 @@ export default function HomeWorkPage() {
   const filteredHomeworks = homeworks.filter(homework => homework.type === activeTab)
 
   return (
-    <div className="min-h-screen bg-orange-50 dark:bg-gray-900 flex flex-col">
-      {/* 顶部导航栏 */}
-      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-10 flex-shrink-0">
-      <div className="max-w-6xl mx-auto px-6 py-4 md:py-5">
-      <div className="flex justify-between items-center">
-            <Button
-              variant="ghost"
-              onClick={() => router.back()}
-              className="inline-flex items-center text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors duration-200"
-            >
-              <ChevronLeft className="w-5 h-5 mr-2" />
-              <span>返回</span>
-            </Button>
-
-            {/* iPad上显示的页面标题 */}
-            <h2 className="hidden md:block text-lg font-medium text-gray-700 dark:text-gray-300">
-              课后作业
-            </h2>
-          </div>
-        </div>
-      </div>
-      
-      {/* 主要内容区域 - 左右分栏布局 */}
-      <div className="flex-1 flex">
-        {/* 左侧选项卡区域 */}
-        <div className="w-48 bg-orange-100 dark:bg-gray-800 p-6">
-          <div className="space-y-4">
+    <DetailLayout title="课后作业">
+      {/* 内容区域 */}
+      <div className="flex flex-col md:flex-row gap-6">
+        {/* 左侧选项卡 - 垂直排列 */}
+        <div className="w-full md:w-48 flex-shrink-0">
+          <div className="space-y-2">
             <button
               onClick={() => setActiveTab('online')}
               className={`w-full py-4 px-6 rounded-xl text-center font-medium transition-all duration-200 ${
@@ -207,6 +184,6 @@ export default function HomeWorkPage() {
           )}
         </div>
       </div>
-    </div>
+    </DetailLayout>
   )
 }
