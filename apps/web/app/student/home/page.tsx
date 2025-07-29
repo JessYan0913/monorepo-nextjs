@@ -198,7 +198,7 @@ export default function StudentPage() {
                   师资展示
                 </h2>
               </div>
-              <Link href="/student/famous-teachers" className="text-sm text-orange-500 hover:text-orange-600 flex items-center">
+              <Link href="/student/home/famous-teachers" className="text-sm text-orange-500 hover:text-orange-600 flex items-center">
                 更多 <ChevronRight className="w-4 h-4" />
               </Link>
             </div>
