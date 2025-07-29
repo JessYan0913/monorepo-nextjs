@@ -3,7 +3,6 @@
 import { useRouter } from 'next/navigation'
 import { ChevronLeft } from 'lucide-react'
 import { Button } from '@repo/ui/components/ui/button'
-import { cn } from '@repo/ui/lib/utils'
 
 export function DetailLayout({ title, children }: { title: string; children: React.ReactNode }) {
   const router = useRouter()

@@ -163,9 +163,9 @@ function HomeworkCard({ homework }: { homework: HomeworkItem }) {
           </div>
         </div>
         <div className="flex-shrink-0">
-          <button className="px-3 py-1.5 md:px-4 md:py-2 bg-orange-500 hover:bg-orange-600 text-white text-xs md:text-sm rounded-lg transition-colors">
+          <Link href={`/student/learning/home-work/${homework.id}`} className="px-3 py-1.5 md:px-4 md:py-2 bg-orange-500 hover:bg-orange-600 text-white text-xs md:text-sm rounded-lg transition-colors">
             立即学习
-          </button>
+          </Link>
         </div>
       </div>
     </div>

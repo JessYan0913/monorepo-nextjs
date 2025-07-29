@@ -91,36 +91,34 @@ export default function HomeWorkPage() {
   return (
     <DetailLayout title="课后作业">
       {/* 内容区域 */}
-      <div className="flex flex-col md:flex-row gap-6">
+      <div className="flex gap-6 h-full">
         {/* 左侧选项卡 - 垂直排列 */}
-        <div className="w-full md:w-48 flex-shrink-0">
-          <div className="space-y-2">
-            <button
-              onClick={() => setActiveTab('online')}
-              className={`w-full py-4 px-6 rounded-xl text-center font-medium transition-all duration-200 ${
-                activeTab === 'online'
-                  ? 'bg-orange-400 text-white shadow-lg'
-                  : 'bg-orange-200 text-orange-800 hover:bg-orange-300'
-              }`}
-            >
-              线上
-            </button>
-            <button
-              onClick={() => setActiveTab('offline')}
-              className={`w-full py-4 px-6 rounded-xl text-center font-medium transition-all duration-200 ${
-                activeTab === 'offline'
-                  ? 'bg-orange-400 text-white shadow-lg'
-                  : 'bg-orange-200 text-orange-800 hover:bg-orange-300'
-              }`}
-            >
-              线下
-            </button>
-          </div>
+        <div className="w-1/3 md:w-48 py-6 px-2 space-y-2 bg-orange-50 rounded-xl flex-shrink-0">
+          <button
+            onClick={() => setActiveTab('online')}
+            className={`w-full py-4 px-6 rounded-xl text-center font-medium transition-all duration-200 ${
+              activeTab === 'online'
+                ? 'bg-orange-400 text-white shadow-lg'
+                : 'bg-orange-200 text-orange-800 hover:bg-orange-300'
+            }`}
+          >
+            线上
+          </button>
+          <button
+            onClick={() => setActiveTab('offline')}
+            className={`w-full py-4 px-6 rounded-xl text-center font-medium transition-all duration-200 ${
+              activeTab === 'offline'
+                ? 'bg-orange-400 text-white shadow-lg'
+                : 'bg-orange-200 text-orange-800 hover:bg-orange-300'
+            }`}
+          >
+            线下
+          </button>
         </div>
         
         {/* 右侧作业列表区域 */}
-        <div className="flex-1 p-6 overflow-y-auto">
-          <div className="space-y-4">
+        <div className="flex-1 py-6 overflow-y-auto rounded-xl bg-orange-50">
+          <div className="space-y-4 px-6">
             {filteredHomeworks.map((homework) => (
               <Link 
                 href={`/student/learning/home-work/${homework.id}`} 

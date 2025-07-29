@@ -1,9 +1,7 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
-import { Play, ArrowLeft, ChevronLeft } from 'lucide-react'
-import { Button } from '@repo/ui/components/ui/button'
+import { Play } from 'lucide-react'
+import { DetailLayout } from '@/components/detail-layout'
 
 interface CourseDetailPageProps {
   params: {
@@ -12,7 +10,6 @@ interface CourseDetailPageProps {
 }
 
 export default function HotVideoDetailPage({ params }: CourseDetailPageProps) {
-  const router = useRouter()
   // 模拟课程数据
   const courseData = {
     id: params.id,
@@ -26,28 +23,7 @@ export default function HotVideoDetailPage({ params }: CourseDetailPageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
-      {/* 顶部导航栏 - 适应iPad */}
-      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-10 flex-shrink-0">
-        <div className="max-w-6xl mx-auto px-6 py-4 md:py-5">
-          <div className="flex justify-between items-center">
-            <Button 
-              variant="ghost"
-              onClick={() => router.back()}
-              className="inline-flex items-center text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors duration-200 text-base md:text-lg"
-            >
-              <ChevronLeft className="w-5 h-5 md:w-6 md:h-6 mr-2" />
-              <span>返回</span>
-            </Button>
-            
-            {/* iPad上显示的课程标题 */}
-            <h2 className="hidden md:block text-lg font-medium text-gray-700 dark:text-gray-300 truncate max-w-md">
-              {courseData.title}
-            </h2>
-          </div>
-        </div>
-      </div>
-      
+    <DetailLayout title="课程详情">
       {/* 内容区域 - 支持滚动 */}
       <div className="flex-1 overflow-y-auto">  
         <div className="max-w-6xl mx-auto p-4 md:p-8">
@@ -138,6 +114,6 @@ export default function HotVideoDetailPage({ params }: CourseDetailPageProps) {
           </div>
         </div>
       </div>
-    </div>
+    </DetailLayout>
   )
 }
