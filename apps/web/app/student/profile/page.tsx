@@ -1,15 +1,12 @@
 'use client'
 
 import React from 'react'
-import { ArrowLeft, Target } from 'lucide-react'
+import { Settings } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { Progress } from '@repo/ui/components/ui/progress'
 
 const ProfilePage = () => {
   const router = useRouter()
-
-  const handleBack = () => {
-    router.back()
-  }
 
   const services = [
     {
@@ -42,52 +39,44 @@ const ProfilePage = () => {
   return (
     <div className="min-h-screen bg-gray-50 overflow-y-auto">
       {/* 容器 - 固定宽度适配iPad */}
-      <div className="w-full max-w-5xl mx-auto px-6 py-4 min-h-screen flex flex-col">
+      <div className="w-full mx-auto px-6 py-8 min-h-screen flex flex-col">
         
         {/* 顶部卡片区域 - 严格按照图片比例 */}
-        <div className="grid grid-cols-2 gap-4 mb-6">
+        <div className="flex-2/3 w-full flex gap-4 mb-6">
           {/* 用户信息卡片 */}
-          <div className="bg-gradient-to-br from-orange-400 to-orange-500 rounded-2xl p-6 text-white relative overflow-hidden h-80">
-            {/* 装饰性背景圆圈 */}
-            <div className="absolute -top-8 -right-8 w-24 h-24 bg-white/10 rounded-full"></div>
-            <div className="absolute -bottom-6 -left-6 w-16 h-16 bg-white/10 rounded-full"></div>
-            
+          <div className="flex-2/5 flex flex-col bg-gradient-to-br from-orange-400 to-orange-500 rounded-2xl p-6 text-white relative overflow-hidden">
             {/* 用户头像和信息 */}
-            <div className="flex items-start mb-6">
-              <div className="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center mr-4 backdrop-blur-sm border-2 border-white/30">
+            <div className="flex-1/2 flex p-6 items-center mb-6">
+              <div className="w-32 h-32 bg-white/20 rounded-full flex items-center justify-center mr-4 backdrop-blur-sm border-2 border-white/30">
                 <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
                   <span className="text-orange-500 font-bold text-base">陈</span>
                 </div>
               </div>
-              <div className="flex-1">
-                <h2 className="text-xl font-bold mb-1">陈小乐</h2>
-                <p className="text-white/90 text-sm mb-0.5">13808298531</p>
-                <p className="text-white/90 text-sm">顺义校区</p>
+              <div className="flex-1 h-full grid grid-cols-1 grid-rows-3">
+                <h1 className="text-4xl font-bold mb-1">陈小乐</h1>
+                <p className="text-white/90 text-xl mb-0.5">13808298531</p>
+                <p className="text-white/90 text-xl">顺义校区</p>
               </div>
             </div>
 
             {/* VIP进度区域 */}
-            <div className="mt-auto">
+            <div className="flex-1/2 flex-col items-center">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-white/90 text-sm font-medium">VIP2</span>
                 <span className="text-white/90 text-sm font-medium">VIP3</span>
               </div>
-              <div className="w-full bg-white/20 rounded-full h-1.5 mb-2">
-                <div className="bg-white h-1.5 rounded-full" style={{ width: '33%' }}></div>
-              </div>
+              <Progress value={50} className="w-full h-4 rounded-full bg-white/10" />
               <div className="text-center text-white/90 text-sm font-medium">12/36</div>
             </div>
 
             {/* 右下角目标图标 */}
-            <div className="absolute bottom-4 right-4">
-              <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
-                <Target className="w-4 h-4 text-white" />
-              </div>
+            <div className="absolute bottom-8 right-8">
+              <Settings className="w-12 h-12 text-white" />
             </div>
           </div>
 
           {/* BEST YOU 宣传卡片 */}
-          <div className="bg-gradient-to-br from-indigo-600 via-purple-600 to-blue-700 rounded-2xl p-6 text-white relative overflow-hidden h-80">
+          <div className="flex-3/5 bg-gradient-to-br from-indigo-600 via-purple-600 to-blue-700 rounded-2xl p-6 text-white relative overflow-hidden">
             {/* 太空装饰元素 */}
             <div className="absolute inset-0 opacity-30">
               {/* 彩色方块装饰 */}
@@ -127,7 +116,7 @@ const ProfilePage = () => {
         </div>
 
         {/* 其他服务区域 - 占满剩余空间 */}
-        <div className="flex-1 flex flex-col">
+        <div className="flex-1/3 flex flex-col">
           <h3 className="text-lg font-medium text-gray-800 mb-4">其他服务</h3>
           
           <div className="grid grid-cols-3 gap-4 flex-1">

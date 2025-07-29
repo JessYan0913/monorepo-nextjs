@@ -11,7 +11,7 @@ export function DetailLayout({ title, children }: { title: string; children: Rea
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
       {/* 顶部导航栏 - 适应iPad */}
       <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-10 flex-shrink-0">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10 py-3 sm:py-4 md:py-5">
+        <div className="mx-auto px-4 py-3">
           <div className="flex justify-between items-center">
             <Button 
               variant="ghost"
@@ -31,7 +31,7 @@ export function DetailLayout({ title, children }: { title: string; children: Rea
       </div>
       
       {/* 内容区域 - 支持滚动，针对iPad优化padding */}
-      <main className="flex-1 overflow-y-auto max-w-6xl w-full mx-auto px-4 py-4 sm:px-6 sm:py-6 md:px-8 md:py-8 lg:px-10 lg:py-10">  
+      <main className="flex-1 overflow-y-auto w-full mx-auto px-4 py-4">  
         {children}
       </main>
     </div>
