@@ -1,10 +1,11 @@
 'use client'
 
-import Link from 'next/link'
-import { ArrowLeft, Star, Award, Users } from 'lucide-react'
+import { useState } from 'react'
+import { Star, Award, Users } from 'lucide-react'
 import { DetailLayout } from '@/components/detail-layout'
 
 export default function FamousTeachersPage() {
+  const [currentSchool, setCurrentSchool] = useState<string>('顺义校区')
   // 模拟名师数据
   const famousTeachers = [
     {
@@ -78,95 +79,69 @@ export default function FamousTeachersPage() {
   return (
     <DetailLayout title="名师团队">
       {/* 内容区域 - 支持滚动 */}
-      <div className="flex-1 overflow-y-auto max-w-6xl mx-auto p-4 md:p-8">  
-        {/* 名师列表 - 响应式网格布局 */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-          {famousTeachers.map((teacher) => (
-            <div 
-              key={teacher.id}
-              className="group bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden transition-all duration-300 cursor-pointer"
+      <div className="flex h-full gap-6">  
+        {/* 左侧选项卡 - 垂直排列 */}
+        <div className="w-1/3 md:w-48 py-6 px-2 space-y-2 bg-orange-50 rounded-xl flex-shrink-0">
+          {["顺义校区", "朝阳校区", "海淀校区", "西城校区", "东城校区", "丰台校区"].map((school) => (
+            <button
+              key={school}
+              onClick={() => setCurrentSchool(school)}
+              className={`w-full py-4 px-6 rounded-xl text-center font-medium transition-all duration-200 ${
+                currentSchool === school
+                  ? 'bg-orange-400 text-white shadow-lg'
+                  : 'bg-orange-200 text-orange-800 hover:bg-orange-300'
+              }`}
             >
-              {/* 教师头像区域 */}
-              <div className="relative w-full h-48 md:h-56 bg-gradient-to-br from-orange-50 to-blue-50 dark:from-orange-900/20 dark:to-blue-900/20 overflow-hidden">
-                {/* 头像背景装饰 */}
-                <div className="absolute inset-0 bg-gradient-to-br from-orange-100/50 to-blue-100/50 dark:from-orange-900/30 dark:to-blue-900/30"></div>
-                
-                {/* 教师头像 */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-24 h-24 md:w-28 md:h-28 bg-white dark:bg-gray-700 rounded-full border-4 border-white dark:border-gray-600 shadow-lg overflow-hidden group-hover:scale-105 transition-transform duration-300">
-                    <div className="w-full h-full bg-gradient-to-br from-orange-200 to-blue-200 dark:from-orange-800 dark:to-blue-800 flex items-center justify-center">
-                      <span className="text-2xl md:text-3xl font-bold text-orange-600 dark:text-orange-300">
-                        {teacher.name.charAt(0)}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                
-                {/* 评分标识 */}
-                <div className="absolute top-3 right-3 bg-white/95 dark:bg-gray-800/95 rounded-full px-2 py-1 flex items-center shadow-sm">
-                  <Star className="w-3 h-3 text-yellow-500 fill-current mr-1" />
-                  <span className="text-xs font-medium text-gray-700 dark:text-gray-300">{teacher.rating}</span>
-                </div>
-              </div>
-              
-              {/* 教师信息区域 */}
-              <div className="p-4 md:p-5">
-                {/* 教师姓名和校区 */}
-                <div className="mb-3">
-                  <h3 className="text-lg md:text-xl font-semibold text-gray-900 dark:text-white mb-1">
-                    {teacher.name}
-                  </h3>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">{teacher.school}</p>
-                </div>
-                
-                {/* 职称 */}
-                <div className="mb-3">
-                  <span className="inline-flex items-center px-3 py-1 bg-orange-100 dark:bg-orange-900/50 text-orange-600 dark:text-orange-300 text-sm font-medium rounded-full">
-                    <Award className="w-3 h-3 mr-1" />
-                    {teacher.title}
-                  </span>
-                </div>
-                
-                {/* 专长领域 */}
-                <div className="mb-3">
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">擅长：</p>
-                  <div className="flex flex-wrap gap-1">
-                    {teacher.specialties.slice(0, 2).map((specialty, index) => (
-                      <span 
-                        key={index}
-                        className="inline-block px-2 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300 text-xs rounded-md"
-                      >
-                        {specialty}
-                      </span>
-                    ))}
-                    {teacher.specialties.length > 2 && (
-                      <span className="inline-block px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 text-xs rounded-md">
-                        +{teacher.specialties.length - 2}
-                      </span>
-                    )}
-                  </div>
-                </div>
-                
-                {/* 统计信息 */}
-                <div className="flex justify-between items-center pt-3 border-t border-gray-100 dark:border-gray-700">
-                  <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
-                    <Users className="w-4 h-4 mr-1" />
-                    <span>{teacher.students}位学员</span>
-                  </div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">
-                    {teacher.experience}
-                  </div>
-                </div>
-              </div>
-            </div>
+              {school}
+            </button>
           ))}
         </div>
         
-        {/* 分页或加载更多按钮 - 适应iPad */}
-        <div className="mt-8 md:mt-12 flex justify-center">
-          <button className="px-6 py-3 md:py-4 bg-orange-600 hover:bg-orange-700 text-white font-medium rounded-lg transition-colors duration-200 flex items-center shadow-md">
-            <span>查看更多名师</span>
-          </button>
+        <div className="flex-1 py-6 px-8 overflow-y-auto rounded-xl bg-orange-50">
+          {/* 名师列表 */}
+          <div className="flex flex-col gap-4">
+            {famousTeachers.map((teacher) => (
+              <div 
+                key={teacher.id}
+                className="w-full flex p-2 gap-4 bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer"
+              >
+                {/* 教师头像区域 */}
+                <div className="w-[156px] h-[167px] rounded-sm bg-orange-50">
+                </div>
+                
+                {/* 教师信息区域 */}
+                <div className="flex-1">
+                  {/* 教师姓名和校区 */}
+                  <div className="mb-3 flex items-center">
+                    <h3 className="text-lg flex-1/4 md:text-xl font-semibold text-gray-900 dark:text-white mb-1">
+                      {teacher.name}
+                    </h3>
+                    <p className="text-sm flex-3/4 text-gray-500 dark:text-gray-400">{teacher.school}</p>
+                  </div>
+                  
+                  {/* 职称 */}
+                  <div className="mb-3">
+                    <span className="inline-flex items-center px-3 py-1 bg-orange-100 dark:bg-orange-900/50 text-orange-600 dark:text-orange-300 text-sm font-medium rounded-full">
+                      <Award className="w-3 h-3 mr-1" />
+                      {teacher.title}
+                    </span>
+                  </div>
+                  
+                  {/* 专长领域 */}
+                  <div>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">擅长： { teacher.specialties.join(', ') }</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          
+          {/* 分页或加载更多按钮 - 适应iPad */}
+          <div className="mt-8 md:mt-12 flex justify-center col-span-full">
+            <button className="px-6 py-3 md:py-4 bg-orange-600 hover:bg-orange-700 text-white font-medium rounded-lg transition-colors duration-200 flex items-center shadow-md">
+              <span>查看更多名师</span>
+            </button>
+          </div>
         </div>
       </div>
     </DetailLayout>

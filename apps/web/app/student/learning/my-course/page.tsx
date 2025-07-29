@@ -90,7 +90,6 @@ export default function MyCourseListPage() {
 
   return (
     <DetailLayout title="我的课程">
-      
       {/* 内容区域 - 支持滚动 */}
       <div className="flex-1 overflow-y-auto">  
         <div className="max-w-6xl mx-auto p-4 md:p-8">
